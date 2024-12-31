@@ -1,7 +1,6 @@
 package main
 
 import (
-	"context"
 	"fmt"
 	"log"
 	"net/http"
@@ -44,16 +43,14 @@ func handleComputeAll(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// Replace with your actual Supabase project URL
-	supabaseUrl := "https://YOUR_PROJECT.supabase.co"
+	supabaseUrl := "https://nopjosfneylfkkgalcmv.supabase.co"
 
 	client := supabase.CreateClient(supabaseUrl, serviceRoleKey)
-	ctx := context.Background()
 
 	var allRecords []ProfitRecord
 	err := client.DB.From("profit_data").
 		Select("*").
-		Execute(ctx, &allRecords)
+		Execute(&allRecords)
 	if err != nil {
 		http.Error(w, "Error reading profit_data: "+err.Error(), http.StatusInternalServerError)
 		return
