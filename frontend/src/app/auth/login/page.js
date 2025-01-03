@@ -1,9 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { supabase } from '@/app/utils/supabaseClient';
 
 export default function LoginPage() {
+    const router = useRouter();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [feedback, setFeedback] = useState(null);
@@ -14,12 +16,15 @@ export default function LoginPage() {
 
         const { data, error } = await supabase.auth.signInWithPassword({
             email,
-            password
+            password,
         });
+
         if (error) {
             setFeedback(`Error: ${error.message}`);
         } else {
-            setFeedback('Login successful! You may proceed to the dashboard.');
+            // data.user is valid if the user is confirmed (if email confirmations are on).
+            setFeedback('Login successful! Redirecting...');
+            router.push('/dashboard'); // redirect to /dashboard
         }
     };
 
@@ -27,21 +32,26 @@ export default function LoginPage() {
         <div style={{ margin: '2rem' }}>
             <h1>Login</h1>
             {feedback && <p>{feedback}</p>}
-            <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', maxWidth: '300px' }}>
+            <form
+                onSubmit={handleSubmit}
+                style={{ display: 'flex', flexDirection: 'column', maxWidth: '300px' }}
+            >
                 <label>Email</label>
                 <input
                     type="email"
                     value={email}
-                    onChange={e => setEmail(e.target.value)}
+                    onChange={(e) => setEmail(e.target.value)}
                     required
                 />
+
                 <label>Password</label>
                 <input
                     type="password"
                     value={password}
-                    onChange={e => setPassword(e.target.value)}
+                    onChange={(e) => setPassword(e.target.value)}
                     required
                 />
+
                 <button type="submit" style={{ marginTop: '1rem' }}>Sign In</button>
             </form>
         </div>
