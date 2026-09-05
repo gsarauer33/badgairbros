@@ -13,9 +13,6 @@ export const revalidate = 3600;
 const mailto = site.email ? `mailto:${site.email}?subject=${encodeURIComponent("Fly a field")}` : "#contact";
 const tel = site.phone ? `tel:+1${site.phone.replace(/\D/g, "")}` : null;
 
-/* Lawnmower flight lines over the orthomosaic, in the image's own coordinate space. */
-const FLIGHT = "M40 330 L 110 40 L 180 330 L 250 40 L 320 330 L 390 40 L 460 330 L 530 40 L 600 330";
-const WAYPOINTS: [number, number][] = [[40, 330], [110, 40], [180, 330], [250, 40], [320, 330], [390, 40], [460, 330], [530, 40], [600, 330]];
 const TICKER = ["Soil tests", "Tissue scans", "Orthomosaics", "Yield maps", "Planting passes", "Spray records", "Boundaries", "Obstacles", "Signed recommendations"];
 
 const PIPELINE = ["35 photos", "matched", "meshed", "stitched", "tiled", "filed to H-3"];
@@ -43,8 +40,8 @@ export default async function Home() {
       <SiteNav name={site.name} mailto={mailto} />
 
       {/* ---------- hero ---------- */}
-      <section className="relative z-10 mx-auto grid max-w-[1280px] items-center gap-10 px-5 pb-16 pt-14 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:pb-20 lg:pt-20">
-        <div className="relative flex flex-col gap-7 lg:col-span-7 lg:gap-8">
+      <section className="relative z-10 mx-auto max-w-[1280px] px-5 pb-10 pt-16 sm:px-8 lg:pb-14 lg:pt-24">
+        <div className="relative flex max-w-[900px] flex-col gap-7 lg:gap-8">
           <p className="mono rise d1 flex items-center gap-3.5 text-[12px] text-moss">
             <span className="h-px w-7 bg-moss" />
             {site.legal} · {site.region}, Wisconsin
@@ -54,7 +51,7 @@ export default async function Home() {
             <span className="mask"><span>Your data.</span></span>
             <span className="mask"><span className="font-normal italic text-moss">Your call.</span></span>
           </h1>
-          <p className="rise d3 max-w-[560px] text-[19px] leading-[1.45] text-ink-muted sm:text-[21px]">
+          <p className="rise d3 max-w-[620px] text-[19px] leading-[1.45] text-ink-muted sm:text-[21px]">
             Drone field mapping and a grower-owned record for the farms of {site.region}. We fly it, your agronomist signs it, and the file is yours for good.
           </p>
           <div className="rise d4 flex flex-wrap items-center gap-3.5">
@@ -65,30 +62,6 @@ export default async function Home() {
           </div>
         </div>
 
-        {/* the real field */}
-        <div className="rise d3 lg:col-span-5">
-          <div className="overflow-hidden rounded-[22px] border border-line bg-surface shadow-[0_30px_60px_-30px_rgba(31,42,31,0.45),0_2px_4px_rgba(31,42,31,0.06)]">
-            <div className="relative aspect-[520/380] overflow-hidden bg-paper-deep">
-              <Image src="/h3-ortho.jpg" alt="Orthomosaic of field H-3, flown 2 September 2026" fill priority sizes="(min-width: 1024px) 520px, 100vw" className="object-cover" />
-              <svg viewBox="0 0 640 380" className="absolute inset-0 h-full w-full" preserveAspectRatio="none" aria-hidden="true">
-                <path d={FLIGHT} className="flight-path" fill="none" stroke="#f7f3ea" strokeWidth="1.6" strokeDasharray="6 6" strokeOpacity="0.95" />
-                <g fill="#c9a227" stroke="#1f2a1f" strokeWidth="1">
-                  {WAYPOINTS.map(([x, y], i) => <circle key={i} cx={x} cy={y} r="4.5" className="waypoint" style={{ animationDelay: `${0.9 + i * 0.42}s` }} />)}
-                </g>
-              </svg>
-              <span className="mono absolute left-3.5 top-3.5 rounded-full bg-ink/75 px-2.5 py-1.5 text-[10px] text-paper">Flown by us</span>
-              <span className="mono absolute bottom-3.5 right-3.5 flex items-center gap-1.5 rounded-full bg-ink/75 px-2.5 py-1.5 text-[10px] text-paper"><span className="h-1.5 w-1.5 rounded-full bg-wheat" />{site.flight.photos} photos · {site.flight.minutes} min</span>
-            </div>
-            <dl className="grid grid-cols-3 border-t border-line">
-              {[["Field", site.flight.field], ["Flown", site.flight.flown], ["Resolution", site.flight.gsd]].map(([k, v], i) => (
-                <div key={k} className={`flex flex-col gap-0.5 px-4 py-3.5 ${i < 2 ? "border-r border-line" : ""}`}>
-                  <dt className="mono text-[10px] text-ink-faint">{k}</dt>
-                  <dd className="text-[14px] font-semibold">{v}</dd>
-                </div>
-              ))}
-            </dl>
-          </div>
-        </div>
       </section>
 
       {/* ---------- principles ---------- */}
