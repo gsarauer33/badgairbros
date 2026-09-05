@@ -6,12 +6,12 @@ export const site = {
   name: "Badgair Bros",
   legal: "Badgair Bros LLC",
   tagline: "Your ground. Your data. Your call.",
-  place: "Chippewa Falls, Wisconsin",
+  place: "Bloomer, Wisconsin",
   region: "the Chippewa Valley",
-  /** Proposed: hello@badgairbros.com forwarded through Cloudflare Email Routing (free). Set null to hide. */
-  email: "hello@badgairbros.com" as string | null,
-  /** Shown as typed. Set null to hide until decided. */
-  phone: null as string | null,
+  /** Set null to hide. office@badgairbros.com can forward here through Cloudflare Email Routing. */
+  email: "badgairbros@gmail.com" as string | null,
+  /** Shown as typed. Set null to hide. */
+  phone: "(715) 933-2112" as string | null,
   acrefileUrl: "https://acrefile.com",
   people: [
     { initial: "G", name: "Garrett Sarauer", role: "Builds Acrefile. Flies the drone. Remote pilot, Part 107 in progress.", photo: null as string | null },

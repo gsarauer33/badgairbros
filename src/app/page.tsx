@@ -1,18 +1,25 @@
 import Image from "next/image";
 import { site } from "@/lib/site";
 import Reveal from "@/components/reveal";
+import SiteNav from "@/components/nav";
+import Tilt from "@/components/tilt";
+import CountUp from "@/components/count-up";
+import Spotlight from "@/components/spotlight";
 import { BadgairMark, AcrefileMark, Arrow } from "@/components/marks";
 
 const mailto = site.email ? `mailto:${site.email}?subject=${encodeURIComponent("Fly a field")}` : "#contact";
+const tel = site.phone ? `tel:+1${site.phone.replace(/\D/g, "")}` : null;
 
 /* Lawnmower flight lines over the orthomosaic, in the image's own coordinate space. */
 const FLIGHT = "M40 330 L 110 40 L 180 330 L 250 40 L 320 330 L 390 40 L 460 330 L 530 40 L 600 330";
 const WAYPOINTS: [number, number][] = [[40, 330], [110, 40], [180, 330], [250, 40], [320, 330], [390, 40], [460, 330], [530, 40], [600, 330]];
+const TICKER = ["Soil tests", "Tissue scans", "Orthomosaics", "Yield maps", "Planting passes", "Spray records", "Boundaries", "Obstacles", "Signed recommendations"];
 
 export default function Home() {
   return (
-    <main className="relative overflow-x-clip">
+    <main id="top" className="relative overflow-x-clip">
       <Reveal />
+      <div className="grain" aria-hidden="true" />
 
       {/* contour backdrop */}
       <svg viewBox="0 0 1440 900" className="pointer-events-none absolute left-0 top-0 h-[900px] w-full opacity-40" preserveAspectRatio="none" aria-hidden="true">
@@ -27,58 +34,52 @@ export default function Home() {
         </g>
       </svg>
 
-      {/* ---------- nav ---------- */}
-      <header className="relative z-10 border-b border-line">
-        <div className="mx-auto flex max-w-[1280px] items-center justify-between px-5 py-5 sm:px-8">
-          <a href="#top" className="flex items-center gap-3">
-            <BadgairMark size={30} />
-            <span className="font-serif text-[22px] font-semibold tracking-[-0.01em]">{site.name}</span>
-          </a>
-          <nav className="mono hidden items-center gap-9 text-[12px] text-ink-muted md:flex" aria-label="Sections">
-            <a href="#mapping" className="hover:text-ink">Mapping</a>
-            <a href="#acrefile" className="hover:text-ink">Acrefile</a>
-            <a href="#how" className="hover:text-ink">How it works</a>
-            <a href="#about" className="hover:text-ink">About</a>
-            <a href="#contact" className="hover:text-ink">Contact</a>
-          </nav>
-          <a href={mailto} className="flex h-11 items-center rounded-full bg-ink px-5 text-[14px] font-medium text-paper transition-colors hover:bg-moss">Book a flight</a>
-        </div>
-      </header>
+      <SiteNav name={site.name} mailto={mailto} />
 
       {/* ---------- hero ---------- */}
-      <section id="top" className="relative z-10 mx-auto grid max-w-[1280px] items-center gap-10 px-5 pb-16 pt-16 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:pb-20 lg:pt-24">
+      <section className="relative z-10 mx-auto grid max-w-[1280px] items-center gap-10 px-5 pb-16 pt-14 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:pb-20 lg:pt-20">
         <div className="flex flex-col gap-7 lg:col-span-7 lg:gap-8">
           <p className="mono rise d1 flex items-center gap-3.5 text-[12px] text-moss">
             <span className="h-px w-7 bg-moss" />
             {site.legal} · {site.region}, Wisconsin
           </p>
-          <h1 className="rise d2 font-serif text-[clamp(56px,9.5vw,104px)] font-semibold leading-[0.96] tracking-[-0.025em] text-ink">
-            Your ground.<br />Your data.<br /><span className="font-normal italic text-moss">Your call.</span>
+          <h1 className="font-serif text-[clamp(56px,9.5vw,104px)] font-semibold leading-[0.96] tracking-[-0.025em] text-ink">
+            <span className="mask"><span>Your ground.</span></span>
+            <span className="mask"><span>Your data.</span></span>
+            <span className="mask"><span className="font-normal italic text-moss">Your call.</span></span>
           </h1>
           <p className="rise d3 max-w-[560px] text-[19px] leading-[1.45] text-ink-muted sm:text-[21px]">
             Drone field mapping and a grower-owned record for the farms of {site.region}. We fly it, your agronomist signs it, and the file is yours for good.
           </p>
           <div className="rise d4 flex flex-wrap items-center gap-3.5">
-            <a href={mailto} className="flex h-[52px] items-center gap-2.5 rounded-full bg-moss px-6 text-[15px] font-medium text-paper transition-colors hover:bg-moss-deep">
-              Book a flight <Arrow />
+            <a href={mailto} className="group flex h-[52px] items-center gap-2.5 rounded-full bg-moss px-6 text-[15px] font-medium text-paper transition-[background-color,transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:bg-moss-deep hover:shadow-[0_14px_30px_-14px_rgba(47,93,58,0.7)]">
+              Book a flight <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
             </a>
-            <a href={site.acrefileUrl} className="flex h-[52px] items-center rounded-full border border-line-strong px-6 text-[15px] font-medium text-ink transition-colors hover:bg-paper-deep">See Acrefile</a>
+            <a href={site.acrefileUrl} className="flex h-[52px] items-center rounded-full border border-line-strong px-6 text-[15px] font-medium text-ink transition-[background-color,transform] duration-300 hover:-translate-y-0.5 hover:bg-paper-deep">See Acrefile</a>
           </div>
         </div>
 
         {/* the real field */}
-        <div className="rise d3 lg:col-span-5">
+        <Tilt className="rise d3 lg:col-span-5">
           <div className="drift overflow-hidden rounded-[22px] border border-line bg-surface shadow-[0_30px_60px_-30px_rgba(31,42,31,0.45),0_2px_4px_rgba(31,42,31,0.06)]">
             <div className="relative aspect-[520/380] overflow-hidden bg-paper-deep">
               <Image src="/h3-ortho.jpg" alt="Orthomosaic of field H-3, flown 2 September 2026" fill priority sizes="(min-width: 1024px) 520px, 100vw" className="object-cover" />
+              <div className="sheen pointer-events-none absolute inset-0" />
               <div className="scanline pointer-events-none absolute inset-x-0 top-0 h-[18%] bg-gradient-to-b from-transparent via-paper/25 to-transparent" />
               <svg viewBox="0 0 640 380" className="absolute inset-0 h-full w-full" preserveAspectRatio="none" aria-hidden="true">
                 <path d={FLIGHT} className="flight-path" fill="none" stroke="#f7f3ea" strokeWidth="1.6" strokeDasharray="6 6" strokeOpacity="0.95" />
                 <g fill="#c9a227" stroke="#1f2a1f" strokeWidth="1">
                   {WAYPOINTS.map(([x, y], i) => <circle key={i} cx={x} cy={y} r="4.5" className="waypoint" style={{ animationDelay: `${0.9 + i * 0.42}s` }} />)}
                 </g>
+                {/* the drone, riding the path once it is drawn */}
+                <g className="drone" style={{ offsetPath: `path("${FLIGHT}")` }}>
+                  <circle r="9" fill="rgba(247,243,234,0.18)" />
+                  <circle r="4" fill="#f7f3ea" stroke="#1f2a1f" strokeWidth="1" />
+                  <path d="M-7 -7 L7 7 M-7 7 L7 -7" stroke="#f7f3ea" strokeWidth="1.2" />
+                </g>
               </svg>
               <span className="mono absolute left-3.5 top-3.5 rounded-full bg-ink/75 px-2.5 py-1.5 text-[10px] text-paper">Flown by us</span>
+              <span className="mono absolute bottom-3.5 right-3.5 flex items-center gap-1.5 rounded-full bg-ink/75 px-2.5 py-1.5 text-[10px] text-paper"><span className="h-1.5 w-1.5 rounded-full bg-wheat" />{site.flight.photos} photos · {site.flight.minutes} min</span>
             </div>
             <dl className="grid grid-cols-3 border-t border-line">
               {[["Field", site.flight.field], ["Flown", site.flight.flown], ["Resolution", site.flight.gsd]].map(([k, v], i) => (
@@ -89,7 +90,7 @@ export default function Home() {
               ))}
             </dl>
           </div>
-        </div>
+        </Tilt>
       </section>
 
       {/* ---------- principles ---------- */}
@@ -103,6 +104,17 @@ export default function Home() {
           ))}
         </ol>
       </section>
+
+      {/* ---------- ticker: what gets filed ---------- */}
+      <div className="ticker-wrap relative z-10 overflow-hidden border-b border-line-strong py-4" aria-hidden="true">
+        <div className="ticker flex w-max gap-10 whitespace-nowrap">
+          {[...TICKER, ...TICKER].map((t, i) => (
+            <span key={i} className="mono flex items-center gap-10 text-[12px] text-ink-faint">
+              {t}<span className="h-1.5 w-1.5 rounded-full bg-wheat" />
+            </span>
+          ))}
+        </div>
+      </div>
 
       {/* ---------- what we do ---------- */}
       <section className="relative z-10 mx-auto flex max-w-[1280px] flex-col gap-10 px-5 pb-24 pt-20 sm:px-8 lg:pt-28">
@@ -118,13 +130,13 @@ export default function Home() {
 
         <div className="grid gap-6 lg:grid-cols-12">
           {/* mapping */}
-          <article id="mapping" className="reveal relative flex min-h-[460px] flex-col justify-between overflow-hidden rounded-[24px] bg-ink p-8 text-paper sm:p-10 lg:col-span-7">
+          <article id="mapping" className="reveal group relative flex min-h-[460px] flex-col justify-between overflow-hidden rounded-[24px] bg-ink p-8 text-paper transition-transform duration-500 hover:-translate-y-1 sm:p-10 lg:col-span-7">
             <svg viewBox="0 0 760 460" className="absolute inset-0 h-full w-full opacity-90" preserveAspectRatio="none" aria-hidden="true">
               <defs><clipPath id="fld"><path d="M420 70 C 520 40, 660 60, 720 110 L 730 330 C 640 380, 520 400, 440 370 Z" /></clipPath></defs>
               <g clipPath="url(#fld)">
                 <rect x="400" y="30" width="360" height="400" fill="#2f5d3a" />
                 <g stroke="#3f7e48" strokeWidth="10" strokeLinecap="round" fill="none" strokeOpacity="0.9">
-                  {Array.from({ length: 11 }, (_, i) => <path key={i} d={`M410 ${100 + i * 24} L 740 ${100 + i * 24}`} />)}
+                  {Array.from({ length: 11 }, (_, i) => <path key={i} className="swath" style={{ animationDelay: `${i * 0.09}s` }} d={`M410 ${100 + i * 24} L 740 ${100 + i * 24}`} />)}
                 </g>
                 <g fill="#c9a227" fillOpacity="0.55"><rect x="560" y="140" width="70" height="40" /><rect x="640" y="230" width="50" height="60" /></g>
               </g>
@@ -137,13 +149,13 @@ export default function Home() {
               <p className="text-[16px] leading-[1.5] text-paper/80">A drone flight over your acres, stitched into a map you can measure from and filed to your record. Stand counts and gaps now. Plant-health layers next.</p>
             </div>
             <div className="relative mt-8 flex flex-wrap gap-2.5">
-              {["Orthomosaic", "Stand count", "Elevation"].map((t) => <span key={t} className="mono rounded-full border border-paper/30 px-3 py-2 text-[11px]">{t}</span>)}
+              {["Orthomosaic", "Stand count", "Elevation"].map((t) => <span key={t} className="mono rounded-full border border-paper/30 px-3 py-2 text-[11px] transition-colors group-hover:border-paper/60">{t}</span>)}
               <span className="mono rounded-full border border-wheat/60 px-3 py-2 text-[11px] text-wheat">Multispectral · next</span>
             </div>
           </article>
 
           {/* acrefile */}
-          <article id="acrefile" className="reveal relative flex min-h-[460px] flex-col justify-between overflow-hidden rounded-[24px] border border-line bg-surface p-8 shadow-[0_2px_4px_rgba(31,42,31,0.04)] sm:p-10 lg:col-span-5" data-delay="1">
+          <article id="acrefile" className="reveal relative flex min-h-[460px] flex-col justify-between overflow-hidden rounded-[24px] border border-line bg-surface p-8 shadow-[0_2px_4px_rgba(31,42,31,0.04)] transition-[transform,box-shadow] duration-500 hover:-translate-y-1 hover:shadow-[0_30px_60px_-36px_rgba(31,42,31,0.5)] sm:p-10 lg:col-span-5" data-delay="1">
             <div className="flex flex-col gap-3.5">
               <p className="mono flex items-center gap-2 text-[12px] text-moss"><AcrefileMark size={18} /> 02 · Acrefile</p>
               <h3 className="font-serif text-[34px] font-semibold leading-[1.05] sm:text-[40px]">One record. Yours.</h3>
@@ -162,10 +174,10 @@ export default function Home() {
                     </div>
                   ))}
                 </div>
-                <div className="rounded-lg border border-wheat bg-wheat-soft p-2 text-[9px] leading-[1.3]">Hold K this year. Retest in three. <span className="font-serif italic">— your agronomist</span></div>
+                <div className="rounded-lg border border-wheat bg-wheat-soft p-2 text-[9px] leading-[1.3]"><span className="typed">Hold K. Retest in three.</span><br /><span className="font-serif italic">— your agronomist</span></div>
               </div>
-              <a href={site.acrefileUrl} className="flex items-center gap-2 text-[15px] font-medium text-moss hover:text-moss-deep">
-                acrefile.com <Arrow className="-rotate-45" />
+              <a href={site.acrefileUrl} className="group flex items-center gap-2 text-[15px] font-medium text-moss hover:text-moss-deep">
+                acrefile.com <Arrow className="-rotate-45 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
               </a>
             </div>
           </article>
@@ -188,8 +200,8 @@ export default function Home() {
               ["We fly it in the right light.", "Wind, sun angle and shutter speed decide the day. If a product needs centimetre accuracy, we fly RTK and the record says so."],
               ["The map lands on your record.", "Stitched on our machine, filed to your field, opened from your link. The files are yours to keep or share."],
             ].map(([t, d], i) => (
-              <li key={t} className="reveal flex flex-col gap-4 border-t-2 border-ink pt-6" data-delay={String(i)}>
-                <span className="font-serif text-[56px] italic leading-none text-moss">{i + 1}</span>
+              <li key={t} className="reveal group flex flex-col gap-4 border-t-2 border-ink pt-6" data-delay={String(i)}>
+                <span className="font-serif text-[56px] italic leading-none text-moss transition-transform duration-500 group-hover:translate-x-1">{i + 1}</span>
                 <h3 className="font-serif text-[26px] font-semibold">{t}</h3>
                 <p className="text-[16px] leading-[1.5] text-ink-muted">{d}</p>
               </li>
@@ -198,30 +210,30 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ---------- the ground, in numbers ---------- */}
-      <section className="relative z-10 overflow-hidden bg-night text-paper">
+      {/* ---------- the first flight, in numbers ---------- */}
+      <Spotlight className="z-10 overflow-hidden bg-night text-paper">
         <svg viewBox="0 0 1440 120" className="absolute bottom-0 left-0 h-[120px] w-full opacity-35" preserveAspectRatio="none" aria-hidden="true">
           <g stroke="#2f5d3a" strokeWidth="3" strokeLinecap="round">
             {Array.from({ length: 72 }, (_, i) => { const h = 12 + ((i * 37) % 48); return <line key={i} x1={20 + i * 20} y1={65 - h / 2} x2={20 + i * 20} y2={65 + h / 2} />; })}
           </g>
         </svg>
-        <div className="mx-auto grid max-w-[1280px] gap-10 px-5 py-20 sm:px-8 lg:grid-cols-12 lg:py-24">
+        <div className="relative mx-auto grid max-w-[1280px] gap-10 px-5 py-20 sm:px-8 lg:grid-cols-12 lg:py-24">
           <div className="reveal flex flex-col gap-5 lg:col-span-5">
             <p className="mono text-[12px] text-wheat">The first flight</p>
             <h2 className="font-serif text-[clamp(38px,5vw,64px)] font-semibold leading-[1.0] tracking-[-0.02em]">Thirty-five photos.<br />One field.<br />The same afternoon.</h2>
             <p className="max-w-[420px] text-[17px] leading-[1.5] text-paper/75">H-3 on the home farm, flown on the second of September. Stitched, filed, and opened on a phone before supper. That is the whole pitch.</p>
           </div>
           <dl className="grid grid-cols-2 gap-4 lg:col-span-7 lg:grid-cols-4">
-            {[["35", "photos", "one pass at 120 ft"], ["9", "minutes", "in the air"], ["5", "cm / pixel", "ground resolution"], ["53", "seconds", "to stitch on our machine"]].map(([n, u, d], i) => (
-              <div key={u} className="reveal rounded-[18px] border border-paper/15 p-5" data-delay={String(i % 3)}>
-                <p className="font-serif text-[56px] font-semibold leading-none text-paper">{n}</p>
+            {[[35, "photos", "one pass at 120 ft"], [9, "minutes", "in the air"], [5, "cm / pixel", "ground resolution"], [53, "seconds", "to stitch on our machine"]].map(([n, u, d], i) => (
+              <div key={String(u)} className="reveal rounded-[18px] border border-paper/15 bg-paper/[0.03] p-5 backdrop-blur-[2px] transition-colors duration-500 hover:border-wheat/50" data-delay={String(i % 3)}>
+                <p className="font-serif text-[56px] font-semibold leading-none text-paper"><CountUp value={n as number} /></p>
                 <p className="mono mt-2 text-[11px] text-wheat">{u}</p>
                 <p className="mt-1 text-[13px] text-paper/60">{d}</p>
               </div>
             ))}
           </dl>
         </div>
-      </section>
+      </Spotlight>
 
       {/* ---------- about ---------- */}
       <section id="about" className="relative z-10 mx-auto grid max-w-[1280px] gap-10 px-5 pb-24 pt-20 sm:px-8 lg:grid-cols-12 lg:pt-28">
@@ -229,7 +241,7 @@ export default function Home() {
           <p className="mono text-[12px] text-moss">About</p>
           <h2 className="font-serif text-[clamp(36px,4.8vw,52px)] font-semibold leading-[1.02] tracking-[-0.02em]">Two brothers,<br />one farm.</h2>
           <p className="text-[17px] leading-[1.55] text-ink-muted">
-            Badgair Bros started on the home farm outside Chippewa Falls. One of us farms it. The other builds the tools and flies the drone. We built Acrefile because every report we got came in a different app, on someone else’s account, and none of it added up to a record of the ground.
+            Badgair Bros started on the home farm outside Bloomer. One of us farms it. The other builds the tools and flies the drone. We built Acrefile because every report we got came in a different app, on someone else’s account, and none of it added up to a record of the ground.
           </p>
           <p className="mono flex items-center gap-2.5 text-[12px] text-ink-faint">
             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true"><path d="M12 21s7-6.2 7-11a7 7 0 0 0-14 0c0 4.8 7 11 7 11Z" /><circle cx="12" cy="10" r="2.5" /></svg>
@@ -238,13 +250,18 @@ export default function Home() {
         </div>
         <div className="grid gap-6 sm:grid-cols-2 lg:col-span-7">
           {site.people.map((p, i) => (
-            <figure key={p.name} className={`reveal flex flex-col gap-3.5 ${i === 1 ? "sm:pt-12" : ""}`} data-delay={String(i)}>
-              <div className="relative flex h-[300px] items-center justify-center overflow-hidden rounded-[20px] border border-line bg-paper-deep">
+            <figure key={p.name} className={`reveal group flex flex-col gap-3.5 ${i === 1 ? "sm:pt-12" : ""}`} data-delay={String(i)}>
+              <div className="relative flex h-[300px] items-center justify-center overflow-hidden rounded-[20px] border border-line bg-paper-deep transition-transform duration-500 group-hover:-translate-y-1">
                 {p.photo ? (
-                  <Image src={p.photo} alt={p.name} fill sizes="(min-width: 640px) 320px, 100vw" className="object-cover" />
+                  <Image src={p.photo} alt={p.name} fill sizes="(min-width: 640px) 320px, 100vw" className="object-cover transition-transform duration-700 group-hover:scale-[1.03]" />
                 ) : (
                   <>
-                    <span className="font-serif text-[72px] font-semibold text-ink/25">{p.initial}</span>
+                    <svg viewBox="0 0 320 300" className="absolute inset-0 h-full w-full opacity-60" preserveAspectRatio="none" aria-hidden="true">
+                      <g fill="none" stroke="#2f5d3a" strokeWidth="1" strokeOpacity="0.25">
+                        <path d="M-10 200 C 60 170, 120 230, 190 200 S 300 160, 330 190" /><path d="M-10 230 C 60 200, 120 260, 190 230 S 300 190, 330 220" /><path d="M-10 260 C 60 230, 120 290, 190 260 S 300 220, 330 250" />
+                      </g>
+                    </svg>
+                    <span className="relative font-serif text-[72px] font-semibold text-ink/25">{p.initial}</span>
                     <span className="mono absolute bottom-3 right-3 text-[10px] text-ink-faint">photo soon</span>
                   </>
                 )}
@@ -264,8 +281,12 @@ export default function Home() {
           <div className="flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-end lg:gap-10">
             <h2 className="reveal max-w-[640px] font-serif text-[clamp(44px,6vw,72px)] font-semibold leading-[1.0] tracking-[-0.025em]">Fly a field<br />with us this fall.</h2>
             <div className="reveal flex flex-col gap-3 lg:items-end" data-delay="1">
-              {site.email && <a href={mailto} className="font-serif text-[24px] text-moss hover:text-moss-deep sm:text-[26px]">{site.email}</a>}
-              <p className="mono text-[12px] text-ink-faint">{[site.phone, site.place].filter(Boolean).join(" · ")}</p>
+              {site.email && <a href={mailto} className="font-serif text-[24px] text-moss underline decoration-wheat/0 underline-offset-8 transition-[text-decoration-color] duration-300 hover:decoration-wheat sm:text-[26px]">{site.email}</a>}
+              <p className="mono flex flex-wrap gap-x-3 text-[12px] text-ink-faint">
+                {site.phone && tel && <a href={tel} className="hover:text-ink">{site.phone}</a>}
+                {site.phone && <span>·</span>}
+                <span>{site.place}</span>
+              </p>
             </div>
           </div>
           <div className="flex flex-col items-start justify-between gap-4 border-t border-line pt-6 sm:flex-row sm:items-center">
