@@ -44,7 +44,8 @@ export default function Scrolly({ steps, image }: { steps: Step[]; image: string
   }, []);
 
   const n = steps.length;
-  const stageF = p * n;
+  // Stages finish at 85% of the pinned distance; the last 15% holds the filed card on screen.
+  const stageF = Math.min(1, p / 0.85) * n;
   const stage = Math.min(n - 1, Math.floor(stageF));
   const local = Math.min(1, stageF - stage); // 0..1 within the stage
   const ease = (x: number) => 1 - Math.pow(1 - x, 3);
