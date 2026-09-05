@@ -1,19 +1,18 @@
 /**
- * Badgair Bros: a badger, front on. White face, two black eye bands, ears, sitting on a wheat
- * ground line. Badger for Wisconsin, ground under it, and the air is where it looks.
- * (Candidate G, provisional until Garrett picks.)
+ * Badgair Bros: the one-line badger, low and long, nose to the ground, with the drone over it.
+ * Drawn in ink on the page's own paper (no box), so it sits like a signature next to the name.
  */
-export function BadgairMark({ size = 30, className = "" }: { size?: number; className?: string }) {
+export function BadgairMark({ size = 30, className = "", color = "#1f2a1f", accent = "#a8442c" }: { size?: number; className?: string; color?: string; accent?: string }) {
+  const h = Math.round(size * 0.62);
   return (
-    <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true" className={className}>
-      <rect width="32" height="32" rx="8" fill="#2f5d3a" />
-      <path d="M8 12.8c0-4 2.7-5.9 8-5.9s8 1.9 8 5.9l-.5 7.2c-.5 3.5-3.5 5.4-7.5 5.4s-7-1.9-7.5-5.4Z" fill="#f7f3ea" />
-      <path d="M9.3 8.3 8 5.9c-.3-.5.5-.8 1-.3l2.1 1.9Zm13.4 0 1.3-2.4c.3-.5-.5-.8-1-.3l-2.1 1.9Z" fill="#f7f3ea" />
-      <path d="M10.4 9.3c1.6-.8 3.5-.5 4 1.4l-.3 10.6c-1.3 1-3.2 0-4-1.6Z" fill="#1f2a1f" />
-      <path d="M21.6 9.3c-1.6-.8-3.5-.5-4 1.4l.3 10.6c1.3 1 3.2 0 4-1.6Z" fill="#1f2a1f" />
-      <circle cx="12.3" cy="14.4" r=".8" fill="#f7f3ea" /><circle cx="19.7" cy="14.4" r=".8" fill="#f7f3ea" />
-      <path d="M14.7 23.4c.5 1 2.1 1 2.6 0-.5-.5-2.1-.5-2.6 0Z" fill="#1f2a1f" />
-      <path d="M5.5 27.5h21" stroke="#c9a227" strokeWidth="1.5" strokeLinecap="round" />
+    <svg width={size} height={h} viewBox="0 0 260 160" fill="none" aria-hidden="true" className={className}>
+      <g stroke={color} strokeWidth="9" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M40 120 C 60 98, 76 92, 100 92 C 130 92, 150 98, 176 88 C 190 83, 206 88, 214 102 L 220 116 C 214 120, 200 118, 192 112 L 186 120 M100 92 L 96 120 M150 94 L 148 120 M176 88 L 182 120" />
+        <path d="M176 88 C 186 80, 200 82, 210 92" />
+        <path d="M24 146 C 60 134, 90 154, 130 142 C 170 130, 200 150, 236 138" strokeWidth="4" strokeOpacity="0.45" />
+      </g>
+      <circle cx="220" cy="116" r="6" fill={accent} />
+      <circle cx="130" cy="30" r="8" fill={color} /><path d="M112 30 h-14 M148 30 h14" stroke={color} strokeWidth="5" strokeLinecap="round" />
     </svg>
   );
 }

@@ -3,13 +3,12 @@
 import { useEffect, useState } from "react";
 import { BadgairMark } from "./marks";
 
+/* Four entries. "How it works" is the scroll scene you meet anyway; "Contact" is the button. */
 const SECTIONS = [
   ["mapping", "Mapping"],
   ["acrefile", "Acrefile"],
-  ["how", "How it works"],
   ["listen", "Listen"],
   ["about", "About"],
-  ["contact", "Contact"],
 ] as const;
 
 /** Sticky nav: turns to frosted paper once you scroll, underlines the section in view, and draws a
@@ -44,10 +43,10 @@ export default function SiteNav({ name, mailto }: { name: string; mailto: string
       <span className="absolute left-0 top-0 h-[2px] bg-moss transition-[width] duration-150" style={{ width: `${progress * 100}%` }} aria-hidden="true" />
       <div className="mx-auto flex max-w-[1280px] items-center justify-between px-5 py-4 sm:px-8">
         <a href="#top" className="group flex items-center gap-3">
-          <span className="transition-transform duration-500 group-hover:rotate-[-6deg]"><BadgairMark size={30} /></span>
+          <span className="transition-transform duration-500 group-hover:-translate-y-0.5"><BadgairMark size={44} /></span>
           <span className="font-serif text-[22px] font-semibold tracking-[-0.01em]">{name}</span>
         </a>
-        <nav className="mono hidden items-center gap-8 text-[12px] text-ink-muted md:flex" aria-label="Sections">
+        <nav className="hidden items-center gap-7 text-[14px] text-ink-muted md:flex" aria-label="Sections">
           {SECTIONS.map(([id, label]) => (
             <a key={id} href={`#${id}`} className={`relative py-1 transition-colors hover:text-ink ${active === id ? "text-ink" : ""}`}>
               {label}
@@ -55,7 +54,7 @@ export default function SiteNav({ name, mailto }: { name: string; mailto: string
             </a>
           ))}
         </nav>
-        <a href={mailto} className="magnet flex h-11 items-center rounded-full bg-ink px-5 text-[14px] font-medium text-paper transition-[background-color,transform] duration-300 hover:-translate-y-0.5 hover:bg-moss">Book a flight</a>
+        <a href={mailto} className="flex h-10 items-center rounded-full bg-ink px-4 text-[14px] font-medium text-paper transition-colors duration-300 hover:bg-moss">Book a flight</a>
       </div>
     </header>
   );

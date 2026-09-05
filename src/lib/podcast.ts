@@ -6,7 +6,8 @@ export type Episode = { title: string; date: string; minutes: number | null; url
 export async function getEpisodes(feedUrl: string | null, limit = 4): Promise<Episode[]> {
   if (!feedUrl) return [];
   try {
-    const res = await fetch(feedUrl, { next: { revalidate: 3600 } });
+    // Never let a slow feed hang a build: give up after 6 seconds and render "coming soon".
+    const res = await fetch(feedUrl, { next: { revalidate: 3600 }, signal: AbortSignal.timeout(6000) });
     if (!res.ok) return [];
     const xml = await res.text();
     const items = xml.split(/<item[\s>]/).slice(1, limit + 1);

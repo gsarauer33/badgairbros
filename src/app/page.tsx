@@ -320,7 +320,7 @@ export default async function Home() {
           </div>
           <div className="flex flex-col items-start justify-between gap-4 border-t border-line pt-6 sm:flex-row sm:items-center">
             <p className="flex items-center gap-2.5">
-              <BadgairMark size={22} />
+              <BadgairMark size={34} />
               <span className="mono text-[11px] text-ink-faint">{site.legal} · © {new Date().getFullYear()}</span>
             </p>
             <nav className="mono flex gap-7 text-[11px] text-ink-faint" aria-label="Footer">
