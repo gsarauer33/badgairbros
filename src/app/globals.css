@@ -110,6 +110,19 @@ body {
 .spotlight { position: relative; }
 .spotlight::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(560px circle at var(--mx, 30%) var(--my, 40%), rgba(63,126,72,0.28), transparent 60%); transition: opacity 0.4s; }
 
+/* Contours drift up as you scroll (scroll-driven animation; browsers without it just keep them still) */
+@supports (animation-timeline: scroll()) {
+  .contours { animation: contour-drift linear both; animation-timeline: scroll(root); animation-range: 0 1200px; }
+  @keyframes contour-drift { to { transform: translateY(-180px); opacity: 0.1; } }
+}
+
+/* Pipeline steps light up in order when the band is revealed */
+.pipeline .step { opacity: 0.35; }
+.pipeline.in .step { animation: step-on 0.5s ease-out forwards; }
+.pipeline.in .step .dot { animation: dot-on 0.5s ease-out forwards; animation-delay: inherit; }
+@keyframes step-on { to { opacity: 1; border-color: rgba(201,162,39,0.6); } }
+@keyframes dot-on { to { background: #c9a227; } }
+
 /* Film grain, barely there */
 .grain { position: fixed; inset: 0; pointer-events: none; z-index: 50; opacity: 0.06; mix-blend-mode: multiply; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
 
@@ -120,6 +133,6 @@ body {
 @keyframes caret { 50% { border-color: transparent; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .mask > span, .drone, .ticker, .swath, .typed { animation: none !important; transform: none !important; stroke-dashoffset: 0 !important; width: 100% !important; border-right: 0 !important; }
+  .mask > span, .drone, .ticker, .swath, .typed, .contours, .pipeline .step, .pipeline .step .dot { animation: none !important; transform: none !important; stroke-dashoffset: 0 !important; width: 100% !important; border-right: 0 !important; }
   .tilt > * { transform: none !important; }
 }

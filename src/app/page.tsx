@@ -5,7 +5,13 @@ import SiteNav from "@/components/nav";
 import Tilt from "@/components/tilt";
 import CountUp from "@/components/count-up";
 import Spotlight from "@/components/spotlight";
+import Canopy from "@/components/canopy";
+import Compare from "@/components/compare";
+import Magnet from "@/components/magnet";
+import { getEpisodes } from "@/lib/podcast";
 import { BadgairMark, AcrefileMark, Arrow } from "@/components/marks";
+
+export const revalidate = 3600;
 
 const mailto = site.email ? `mailto:${site.email}?subject=${encodeURIComponent("Fly a field")}` : "#contact";
 const tel = site.phone ? `tel:+1${site.phone.replace(/\D/g, "")}` : null;
@@ -15,14 +21,17 @@ const FLIGHT = "M40 330 L 110 40 L 180 330 L 250 40 L 320 330 L 390 40 L 460 330
 const WAYPOINTS: [number, number][] = [[40, 330], [110, 40], [180, 330], [250, 40], [320, 330], [390, 40], [460, 330], [530, 40], [600, 330]];
 const TICKER = ["Soil tests", "Tissue scans", "Orthomosaics", "Yield maps", "Planting passes", "Spray records", "Boundaries", "Obstacles", "Signed recommendations"];
 
-export default function Home() {
+const PIPELINE = ["35 photos", "matched", "meshed", "stitched", "tiled", "filed to H-3"];
+
+export default async function Home() {
+  const episodes = await getEpisodes(site.podcast.feed);
   return (
     <main id="top" className="relative overflow-x-clip">
       <Reveal />
       <div className="grain" aria-hidden="true" />
 
       {/* contour backdrop */}
-      <svg viewBox="0 0 1440 900" className="pointer-events-none absolute left-0 top-0 h-[900px] w-full opacity-40" preserveAspectRatio="none" aria-hidden="true">
+      <svg viewBox="0 0 1440 900" className="contours pointer-events-none absolute left-0 top-0 h-[900px] w-full opacity-40" preserveAspectRatio="none" aria-hidden="true">
         <g fill="none" stroke="#2f5d3a" strokeWidth="1" strokeOpacity="0.22">
           <path d="M-40 620 C 200 560, 380 700, 620 640 S 1000 520, 1240 600 S 1480 700, 1520 660" />
           <path d="M-40 680 C 220 610, 400 760, 640 700 S 1020 580, 1260 660 S 1480 760, 1520 720" />
@@ -38,7 +47,8 @@ export default function Home() {
 
       {/* ---------- hero ---------- */}
       <section className="relative z-10 mx-auto grid max-w-[1280px] items-center gap-10 px-5 pb-16 pt-14 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:pb-20 lg:pt-20">
-        <div className="flex flex-col gap-7 lg:col-span-7 lg:gap-8">
+        <Canopy className="absolute inset-0 -z-10 h-full w-full" />
+        <div className="relative flex flex-col gap-7 lg:col-span-7 lg:gap-8">
           <p className="mono rise d1 flex items-center gap-3.5 text-[12px] text-moss">
             <span className="h-px w-7 bg-moss" />
             {site.legal} · {site.region}, Wisconsin
@@ -52,10 +62,10 @@ export default function Home() {
             Drone field mapping and a grower-owned record for the farms of {site.region}. We fly it, your agronomist signs it, and the file is yours for good.
           </p>
           <div className="rise d4 flex flex-wrap items-center gap-3.5">
-            <a href={mailto} className="group flex h-[52px] items-center gap-2.5 rounded-full bg-moss px-6 text-[15px] font-medium text-paper transition-[background-color,transform,box-shadow] duration-300 hover:-translate-y-0.5 hover:bg-moss-deep hover:shadow-[0_14px_30px_-14px_rgba(47,93,58,0.7)]">
+            <Magnet href={mailto} className="group flex h-[52px] items-center gap-2.5 rounded-full bg-moss px-6 text-[15px] font-medium text-paper hover:bg-moss-deep hover:shadow-[0_14px_30px_-14px_rgba(47,93,58,0.7)]">
               Book a flight <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
-            </a>
-            <a href={site.acrefileUrl} className="flex h-[52px] items-center rounded-full border border-line-strong px-6 text-[15px] font-medium text-ink transition-[background-color,transform] duration-300 hover:-translate-y-0.5 hover:bg-paper-deep">See Acrefile</a>
+            </Magnet>
+            <Magnet href={site.acrefileUrl} className="flex h-[52px] items-center rounded-full border border-line-strong px-6 text-[15px] font-medium text-ink hover:bg-paper-deep">See Acrefile</Magnet>
           </div>
         </div>
 
@@ -147,6 +157,7 @@ export default function Home() {
               <p className="mono text-[12px] text-wheat">01 · Field mapping</p>
               <h3 className="font-serif text-[34px] font-semibold leading-[1.05] sm:text-[40px]">The field, at five centimetres.</h3>
               <p className="text-[16px] leading-[1.5] text-paper/80">A drone flight over your acres, stitched into a map you can measure from and filed to your record. Stand counts and gaps now. Plant-health layers next.</p>
+              <p className="mono text-[11px] text-paper/55">{site.pricing}</p>
             </div>
             <div className="relative mt-8 flex flex-wrap gap-2.5">
               {["Orthomosaic", "Stand count", "Elevation"].map((t) => <span key={t} className="mono rounded-full border border-paper/30 px-3 py-2 text-[11px] transition-colors group-hover:border-paper/60">{t}</span>)}
@@ -181,6 +192,21 @@ export default function Home() {
               </a>
             </div>
           </article>
+        </div>
+      </section>
+
+      {/* ---------- same ground, two eyes ---------- */}
+      <section className="relative z-10 mx-auto max-w-[1280px] px-5 sm:px-8">
+        <div className="grid gap-10 border-t border-line-strong pb-24 pt-20 lg:grid-cols-12 lg:items-center">
+          <div className="reveal flex flex-col gap-5 lg:col-span-4">
+            <p className="mono text-[12px] text-moss">Same ground, two eyes</p>
+            <h2 className="font-serif text-[clamp(34px,4.5vw,48px)] font-semibold leading-[1.05] tracking-[-0.02em]">Satellite sees a field.<br />We see the rows.</h2>
+            <p className="text-[17px] leading-[1.5] text-ink-muted">The public satellite image on the right is what every farm app shows you. The left half is H-3 from our first flight, the same ground at five centimetres: the wet corner, the skips, the cattle in the pasture. Drag the handle.</p>
+            <p className="mono text-[11px] text-ink-faint">USGS imagery for the satellite half · our orthomosaic for the flight</p>
+          </div>
+          <div className="reveal lg:col-span-8" data-delay="1">
+            <Compare before="/h3-satellite.jpg" after="/h3-drone.jpg" alt="H-3 from our flight at five centimetres per pixel" />
+          </div>
         </div>
       </section>
 
@@ -232,8 +258,47 @@ export default function Home() {
               </div>
             ))}
           </dl>
+          <ol className="pipeline reveal mono flex flex-wrap items-center gap-x-3 gap-y-2 text-[11px] text-paper/60 lg:col-span-12" data-delay="2" aria-label="What happens to the photos">
+            {PIPELINE.map((step, i) => (
+              <li key={step} className="flex items-center gap-3">
+                <span className="step flex items-center gap-2 rounded-full border border-paper/20 px-3 py-1.5" style={{ animationDelay: `${0.4 + i * 0.35}s` }}>
+                  <span className="dot h-1.5 w-1.5 rounded-full bg-paper/40" />{step}
+                </span>
+                {i < PIPELINE.length - 1 && <span className="h-px w-5 bg-paper/25" />}
+              </li>
+            ))}
+          </ol>
         </div>
       </Spotlight>
+
+      {/* ---------- listen (appears once the feed exists) ---------- */}
+      {site.podcast.feed && site.podcast.name && (
+        <section id="listen" className="relative z-10 overflow-hidden bg-moss text-paper">
+          <div className="mx-auto grid max-w-[1280px] gap-10 px-5 py-20 sm:px-8 lg:grid-cols-12 lg:py-24">
+            <div className="reveal flex flex-col gap-5 lg:col-span-5">
+              <p className="mono text-[12px] text-wheat">Listen · the podcast</p>
+              <h2 className="font-serif text-[clamp(40px,5vw,64px)] font-semibold leading-[1.0] tracking-[-0.02em]">{site.podcast.name}</h2>
+              <p className="max-w-[420px] text-[17px] leading-[1.5] text-paper/80">{site.podcast.blurb}</p>
+              <div className="flex flex-wrap gap-2.5 pt-2">
+                {[["Apple Podcasts", site.podcast.apple], ["Spotify", site.podcast.spotify], ["RSS", site.podcast.feed]].map(([l, u]) => u && <a key={l} href={u} className="mono rounded-full border border-paper/30 px-3.5 py-2 text-[11px] transition-colors hover:border-paper hover:bg-paper/10">{l}</a>)}
+              </div>
+            </div>
+            <ol className="flex flex-col gap-3 lg:col-span-7">
+              {episodes.length === 0 && <li className="reveal rounded-[16px] border border-paper/15 p-5 text-paper/70">First episode coming soon.</li>}
+              {episodes.map((ep, i) => (
+                <li key={ep.title} className={`reveal flex items-center justify-between gap-4 rounded-[16px] p-5 ${i === 0 ? "bg-night" : "border border-paper/15"}`} data-delay={String(i % 3)}>
+                  <div className="min-w-0">
+                    <p className="mono text-[10px] text-paper/60">{i === 0 ? "Latest" : ""} {ep.date ? new Date(ep.date).toLocaleDateString("en-US", { month: "long", day: "numeric" }) : ""}</p>
+                    <p className="font-serif text-[20px] font-semibold leading-[1.2]">{ep.url ? <a href={ep.url} className="hover:underline">{ep.title}</a> : ep.title}</p>
+                    {i === 0 && ep.summary && <p className="mt-1 text-[14px] text-paper/70">{ep.summary}</p>}
+                  </div>
+                  <span className="mono shrink-0 text-[11px] text-paper/60">{ep.minutes ? `${ep.minutes} min` : ""}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      )}
 
       {/* ---------- about ---------- */}
       <section id="about" className="relative z-10 mx-auto grid max-w-[1280px] gap-10 px-5 pb-24 pt-20 sm:px-8 lg:grid-cols-12 lg:pt-28">
@@ -279,7 +344,10 @@ export default function Home() {
       <footer id="contact" className="relative z-10 mx-auto max-w-[1280px] px-5 sm:px-8">
         <div className="flex flex-col gap-16 border-t border-line-strong pb-10 pt-16 lg:pt-20">
           <div className="flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-end lg:gap-10">
-            <h2 className="reveal max-w-[640px] font-serif text-[clamp(44px,6vw,72px)] font-semibold leading-[1.0] tracking-[-0.025em]">Fly a field<br />with us this fall.</h2>
+            <div className="reveal flex flex-col gap-4">
+              <h2 className="max-w-[640px] font-serif text-[clamp(44px,6vw,72px)] font-semibold leading-[1.0] tracking-[-0.025em]">Fly a field<br />with us this fall.</h2>
+              <p className="max-w-[520px] text-[16px] text-ink-muted">{site.pricing}</p>
+            </div>
             <div className="reveal flex flex-col gap-3 lg:items-end" data-delay="1">
               {site.email && <a href={mailto} className="font-serif text-[24px] text-moss underline decoration-wheat/0 underline-offset-8 transition-[text-decoration-color] duration-300 hover:decoration-wheat sm:text-[26px]">{site.email}</a>}
               <p className="mono flex flex-wrap gap-x-3 text-[12px] text-ink-faint">
