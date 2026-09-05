@@ -1,26 +1,81 @@
 @import "tailwindcss";
 
+/* Badgair Bros: the Acrefile palette pushed harder. Paper ground, ink type, moss brand,
+   wheat as the single accent, and a near-black moss ("night") for the dark bands. */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --paper: #f7f3ea;
+  --paper-deep: #efe9db;
+  --surface: #ffffff;
+  --ink: #1f2a1f;
+  --ink-muted: rgba(31, 42, 31, 0.72);
+  --ink-faint: rgba(31, 42, 31, 0.55);
+  --line: rgba(31, 42, 31, 0.12);
+  --line-strong: rgba(31, 42, 31, 0.25);
+  --moss: #2f5d3a;
+  --moss-deep: #24492d;
+  --moss-bright: #3f7e48;
+  --moss-soft: #e6eee6;
+  --wheat: #c9a227;
+  --wheat-soft: #f3e7bf;
+  --night: #131c16;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  --color-paper: var(--paper);
+  --color-paper-deep: var(--paper-deep);
+  --color-surface: var(--surface);
+  --color-ink: var(--ink);
+  --color-ink-muted: var(--ink-muted);
+  --color-ink-faint: var(--ink-faint);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-moss: var(--moss);
+  --color-moss-deep: var(--moss-deep);
+  --color-moss-bright: var(--moss-bright);
+  --color-moss-soft: var(--moss-soft);
+  --color-wheat: var(--wheat);
+  --color-wheat-soft: var(--wheat-soft);
+  --color-night: var(--night);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
+  --font-serif: var(--font-serif);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
+html { scroll-behavior: smooth; }
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+::selection { background: var(--wheat-soft); color: var(--ink); }
+
+/* Label voice: mono with wide tracking */
+.mono { font-family: var(--font-geist-mono), ui-monospace, Menlo, monospace; letter-spacing: 0.08em; text-transform: uppercase; }
+
+/* Motion. Everything respects reduced motion. */
+@keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
+.rise { animation: rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+.d1 { animation-delay: 0.08s; } .d2 { animation-delay: 0.22s; } .d3 { animation-delay: 0.36s; } .d4 { animation-delay: 0.5s; } .d5 { animation-delay: 0.64s; }
+
+/* Scroll reveal: elements start hidden, an observer adds .in */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.reveal.in { opacity: 1; transform: none; }
+.reveal[data-delay="1"] { transition-delay: 0.1s; }
+.reveal[data-delay="2"] { transition-delay: 0.2s; }
+.reveal[data-delay="3"] { transition-delay: 0.3s; }
+
+/* The flight path draws itself over the orthomosaic */
+@keyframes draw { to { stroke-dashoffset: 0; } }
+.flight-path { stroke-dasharray: 2600; stroke-dashoffset: 2600; animation: draw 4s cubic-bezier(0.4, 0, 0.2, 1) 0.9s forwards; }
+@keyframes pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.waypoint { transform-origin: center; transform-box: fill-box; animation: pop 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
+@keyframes drift { from { transform: translateY(0); } to { transform: translateY(-12px); } }
+.drift { animation: drift 9s ease-in-out infinite alternate; }
+@keyframes scan { from { transform: translateY(-10%); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } to { transform: translateY(110%); opacity: 0; } }
+.scanline { animation: scan 7s linear 5s infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  .rise, .reveal, .flight-path, .waypoint, .drift, .scanline { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; stroke-dashoffset: 0 !important; }
 }
