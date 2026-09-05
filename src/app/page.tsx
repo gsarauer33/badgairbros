@@ -40,8 +40,8 @@ export default async function Home() {
       <SiteNav name={site.name} mailto={mailto} />
 
       {/* ---------- hero ---------- */}
-      <section className="relative z-10 mx-auto max-w-[1280px] px-5 pb-10 pt-16 sm:px-8 lg:pb-14 lg:pt-24">
-        <div className="relative flex max-w-[900px] flex-col gap-7 lg:gap-8">
+      <section className="relative z-10 mx-auto grid max-w-[1280px] items-end gap-12 px-5 pb-12 pt-16 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:pb-16 lg:pt-24">
+        <div className="relative flex flex-col gap-7 lg:col-span-8 lg:gap-8">
           <p className="mono rise d1 flex items-center gap-3.5 text-[12px] text-moss">
             <span className="h-px w-7 bg-moss" />
             {site.legal} · {site.region}, Wisconsin
@@ -62,15 +62,11 @@ export default async function Home() {
           </div>
         </div>
 
-      </section>
-
-      {/* ---------- principles ---------- */}
-      <section className="relative z-10 mx-auto max-w-[1280px] px-5 sm:px-8">
-        <ol className="grid gap-6 border-y border-line-strong py-9 md:grid-cols-3 md:gap-8">
+        <ol className="rise d5 flex flex-col divide-y divide-line-strong border-y border-line-strong lg:col-span-4">
           {["The grower owns every file.", "A person signs every recommendation.", "Accuracy is recorded, never assumed."].map((t, i) => (
-            <li key={t} className="reveal flex items-baseline gap-4" data-delay={String(i)}>
+            <li key={t} className="flex items-baseline gap-4 py-5">
               <span className="mono text-[12px] text-moss">0{i + 1}</span>
-              <span className="font-serif text-[22px] leading-[1.25] sm:text-[24px]">{t}</span>
+              <span className="font-serif text-[22px] leading-[1.25]">{t}</span>
             </li>
           ))}
         </ol>

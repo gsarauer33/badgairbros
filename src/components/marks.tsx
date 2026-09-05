@@ -1,18 +1,19 @@
 /**
- * Badgair Bros: badger + ground + air. The badger's white face stripe runs up through the
- * mark; below the wheat horizon the ground is drawn as furrows, above it the air holds the
- * drone as a chevron. (Candidate C, provisional until Garrett picks.)
+ * Badgair Bros: a badger, front on. White face, two black eye bands, ears, sitting on a wheat
+ * ground line. Badger for Wisconsin, ground under it, and the air is where it looks.
+ * (Candidate G, provisional until Garrett picks.)
  */
 export function BadgairMark({ size = 30, className = "" }: { size?: number; className?: string }) {
   return (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true" className={className}>
       <rect width="32" height="32" rx="8" fill="#2f5d3a" />
-      <path d="M0 18h32v6a8 8 0 0 1-8 8H8a8 8 0 0 1-8-8z" fill="#24492d" />
-      <path d="M0 18h32" stroke="#c9a227" strokeWidth="1.2" />
-      <path d="M4 24c4-3 8-3 12 0s8 3 12 0" stroke="#f7f3ea" strokeWidth="1.5" strokeLinecap="round" />
-      <path d="M6.5 28.5c3.5-2.4 6.5-2.4 9.5 0s6 2.4 9.5 0" stroke="#f7f3ea" strokeWidth="1.3" strokeLinecap="round" strokeOpacity="0.6" />
-      <path d="M16 5.5v12.5" stroke="#f7f3ea" strokeWidth="3" strokeLinecap="round" />
-      <path d="M10 13l6-5 6 5" stroke="#c9a227" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M8 12.8c0-4 2.7-5.9 8-5.9s8 1.9 8 5.9l-.5 7.2c-.5 3.5-3.5 5.4-7.5 5.4s-7-1.9-7.5-5.4Z" fill="#f7f3ea" />
+      <path d="M9.3 8.3 8 5.9c-.3-.5.5-.8 1-.3l2.1 1.9Zm13.4 0 1.3-2.4c.3-.5-.5-.8-1-.3l-2.1 1.9Z" fill="#f7f3ea" />
+      <path d="M10.4 9.3c1.6-.8 3.5-.5 4 1.4l-.3 10.6c-1.3 1-3.2 0-4-1.6Z" fill="#1f2a1f" />
+      <path d="M21.6 9.3c-1.6-.8-3.5-.5-4 1.4l.3 10.6c1.3 1 3.2 0 4-1.6Z" fill="#1f2a1f" />
+      <circle cx="12.3" cy="14.4" r=".8" fill="#f7f3ea" /><circle cx="19.7" cy="14.4" r=".8" fill="#f7f3ea" />
+      <path d="M14.7 23.4c.5 1 2.1 1 2.6 0-.5-.5-2.1-.5-2.6 0Z" fill="#1f2a1f" />
+      <path d="M5.5 27.5h21" stroke="#c9a227" strokeWidth="1.5" strokeLinecap="round" />
     </svg>
   );
 }
