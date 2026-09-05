@@ -1,11 +1,18 @@
-/** Badgair Bros: two furrows over one wheat horizon. Same drawing as docs/brand in the Acrefile repo. */
+/**
+ * Badgair Bros: badger + ground + air. The badger's white face stripe runs up through the
+ * mark; below the wheat horizon the ground is drawn as furrows, above it the air holds the
+ * drone as a chevron. (Candidate C, provisional until Garrett picks.)
+ */
 export function BadgairMark({ size = 30, className = "" }: { size?: number; className?: string }) {
   return (
     <svg width={size} height={size} viewBox="0 0 32 32" fill="none" aria-hidden="true" className={className}>
       <rect width="32" height="32" rx="8" fill="#2f5d3a" />
-      <path d="M6 21c3.5-7 7.5-7 11 0" stroke="#f7f3ea" strokeWidth="1.8" strokeLinecap="round" />
-      <path d="M13 21c3.5-8.5 8.5-8.5 13 0" stroke="#f7f3ea" strokeWidth="1.8" strokeLinecap="round" />
-      <path d="M5 24h22" stroke="#c9a227" strokeWidth="1.8" strokeLinecap="round" />
+      <path d="M0 18h32v6a8 8 0 0 1-8 8H8a8 8 0 0 1-8-8z" fill="#24492d" />
+      <path d="M0 18h32" stroke="#c9a227" strokeWidth="1.2" />
+      <path d="M4 24c4-3 8-3 12 0s8 3 12 0" stroke="#f7f3ea" strokeWidth="1.5" strokeLinecap="round" />
+      <path d="M6.5 28.5c3.5-2.4 6.5-2.4 9.5 0s6 2.4 9.5 0" stroke="#f7f3ea" strokeWidth="1.3" strokeLinecap="round" strokeOpacity="0.6" />
+      <path d="M16 5.5v12.5" stroke="#f7f3ea" strokeWidth="3" strokeLinecap="round" />
+      <path d="M10 13l6-5 6 5" stroke="#c9a227" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" />
     </svg>
   );
 }

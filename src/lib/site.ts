@@ -21,8 +21,9 @@ export const site = {
   pricing: "Priced per acre, one number, the map is yours to keep. Ask us for a quote.",
   /** Podcast: fill in once the RSS.com show exists. The Listen section stays hidden while feed is null. */
   podcast: {
-    name: null as string | null,
-    blurb: "Two brothers, one farm, twenty minutes a month. What we’re seeing in the field and what the numbers actually say. No sales pitch.",
+    /** Working title (Garrett, 2026-09-05): the road to 400-bushel corn on a small farm. */
+    name: "Road to 400" as string | null,
+    blurb: "Two brothers chasing 400-bushel corn on a small Wisconsin farm. Timing, plant biology, and what a dollar an acre actually buys in bushels. No sales pitch.",
     feed: null as string | null,
     apple: null as string | null,
     spotify: null as string | null,

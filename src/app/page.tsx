@@ -2,12 +2,9 @@ import Image from "next/image";
 import { site } from "@/lib/site";
 import Reveal from "@/components/reveal";
 import SiteNav from "@/components/nav";
-import Tilt from "@/components/tilt";
 import CountUp from "@/components/count-up";
-import Spotlight from "@/components/spotlight";
-import Canopy from "@/components/canopy";
 import Compare from "@/components/compare";
-import Magnet from "@/components/magnet";
+import Scrolly from "@/components/scrolly";
 import { getEpisodes } from "@/lib/podcast";
 import { BadgairMark, AcrefileMark, Arrow } from "@/components/marks";
 
@@ -47,7 +44,6 @@ export default async function Home() {
 
       {/* ---------- hero ---------- */}
       <section className="relative z-10 mx-auto grid max-w-[1280px] items-center gap-10 px-5 pb-16 pt-14 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:pb-20 lg:pt-20">
-        <Canopy className="absolute inset-0 -z-10 h-full w-full" />
         <div className="relative flex flex-col gap-7 lg:col-span-7 lg:gap-8">
           <p className="mono rise d1 flex items-center gap-3.5 text-[12px] text-moss">
             <span className="h-px w-7 bg-moss" />
@@ -62,30 +58,22 @@ export default async function Home() {
             Drone field mapping and a grower-owned record for the farms of {site.region}. We fly it, your agronomist signs it, and the file is yours for good.
           </p>
           <div className="rise d4 flex flex-wrap items-center gap-3.5">
-            <Magnet href={mailto} className="group flex h-[52px] items-center gap-2.5 rounded-full bg-moss px-6 text-[15px] font-medium text-paper hover:bg-moss-deep hover:shadow-[0_14px_30px_-14px_rgba(47,93,58,0.7)]">
+            <a href={mailto} className="group flex h-[52px] items-center gap-2.5 rounded-full bg-moss px-6 text-[15px] font-medium text-paper transition-[background-color,box-shadow] duration-300 hover:bg-moss-deep hover:shadow-[0_14px_30px_-14px_rgba(47,93,58,0.7)]">
               Book a flight <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
-            </Magnet>
-            <Magnet href={site.acrefileUrl} className="flex h-[52px] items-center rounded-full border border-line-strong px-6 text-[15px] font-medium text-ink hover:bg-paper-deep">See Acrefile</Magnet>
+            </a>
+            <a href={site.acrefileUrl} className="flex h-[52px] items-center rounded-full border border-line-strong px-6 text-[15px] font-medium text-ink transition-colors duration-300 hover:bg-paper-deep">See Acrefile</a>
           </div>
         </div>
 
         {/* the real field */}
-        <Tilt className="rise d3 lg:col-span-5">
-          <div className="drift overflow-hidden rounded-[22px] border border-line bg-surface shadow-[0_30px_60px_-30px_rgba(31,42,31,0.45),0_2px_4px_rgba(31,42,31,0.06)]">
+        <div className="rise d3 lg:col-span-5">
+          <div className="overflow-hidden rounded-[22px] border border-line bg-surface shadow-[0_30px_60px_-30px_rgba(31,42,31,0.45),0_2px_4px_rgba(31,42,31,0.06)]">
             <div className="relative aspect-[520/380] overflow-hidden bg-paper-deep">
               <Image src="/h3-ortho.jpg" alt="Orthomosaic of field H-3, flown 2 September 2026" fill priority sizes="(min-width: 1024px) 520px, 100vw" className="object-cover" />
-              <div className="sheen pointer-events-none absolute inset-0" />
-              <div className="scanline pointer-events-none absolute inset-x-0 top-0 h-[18%] bg-gradient-to-b from-transparent via-paper/25 to-transparent" />
               <svg viewBox="0 0 640 380" className="absolute inset-0 h-full w-full" preserveAspectRatio="none" aria-hidden="true">
                 <path d={FLIGHT} className="flight-path" fill="none" stroke="#f7f3ea" strokeWidth="1.6" strokeDasharray="6 6" strokeOpacity="0.95" />
                 <g fill="#c9a227" stroke="#1f2a1f" strokeWidth="1">
                   {WAYPOINTS.map(([x, y], i) => <circle key={i} cx={x} cy={y} r="4.5" className="waypoint" style={{ animationDelay: `${0.9 + i * 0.42}s` }} />)}
-                </g>
-                {/* the drone, riding the path once it is drawn */}
-                <g className="drone" style={{ offsetPath: `path("${FLIGHT}")` }}>
-                  <circle r="9" fill="rgba(247,243,234,0.18)" />
-                  <circle r="4" fill="#f7f3ea" stroke="#1f2a1f" strokeWidth="1" />
-                  <path d="M-7 -7 L7 7 M-7 7 L7 -7" stroke="#f7f3ea" strokeWidth="1.2" />
                 </g>
               </svg>
               <span className="mono absolute left-3.5 top-3.5 rounded-full bg-ink/75 px-2.5 py-1.5 text-[10px] text-paper">Flown by us</span>
@@ -100,7 +88,7 @@ export default async function Home() {
               ))}
             </dl>
           </div>
-        </Tilt>
+        </div>
       </section>
 
       {/* ---------- principles ---------- */}
@@ -126,6 +114,17 @@ export default async function Home() {
         </div>
       </div>
 
+      {/* ---------- pinned: how a flight becomes a record ---------- */}
+      <Scrolly
+        image="/h3-ortho.jpg"
+        steps={[
+          { kicker: "01 · Fly", title: "We fly it in the right light.", body: "Wind, sun angle and shutter speed decide the day. The drone flies a lawnmower pattern and shoots a photo every couple of seconds. This flight: 35 photos, nine minutes." },
+          { kicker: "02 · Stitch", title: "Our machine stitches it into one map.", body: "The photos are matched, meshed and blended into a single orthomosaic you can measure from. Fifty-three seconds for this field. No cloud, no monthly fee." },
+          { kicker: "03 · Read", title: "Then you read the field, not a pixel.", body: "Wet corners, skips in the stand, the pasture your cattle actually use. Five centimetres per pixel is enough to count plants." },
+          { kicker: "04 · File", title: "It lands on your record, signed.", body: "The map is filed to the field in Acrefile beside your soil numbers, in words, with your agronomist’s signed recommendation on top. Opened from a text." },
+        ]}
+      />
+
       {/* ---------- what we do ---------- */}
       <section className="relative z-10 mx-auto flex max-w-[1280px] flex-col gap-10 px-5 pb-24 pt-20 sm:px-8 lg:pt-28">
         <div className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-end lg:gap-10">
@@ -141,17 +140,10 @@ export default async function Home() {
         <div className="grid gap-6 lg:grid-cols-12">
           {/* mapping */}
           <article id="mapping" className="reveal group relative flex min-h-[460px] flex-col justify-between overflow-hidden rounded-[24px] bg-ink p-8 text-paper transition-transform duration-500 hover:-translate-y-1 sm:p-10 lg:col-span-7">
-            <svg viewBox="0 0 760 460" className="absolute inset-0 h-full w-full opacity-90" preserveAspectRatio="none" aria-hidden="true">
-              <defs><clipPath id="fld"><path d="M420 70 C 520 40, 660 60, 720 110 L 730 330 C 640 380, 520 400, 440 370 Z" /></clipPath></defs>
-              <g clipPath="url(#fld)">
-                <rect x="400" y="30" width="360" height="400" fill="#2f5d3a" />
-                <g stroke="#3f7e48" strokeWidth="10" strokeLinecap="round" fill="none" strokeOpacity="0.9">
-                  {Array.from({ length: 11 }, (_, i) => <path key={i} className="swath" style={{ animationDelay: `${i * 0.09}s` }} d={`M410 ${100 + i * 24} L 740 ${100 + i * 24}`} />)}
-                </g>
-                <g fill="#c9a227" fillOpacity="0.55"><rect x="560" y="140" width="70" height="40" /><rect x="640" y="230" width="50" height="60" /></g>
+            <svg viewBox="0 0 760 460" className="absolute inset-0 h-full w-full opacity-70" preserveAspectRatio="none" aria-hidden="true">
+              <g fill="none" stroke="#3f7e48" strokeWidth="1" strokeOpacity="0.5">
+                {Array.from({ length: 9 }, (_, i) => <path key={i} d={`M380 ${60 + i * 46} C 480 ${20 + i * 46}, 600 ${100 + i * 46}, 780 ${50 + i * 46}`} />)}
               </g>
-              <path d="M420 70 C 520 40, 660 60, 720 110 L 730 330 C 640 380, 520 400, 440 370 Z" fill="none" stroke="#f7f3ea" strokeWidth="1.5" strokeOpacity="0.8" />
-              <path d="M440 380 L 470 80 L 500 380 L 530 80 L 560 380 L 590 80 L 620 380 L 650 80 L 680 380 L 710 80" fill="none" stroke="#f7f3ea" strokeWidth="1" strokeDasharray="5 6" strokeOpacity="0.6" />
             </svg>
             <div className="relative flex max-w-[360px] flex-col gap-3.5">
               <p className="mono text-[12px] text-wheat">01 · Field mapping</p>
@@ -237,7 +229,7 @@ export default async function Home() {
       </section>
 
       {/* ---------- the first flight, in numbers ---------- */}
-      <Spotlight className="z-10 overflow-hidden bg-night text-paper">
+      <section className="relative z-10 overflow-hidden bg-night text-paper">
         <svg viewBox="0 0 1440 120" className="absolute bottom-0 left-0 h-[120px] w-full opacity-35" preserveAspectRatio="none" aria-hidden="true">
           <g stroke="#2f5d3a" strokeWidth="3" strokeLinecap="round">
             {Array.from({ length: 72 }, (_, i) => { const h = 12 + ((i * 37) % 48); return <line key={i} x1={20 + i * 20} y1={65 - h / 2} x2={20 + i * 20} y2={65 + h / 2} />; })}
@@ -269,7 +261,7 @@ export default async function Home() {
             ))}
           </ol>
         </div>
-      </Spotlight>
+      </section>
 
       {/* ---------- listen (appears once the feed exists) ---------- */}
       {site.podcast.feed && site.podcast.name && (

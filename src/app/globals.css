@@ -71,13 +71,9 @@ body {
 .flight-path { stroke-dasharray: 2600; stroke-dashoffset: 2600; animation: draw 4s cubic-bezier(0.4, 0, 0.2, 1) 0.9s forwards; }
 @keyframes pop { from { transform: scale(0); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 .waypoint { transform-origin: center; transform-box: fill-box; animation: pop 0.35s cubic-bezier(0.2, 0.7, 0.2, 1) both; }
-@keyframes drift { from { transform: translateY(0); } to { transform: translateY(-12px); } }
-.drift { animation: drift 9s ease-in-out infinite alternate; }
-@keyframes scan { from { transform: translateY(-10%); opacity: 0; } 15% { opacity: 1; } 85% { opacity: 1; } to { transform: translateY(110%); opacity: 0; } }
-.scanline { animation: scan 7s linear 5s infinite; }
 
 @media (prefers-reduced-motion: reduce) {
-  .rise, .reveal, .flight-path, .waypoint, .drift, .scanline { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; stroke-dashoffset: 0 !important; }
+  .rise, .reveal, .flight-path, .waypoint { animation: none !important; transition: none !important; opacity: 1 !important; transform: none !important; stroke-dashoffset: 0 !important; }
 }
 
 /* ---------- pizazz ---------- */
@@ -88,27 +84,13 @@ body {
 @keyframes lineup { to { transform: translateY(0); } }
 .mask:nth-child(1) > span { animation-delay: 0.15s; } .mask:nth-child(2) > span { animation-delay: 0.3s; } .mask:nth-child(3) > span { animation-delay: 0.45s; }
 
-/* 3D tilt card */
-.tilt > * { transform: rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)); transition: transform 0.35s cubic-bezier(0.2, 0.7, 0.2, 1); transform-style: preserve-3d; will-change: transform; }
-.sheen { background: radial-gradient(420px circle at var(--sx, 50%) var(--sy, 50%), rgba(247,243,234,0.22), transparent 60%); }
-
-/* The drone follows the flight path */
-@keyframes fly { from { offset-distance: 0%; } to { offset-distance: 100%; } }
-.drone { offset-rotate: 0deg; animation: fly 16s linear 4.8s infinite; }
 
 /* Ticker between sections */
 @keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
 .ticker { animation: ticker 38s linear infinite; }
 .ticker-wrap:hover .ticker { animation-play-state: paused; }
 
-/* Swaths in the mapping card light up when the card is revealed */
-.swath { stroke-dasharray: 340; stroke-dashoffset: 340; }
-.reveal.in .swath { animation: draw-swath 1.1s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
-@keyframes draw-swath { to { stroke-dashoffset: 0; } }
 
-/* Pointer spotlight on the dark band */
-.spotlight { position: relative; }
-.spotlight::before { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(560px circle at var(--mx, 30%) var(--my, 40%), rgba(63,126,72,0.28), transparent 60%); transition: opacity 0.4s; }
 
 /* Contours drift up as you scroll (scroll-driven animation; browsers without it just keep them still) */
 @supports (animation-timeline: scroll()) {
@@ -133,6 +115,5 @@ body {
 @keyframes caret { 50% { border-color: transparent; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .mask > span, .drone, .ticker, .swath, .typed, .contours, .pipeline .step, .pipeline .step .dot { animation: none !important; transform: none !important; stroke-dashoffset: 0 !important; width: 100% !important; border-right: 0 !important; }
-  .tilt > * { transform: none !important; }
+  .mask > span, .ticker, .typed, .contours, .pipeline .step, .pipeline .step .dot { animation: none !important; transform: none !important; stroke-dashoffset: 0 !important; width: 100% !important; border-right: 0 !important; }
 }
