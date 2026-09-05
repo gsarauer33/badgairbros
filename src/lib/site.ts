@@ -24,10 +24,10 @@ export const site = {
     /** Working title (Garrett, 2026-09-05): the road to 400-bushel corn on a small farm. */
     name: "Road to 400" as string | null,
     blurb: "Two brothers chasing 400-bushel corn on a small Wisconsin farm. Timing, plant biology, and what a dollar an acre actually buys in bushels. No sales pitch.",
-    feed: null as string | null,
+    feed: "https://media.rss.com/road-to-400/feed.xml" as string | null,
     apple: null as string | null,
     spotify: null as string | null,
-    rsscom: null as string | null,
+    rsscom: "https://rss.com/podcasts/road-to-400/" as string | null,
   },
   /** The hero flight: real numbers from the first capture. */
   flight: { field: "H-3 · Home Farm", flown: "2 Sep 2026", gsd: "5 cm / pixel", photos: 35, minutes: 9 },

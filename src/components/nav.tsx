@@ -7,6 +7,7 @@ const SECTIONS = [
   ["mapping", "Mapping"],
   ["acrefile", "Acrefile"],
   ["how", "How it works"],
+  ["listen", "Listen"],
   ["about", "About"],
   ["contact", "Contact"],
 ] as const;

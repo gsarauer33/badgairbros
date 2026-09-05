@@ -241,11 +241,11 @@ export default async function Home() {
               <h2 className="font-serif text-[clamp(40px,5vw,64px)] font-semibold leading-[1.0] tracking-[-0.02em]">{site.podcast.name}</h2>
               <p className="max-w-[420px] text-[17px] leading-[1.5] text-paper/80">{site.podcast.blurb}</p>
               <div className="flex flex-wrap gap-2.5 pt-2">
-                {[["Apple Podcasts", site.podcast.apple], ["Spotify", site.podcast.spotify], ["RSS", site.podcast.feed]].map(([l, u]) => u && <a key={l} href={u} className="mono rounded-full border border-paper/30 px-3.5 py-2 text-[11px] transition-colors hover:border-paper hover:bg-paper/10">{l}</a>)}
+                {[["Apple Podcasts", site.podcast.apple], ["Spotify", site.podcast.spotify], ["Show page", site.podcast.rsscom], ["RSS", site.podcast.feed]].map(([l, u]) => u && <a key={l} href={u} className="mono rounded-full border border-paper/30 px-3.5 py-2 text-[11px] transition-colors hover:border-paper hover:bg-paper/10">{l}</a>)}
               </div>
             </div>
             <ol className="flex flex-col gap-3 lg:col-span-7">
-              {episodes.length === 0 && <li className="reveal rounded-[16px] border border-paper/15 p-5 text-paper/70">First episode coming soon.</li>}
+              {episodes.length === 0 && <li className="reveal rounded-[16px] border border-paper/15 p-5 text-paper/70">First episode coming soon. The feed is live; the first recording is being made.</li>}
               {episodes.map((ep, i) => (
                 <li key={ep.title} className={`reveal flex items-center justify-between gap-4 rounded-[16px] p-5 ${i === 0 ? "bg-night" : "border border-paper/15"}`} data-delay={String(i % 3)}>
                   <div className="min-w-0">
