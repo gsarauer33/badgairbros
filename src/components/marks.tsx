@@ -6,7 +6,7 @@ export function BadgairMark({ size = 30, className = "", color = "#1f2a1f", acce
   const h = Math.round(size * 0.62);
   return (
     <svg width={size} height={h} viewBox="0 0 260 160" fill="none" aria-hidden="true" className={className}>
-      <g stroke={color} strokeWidth="9" strokeLinecap="round" strokeLinejoin="round">
+      <g stroke={color} strokeWidth="11" strokeLinecap="round" strokeLinejoin="round">
         <path d="M40 120 C 60 98, 76 92, 100 92 C 130 92, 150 98, 176 88 C 190 83, 206 88, 214 102 L 220 116 C 214 120, 200 118, 192 112 L 186 120 M100 92 L 96 120 M150 94 L 148 120 M176 88 L 182 120" />
         <path d="M176 88 C 186 80, 200 82, 210 92" />
         <path d="M24 146 C 60 134, 90 154, 130 142 C 170 130, 200 150, 236 138" strokeWidth="4" strokeOpacity="0.45" />
