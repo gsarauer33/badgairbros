@@ -15,7 +15,7 @@ const tel = site.phone ? `tel:+1${site.phone.replace(/\D/g, "")}` : null;
 
 const TICKER = ["Soil tests", "Tissue scans", "Orthomosaics", "Yield maps", "Planting passes", "Spray records", "Boundaries", "Obstacles", "Signed recommendations"];
 
-const PIPELINE = ["35 photos", "matched", "meshed", "stitched", "tiled", "filed to H-3"];
+const PIPELINE = ["620 photos", "matched", "meshed", "stitched", "tiled", "filed to H-3"];
 
 export default async function Home() {
   const episodes = await getEpisodes(site.podcast.feed);
@@ -88,11 +88,11 @@ export default async function Home() {
       {/* ---------- pinned: how a flight becomes a record ---------- */}
       <div id="mapping" />
       <Scrolly
-        image="/h3-ortho.jpg"
+        image="/h3-field.jpg"
         steps={[
-          { kicker: "01 · Fly", title: "We fly it in the right light.", body: "Wind, sun angle and shutter speed decide the day. The drone flies a lawnmower pattern and shoots a photo every couple of seconds. This flight: 35 photos, nine minutes." },
-          { kicker: "02 · Stitch", title: "Our machine stitches it into one map.", body: "The photos are matched, meshed and blended into a single orthomosaic you can measure from. Fifty-three seconds for this field. No cloud, no monthly fee." },
-          { kicker: "03 · Read", title: "Then you read the field, not a pixel.", body: "Wet corners, skips in the stand, the pasture your cattle actually use. Five centimetres per pixel is enough to count plants." },
+          { kicker: "01 · Fly", title: "We fly it in the right light.", body: "Wind, sun angle and shutter speed decide the day. The drone flies a lawnmower pattern and shoots a photo every three seconds. This flight: 620 photos, 38 minutes, one battery swap." },
+          { kicker: "02 · Stitch", title: "Our machine stitches it into one map.", body: "The photos are matched, meshed and blended into a single orthomosaic you can measure from. Ten minutes for these 65 acres. No cloud, no monthly fee." },
+          { kicker: "03 · Read", title: "Then you read the field, not a pixel.", body: "The brown patches worth walking, the waterway you farm around, the corner that always comes up thin. Five centimetres per pixel is enough to count plants." },
           { kicker: "04 · File", title: "It lands on your record, signed.", body: "The map is filed to the field in Acrefile beside your soil numbers, in words, with your agronomist’s signed recommendation on top. Opened from a text." },
         ]}
       />
