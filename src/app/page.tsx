@@ -42,14 +42,10 @@ export default async function Home() {
       {/* ---------- hero ---------- */}
       <section className="relative z-10 mx-auto grid max-w-[1280px] items-end gap-12 px-5 pb-12 pt-16 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:pb-16 lg:pt-24">
         <div className="relative flex flex-col gap-7 lg:col-span-8 lg:gap-8">
-          <p className="mono rise d1 flex items-center gap-3.5 text-[12px] text-moss">
-            <span className="h-px w-7 bg-moss" />
-            {site.legal} · {site.region}, Wisconsin
-          </p>
-          <h1 className="font-serif text-[clamp(56px,9.5vw,104px)] font-semibold leading-[0.96] tracking-[-0.025em] text-ink">
-            <span className="mask"><span>Your ground.</span></span>
-            <span className="mask"><span>Your data.</span></span>
-            <span className="mask"><span className="font-normal italic text-moss">Your call.</span></span>
+          <h1 className="font-serif text-[clamp(56px,9.5vw,104px)] font-semibold leading-[1.02] tracking-[-0.025em] text-ink">
+            <span className="rise d1 block">Your ground.</span>
+            <span className="rise d2 block">Your data.</span>
+            <span className="rise d3 block font-normal italic text-moss">Your call.</span>
           </h1>
           <p className="rise d3 max-w-[620px] text-[19px] leading-[1.45] text-ink-muted sm:text-[21px]">
             Drone field mapping and a grower-owned record for the farms of {site.region}. We fly it, your agronomist signs it, and the file is yours for good.
@@ -59,6 +55,12 @@ export default async function Home() {
               Book a flight <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
             </a>
             <a href={site.acrefileUrl} className="flex h-[52px] items-center rounded-full border border-line-strong px-6 text-[15px] font-medium text-ink transition-colors duration-300 hover:bg-paper-deep">See Acrefile</a>
+            {site.podcast.name && (
+              <a href="#listen" className="group flex h-[52px] items-center gap-2 px-2 text-[15px] font-medium text-ink-muted transition-colors hover:text-ink">
+                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-ink text-paper"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg></span>
+                Listen to {site.podcast.name}
+              </a>
+            )}
           </div>
         </div>
 
@@ -84,6 +86,7 @@ export default async function Home() {
       </div>
 
       {/* ---------- pinned: how a flight becomes a record ---------- */}
+      <div id="mapping" />
       <Scrolly
         image="/h3-ortho.jpg"
         steps={[
@@ -94,65 +97,51 @@ export default async function Home() {
         ]}
       />
 
-      {/* ---------- what we do ---------- */}
-      <section className="relative z-10 mx-auto flex max-w-[1280px] flex-col gap-10 px-5 pb-24 pt-20 sm:px-8 lg:pt-28">
-        <div className="flex flex-col items-start justify-between gap-6 lg:flex-row lg:items-end lg:gap-10">
-          <div className="reveal flex flex-col gap-3.5">
-            <p className="mono text-[12px] text-moss">What we do</p>
-            <h2 className="max-w-[720px] font-serif text-[clamp(40px,5.5vw,60px)] font-semibold leading-[1.02] tracking-[-0.02em]">Two things, done properly.</h2>
+      {/* ---------- acrefile ---------- */}
+      <section id="acrefile" className="relative z-10 mx-auto max-w-[1280px] px-5 sm:px-8">
+        <div className="grid items-center gap-10 border-t border-line-strong pb-24 pt-20 lg:grid-cols-12">
+          <div className="reveal flex flex-col gap-5 lg:col-span-6">
+            <p className="mono flex items-center gap-2 text-[12px] text-moss"><AcrefileMark size={18} /> Acrefile</p>
+            <h2 className="font-serif text-[clamp(36px,5vw,56px)] font-semibold leading-[1.02] tracking-[-0.02em]">One record. Yours.</h2>
+            <p className="max-w-[520px] text-[17px] leading-[1.55] text-ink-muted">
+              Every flight we make lands in Acrefile, the field record the grower owns. Soil tests, tissue scans, imagery and planter data in one place, in plain words, with your agronomist’s signed recommendation on top. Opened from a text message. No login to remember, no account someone else controls.
+            </p>
+            <ul className="flex flex-wrap gap-2.5">
+              {["Six numbers in words", "Signed recommendations", "Machine data filed by location", "One-page PDF", "Share links you can revoke"].map((t) => (
+                <li key={t} className="mono rounded-full border border-line-strong px-3 py-2 text-[11px] text-ink-muted">{t}</li>
+              ))}
+            </ul>
+            <a href={site.acrefileUrl} className="group inline-flex w-fit items-center gap-2 text-[15px] font-medium text-moss hover:text-moss-deep">
+              acrefile.com <Arrow className="-rotate-45 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+            </a>
           </div>
-          <p className="reveal max-w-[420px] text-[17px] leading-[1.5] text-ink-muted" data-delay="1">
-            We fly the field. Acrefile keeps the record. Everything else, from soil labs to your planter monitor, gets filed into the same place and stays yours.
-          </p>
-        </div>
-
-        <div className="grid gap-6 lg:grid-cols-12">
-          {/* mapping */}
-          <article id="mapping" className="reveal group relative flex min-h-[460px] flex-col justify-between overflow-hidden rounded-[24px] bg-ink p-8 text-paper transition-transform duration-500 hover:-translate-y-1 sm:p-10 lg:col-span-7">
-            <svg viewBox="0 0 760 460" className="absolute inset-0 h-full w-full opacity-70" preserveAspectRatio="none" aria-hidden="true">
-              <g fill="none" stroke="#3f7e48" strokeWidth="1" strokeOpacity="0.5">
-                {Array.from({ length: 9 }, (_, i) => <path key={i} d={`M380 ${60 + i * 46} C 480 ${20 + i * 46}, 600 ${100 + i * 46}, 780 ${50 + i * 46}`} />)}
-              </g>
-            </svg>
-            <div className="relative flex max-w-[360px] flex-col gap-3.5">
-              <p className="mono text-[12px] text-wheat">01 · Field mapping</p>
-              <h3 className="font-serif text-[34px] font-semibold leading-[1.05] sm:text-[40px]">The field, at five centimetres.</h3>
-              <p className="text-[16px] leading-[1.5] text-paper/80">A drone flight over your acres, stitched into a map you can measure from and filed to your record. Stand counts and gaps now. Plant-health layers next.</p>
-              <p className="mono text-[11px] text-paper/55">{site.pricing}</p>
-            </div>
-            <div className="relative mt-8 flex flex-wrap gap-2.5">
-              {["Orthomosaic", "Stand count", "Elevation"].map((t) => <span key={t} className="mono rounded-full border border-paper/30 px-3 py-2 text-[11px] transition-colors group-hover:border-paper/60">{t}</span>)}
-              <span className="mono rounded-full border border-wheat/60 px-3 py-2 text-[11px] text-wheat">Multispectral · next</span>
-            </div>
-          </article>
-
-          {/* acrefile */}
-          <article id="acrefile" className="reveal relative flex min-h-[460px] flex-col justify-between overflow-hidden rounded-[24px] border border-line bg-surface p-8 shadow-[0_2px_4px_rgba(31,42,31,0.04)] transition-[transform,box-shadow] duration-500 hover:-translate-y-1 hover:shadow-[0_30px_60px_-36px_rgba(31,42,31,0.5)] sm:p-10 lg:col-span-5" data-delay="1">
-            <div className="flex flex-col gap-3.5">
-              <p className="mono flex items-center gap-2 text-[12px] text-moss"><AcrefileMark size={18} /> 02 · Acrefile</p>
-              <h3 className="font-serif text-[34px] font-semibold leading-[1.05] sm:text-[40px]">One record. Yours.</h3>
-              <p className="text-[16px] leading-[1.5] text-ink-muted">Soil, tissue, imagery and planter data in one place, with your agronomist’s signed recommendation on top. Opened from a text message. No login to remember.</p>
-            </div>
-            <div className="mt-8 flex items-end justify-between gap-5">
-              {/* phone sketch */}
-              <div className="flex w-[176px] flex-col gap-2 rounded-[18px] border border-line bg-paper p-3">
-                <p className="mono text-[9px] text-ink-faint">H-3 · Oct 2025</p>
-                <div className="grid grid-cols-3 gap-1">
-                  {[["pH", "6.6", "in range", "bg-moss-soft text-moss-deep"], ["P", "38", "high", "bg-paper-deep text-ink-faint"], ["K", "97", "a little low", "bg-wheat-soft text-ink"]].map(([k, v, w, c]) => (
-                    <div key={k} className="rounded-lg bg-surface p-1.5">
-                      <p className="text-[8px] text-ink-faint">{k}</p>
-                      <p className="font-serif text-[15px] font-semibold leading-none">{v}</p>
-                      <p className={`mt-1 inline-block rounded-full px-1 text-[7px] font-medium ${c}`}>{w}</p>
-                    </div>
-                  ))}
-                </div>
-                <div className="rounded-lg border border-wheat bg-wheat-soft p-2 text-[9px] leading-[1.3]"><span className="typed">Hold K. Retest in three.</span><br /><span className="font-serif italic">— your agronomist</span></div>
+          <div className="reveal lg:col-span-6" data-delay="1">
+            {/* the record as the grower sees it on a phone */}
+            <div className="mx-auto w-[min(360px,100%)] rounded-[28px] border border-line bg-surface p-4 shadow-[0_30px_60px_-30px_rgba(31,42,31,0.45)]">
+              <div className="flex items-center justify-between px-1">
+                <span className="mono text-[10px] text-ink-faint">H-3 · Home Farm · 65.3 ac</span>
+                <span className="mono rounded-full bg-moss-soft px-2 py-0.5 text-[9px] text-moss-deep">your link</span>
               </div>
-              <a href={site.acrefileUrl} className="group flex items-center gap-2 text-[15px] font-medium text-moss hover:text-moss-deep">
-                acrefile.com <Arrow className="-rotate-45 transition-transform duration-300 group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-              </a>
+              <div className="mt-3 rounded-2xl border-l-4 border-wheat bg-wheat-soft/70 p-3">
+                <p className="mono text-[9px] text-ink-faint">Recommendation · signed</p>
+                <p className="mt-1 font-serif text-[15px] leading-snug">Hold K this year. Retest in three. Lime is not needed at these pH levels.</p>
+                <p className="mt-1.5 font-serif text-[13px] italic text-ink-muted">— your agronomist</p>
+              </div>
+              <div className="mt-3 grid grid-cols-3 gap-1.5">
+                {[["pH", "6.2", "in range", "bg-moss-soft text-moss-deep"], ["OM", "2.4%", "in range", "bg-moss-soft text-moss-deep"], ["P", "34", "high", "bg-paper-deep text-ink-faint"], ["K", "115", "in range", "bg-moss-soft text-moss-deep"], ["CEC", "7.1", "lighter", "bg-wheat-soft text-ink"], ["S", "14", "low", "bg-[#f6e3dc] text-[#a8442c]"]].map(([k, v, w, c]) => (
+                  <div key={k} className="rounded-xl bg-paper p-2">
+                    <p className="text-[9px] text-ink-faint">{k}</p>
+                    <p className="font-serif text-[18px] font-semibold leading-none">{v}</p>
+                    <p className={`mt-1 inline-block rounded-full px-1.5 text-[8px] font-medium ${c}`}>{w}</p>
+                  </div>
+                ))}
+              </div>
+              <div className="mt-3 flex items-center justify-between rounded-xl bg-paper px-3 py-2">
+                <span className="mono text-[9px] text-ink-faint">Yield 2025 · Corn</span>
+                <span className="font-serif text-[15px] font-semibold">200 <span className="text-[10px] font-normal text-ink-faint">bu/ac</span></span>
+              </div>
             </div>
-          </article>
+          </div>
         </div>
       </section>
 
@@ -179,7 +168,13 @@ export default async function Home() {
               <p className="mono text-[12px] text-moss">How a flight works</p>
               <h2 className="font-serif text-[clamp(34px,4.5vw,48px)] font-semibold leading-[1.05] tracking-[-0.02em]">Ask. We fly. It lands on your record.</h2>
             </div>
-            <p className="mono reveal text-[12px] text-ink-faint" data-delay="1">Most fields · within a day</p>
+            <div className="reveal flex flex-col items-start gap-3 lg:items-end" data-delay="1">
+              <div className="flex flex-wrap gap-2">
+                {["Orthomosaic", "Stand count", "Elevation"].map((t) => <span key={t} className="mono rounded-full border border-line-strong px-3 py-1.5 text-[11px] text-ink-muted">{t}</span>)}
+                <span className="mono rounded-full border border-wheat px-3 py-1.5 text-[11px] text-ink">Multispectral · next</span>
+              </div>
+              <p className="mono text-[11px] text-ink-faint">{site.pricing}</p>
+            </div>
           </div>
           <ol className="grid gap-8 md:grid-cols-3">
             {[

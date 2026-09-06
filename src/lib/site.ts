@@ -9,7 +9,7 @@ export const site = {
   place: "Bloomer, Wisconsin",
   region: "the Chippewa Valley",
   /** Set null to hide. office@badgairbros.com can forward here through Cloudflare Email Routing. */
-  email: "badgairbros@gmail.com" as string | null,
+  email: "office@badgairbros.com" as string | null,
   /** Shown as typed. Set null to hide. */
   phone: "(715) 933-2112" as string | null,
   acrefileUrl: "https://acrefile.com",
