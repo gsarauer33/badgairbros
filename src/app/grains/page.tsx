@@ -11,6 +11,8 @@ export const revalidate = 3600;
 export const metadata: Metadata = {
   title: `Grains and weather · ${site.name}`,
   description: `Where to see today's corn and soybean bids at ${site.grains.elevator} in ${site.grains.place}, and the ten-day forecast over the same ground.`,
+  alternates: { canonical: "/grains" },
+  openGraph: { title: `Grains and weather · ${site.name}`, description: `Corn and soybean bids at ${site.grains.elevator}, and ten days of rain, wind, and heat units over ${site.grains.place}.`, url: "/grains" },
 };
 
 const fmtDay = (d: string, i: number) => (i === 0 ? "Today" : i === 1 ? "Tomorrow" : new Date(d + "T12:00:00").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" }));
@@ -22,7 +24,7 @@ const n = (v: number | null, digits = 0) => (v == null ? "—" : v.toFixed(digit
  */
 export default async function Grains() {
   const wx = await getForecast(site.grains.lat, site.grains.lon);
-  const mailto = site.email ? `mailto:${site.email}?subject=${encodeURIComponent("Flight quote")}` : "#contact";
+  const mailto = site.email ? `mailto:${site.email}?subject=${encodeURIComponent("Fly a field")}` : "#contact";
   const g = site.grains;
 
   return (
@@ -71,7 +73,7 @@ export default async function Grains() {
             )}
           </div>
           {!wx ? (
-            <p className="reveal mt-8 rounded-[16px] border border-paper/15 p-5 text-paper/70">The forecast did not load. Try again in a minute.</p>
+            <p className="reveal mt-8 rounded-[16px] border border-paper/15 p-5 text-paper/85">The forecast is not available right now. Check back later, or open a weather app for Bloomer.</p>
           ) : (
             <div className="reveal mt-8 overflow-x-auto" data-delay="1">
               <table className="w-full min-w-[640px] text-[15px]">
@@ -95,7 +97,7 @@ export default async function Grains() {
                   ))}
                 </tbody>
               </table>
-              <p className="mono mt-4 text-[10px] text-paper/50">Open-Meteo forecast for {g.lat.toFixed(2)}, {g.lon.toFixed(2)} · rain in inches, wind is the day&apos;s peak in mph · gold marks a quarter inch or a 15 mph day, the two numbers that ground a drone or a sprayer.</p>
+              <p className="mono mt-4 text-[10px] text-paper/65">Forecast as of {new Date(wx.fetchedAt).toLocaleString("en-US", { timeZone: "America/Chicago", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })} Central · Open-Meteo for {g.lat.toFixed(2)}, {g.lon.toFixed(2)} · rain in inches, wind is the day&apos;s peak in mph · gold marks a quarter inch or a 15 mph day, the two numbers that ground a drone or a sprayer.</p>
             </div>
           )}
         </div>

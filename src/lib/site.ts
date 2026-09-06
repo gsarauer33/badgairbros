@@ -29,8 +29,19 @@ export const site = {
     spotify: null as string | null,
     rsscom: "https://rss.com/podcasts/road-to-400/" as string | null,
   },
-  /** The hero flight: real numbers from the latest full-field capture. */
-  flight: { field: "H-3 · Home Farm", flown: "6 Sep 2026", gsd: "5 cm / pixel", photos: 620, minutes: 10 },
+  /** The latest full-field capture. Every number on the site about this flight reads from here. */
+  flight: {
+    field: "H-3 · Home Farm",
+    acres: 65.3,
+    flown: "6 Sep 2026",
+    flownLong: "the sixth of September",
+    gsdCm: 5,
+    photos: 620,
+    intervalSeconds: 3,
+    flightMinutes: 38,
+    batteries: 2,
+    stitchMinutes: 10,
+  },
   /** Grains page: the elevator we point to (their numbers stay on their page) and the point the forecast is for. */
   grains: {
     elevator: "CDR Farms",

@@ -21,9 +21,17 @@ const HOTSPOTS: { x: number; y: number; label: string }[] = [
 const NUMBERS = [["pH", "6.2", "in range"], ["OM", "2.4%", "in range"], ["P", "34", "high"], ["K", "115", "in range"], ["CEC", "7.1", "lighter"], ["S", "14", "low"]];
 const COLS = 6, ROWS = 4;
 
-export default function Scrolly({ steps, image }: { steps: Step[]; image: string }) {
+export default function Scrolly({ steps, image, id }: { steps: Step[]; image: string; id?: string }) {
   const ref = useRef<HTMLElement>(null);
   const [p, setP] = useState(0);
+  // Reduced motion: no pin, no scrubbing; the scene sits still in its finished state.
+  const [still, setStill] = useState(false);
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const on = () => setStill(mq.matches);
+    on(); mq.addEventListener("change", on);
+    return () => mq.removeEventListener("change", on);
+  }, []);
 
   useEffect(() => {
     let raf = 0;
@@ -45,7 +53,7 @@ export default function Scrolly({ steps, image }: { steps: Step[]; image: string
 
   const n = steps.length;
   // Stages finish at 85% of the pinned distance; the last 15% holds the filed card on screen.
-  const stageF = Math.min(1, p / 0.85) * n;
+  const stageF = Math.min(1, (still ? 1 : p) / 0.85) * n;
   const stage = Math.min(n - 1, Math.floor(stageF));
   const local = Math.min(1, stageF - stage); // 0..1 within the stage
   const ease = (x: number) => 1 - Math.pow(1 - x, 3);
@@ -56,13 +64,13 @@ export default function Scrolly({ steps, image }: { steps: Step[]; image: string
   const PATH_LEN = 9681;
 
   return (
-    <section ref={ref} className="relative" style={{ height: `${(n + 0.6) * 100}vh` }} aria-label="How a flight becomes a record">
-      <div className="sticky top-0 flex h-screen items-center overflow-hidden">
+    <section ref={ref} id={id} className="relative scroll-mt-16" style={{ height: still ? "auto" : `${(n + 0.6) * 100}vh` }} aria-label="How a flight becomes a record">
+      <div className={still ? "flex items-center py-16" : "sticky top-0 flex h-dvh items-center overflow-hidden"}>
         <div className="mx-auto grid w-full max-w-[1280px] items-center gap-8 px-5 sm:px-8 lg:grid-cols-12">
           {/* words */}
-          <div className="relative min-h-[200px] lg:col-span-4">
+          <div className="relative min-h-[280px] sm:min-h-[220px] lg:col-span-4">
             {steps.map((s, i) => (
-              <div key={s.title} className="absolute inset-x-0 top-0 flex flex-col gap-3 transition-[opacity,transform] duration-500" style={{ opacity: i === stage ? 1 : 0, transform: `translateY(${i === stage ? 0 : i < stage ? -16 : 16}px)`, pointerEvents: i === stage ? "auto" : "none" }}>
+              <div key={s.title} aria-hidden={i !== stage} className="absolute inset-x-0 top-0 flex flex-col gap-3 transition-[opacity,transform] duration-500" style={{ opacity: i === stage ? 1 : 0, transform: `translateY(${i === stage ? 0 : i < stage ? -16 : 16}px)`, pointerEvents: i === stage ? "auto" : "none" }}>
                 <p className="mono text-[12px] text-moss">{s.kicker}</p>
                 <h3 className="font-serif text-[clamp(30px,3.6vw,44px)] font-semibold leading-[1.05] tracking-[-0.02em]">{s.title}</h3>
                 <p className="text-[16px] leading-[1.5] text-ink-muted sm:text-[17px]">{s.body}</p>
@@ -77,7 +85,7 @@ export default function Scrolly({ steps, image }: { steps: Step[]; image: string
           <div className="relative lg:col-span-8">
             <div className="relative overflow-hidden rounded-[22px] border border-line bg-surface shadow-[0_30px_60px_-30px_rgba(31,42,31,0.45)]">
               <div className="relative aspect-[640/380] overflow-hidden bg-paper-deep">
-                <Image src={image} alt="Orthomosaic of field H-3, 65 acres, flown 6 September 2026" fill sizes="(min-width: 1024px) 840px, 100vw" className="object-contain" style={{ opacity: 0.35 + 0.65 * stitch, filter: `saturate(${0.6 + 0.4 * stitch})`, transition: "opacity 0.2s, filter 0.2s" }} />
+                <Image priority src={image} alt="Orthomosaic of field H-3, 65.3 acres, flown 6 September 2026" fill sizes="(min-width: 1024px) 840px, 100vw" className="object-contain" style={{ opacity: 0.35 + 0.65 * stitch, filter: `saturate(${0.6 + 0.4 * stitch})`, transition: "opacity 0.2s, filter 0.2s" }} />
 
                 {/* stitch tiles */}
                 <div className="absolute inset-0 grid" style={{ gridTemplateColumns: `repeat(${COLS}, 1fr)`, gridTemplateRows: `repeat(${ROWS}, 1fr)` }} aria-hidden="true">

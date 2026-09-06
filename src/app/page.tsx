@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { site } from "@/lib/site";
 import Reveal from "@/components/reveal";
 import SiteNav from "@/components/nav";
@@ -15,7 +16,8 @@ const tel = site.phone ? `tel:+1${site.phone.replace(/\D/g, "")}` : null;
 
 const TICKER = ["Soil tests", "Tissue scans", "Orthomosaics", "Yield maps", "Planting passes", "Spray records", "Boundaries", "Obstacles", "Signed recommendations"];
 
-const PIPELINE = ["620 photos", "matched", "meshed", "stitched", "tiled", "filed to H-3"];
+const F = site.flight;
+const PIPELINE = [`${F.photos} photos`, "matched", "meshed", "stitched", "tiled", "filed to H-3"];
 
 export default async function Home() {
   const episodes = await getEpisodes(site.podcast.feed);
@@ -55,7 +57,7 @@ export default async function Home() {
               Book a flight <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
             </a>
             <a href={site.acrefileUrl} className="flex h-[52px] items-center rounded-full border border-line-strong px-6 text-[15px] font-medium text-ink transition-colors duration-300 hover:bg-paper-deep">See Acrefile</a>
-            {site.podcast.name && (
+            {site.podcast.name && site.podcast.feed && (
               <a href="#listen" className="group flex h-[52px] items-center gap-2 px-2 text-[15px] font-medium text-ink-muted transition-colors hover:text-ink">
                 <span className="flex h-7 w-7 items-center justify-center rounded-full bg-ink text-paper"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg></span>
                 Listen to {site.podcast.name}
@@ -86,14 +88,14 @@ export default async function Home() {
       </div>
 
       {/* ---------- pinned: how a flight becomes a record ---------- */}
-      <div id="mapping" />
       <Scrolly
+        id="mapping"
         image="/h3-field.jpg"
         steps={[
-          { kicker: "01 · Fly", title: "We fly it in the right light.", body: "Wind, sun angle and shutter speed decide the day. The drone flies a lawnmower pattern and shoots a photo every three seconds. This flight: 620 photos, 38 minutes, one battery swap." },
-          { kicker: "02 · Stitch", title: "Our machine stitches it into one map.", body: "The photos are matched, meshed and blended into a single orthomosaic you can measure from. Ten minutes for these 65 acres. No cloud, no monthly fee." },
+          { kicker: "01 · Fly", title: "We fly it in the right light.", body: `Wind, sun angle and shutter speed decide the day. The drone flies a lawnmower pattern and shoots a photo every ${F.intervalSeconds} seconds. This flight: ${F.photos} photos in ${F.flightMinutes} minutes of flying, ${F.batteries === 2 ? "one battery swap" : `${F.batteries} batteries`}.` },
+          { kicker: "02 · Stitch", title: "Our machine stitches it into one map.", body: `The photos are matched, meshed and blended into a single orthomosaic you can measure from. ${F.stitchMinutes} minutes for these ${F.acres} acres, on our own machine. No cloud, no monthly fee.` },
           { kicker: "03 · Read", title: "Then you read the field, not a pixel.", body: "The brown patches worth walking, the waterway you farm around, the corner that always comes up thin. Five centimetres per pixel is enough to count plants." },
-          { kicker: "04 · File", title: "It lands on your record, signed.", body: "The map is filed to the field in Acrefile beside your soil numbers, in words, with your agronomist’s signed recommendation on top. Opened from a text." },
+          { kicker: "04 · File", title: "It lands on your record, signed.", body: "The map is filed to the field in Acrefile beside your soil numbers, in words, with your agronomist’s signed recommendation on top. No login, no app to install." },
         ]}
       />
 
@@ -151,11 +153,11 @@ export default async function Home() {
           <div className="reveal flex flex-col gap-5 lg:col-span-4">
             <p className="mono text-[12px] text-moss">Same ground, two eyes</p>
             <h2 className="font-serif text-[clamp(34px,4.5vw,48px)] font-semibold leading-[1.05] tracking-[-0.02em]">Satellite sees a field.<br />We see the rows.</h2>
-            <p className="text-[17px] leading-[1.5] text-ink-muted">The public satellite image on the right is what every farm app shows you. The left half is H-3 from our first flight, the same ground at five centimetres: the wet corner, the skips, the cattle in the pasture. Drag the handle.</p>
+            <p className="text-[17px] leading-[1.5] text-ink-muted">The public satellite image on the right is what every farm app shows you. The left half is our 2 September test flight over the northeast corner of H-3, the same ground at five centimetres per pixel. Drag the handle.</p>
             <p className="mono text-[11px] text-ink-faint">USGS imagery for the satellite half · our orthomosaic for the flight</p>
           </div>
           <div className="reveal lg:col-span-8" data-delay="1">
-            <Compare before="/h3-satellite.jpg" after="/h3-drone.jpg" alt="H-3 from our flight at five centimetres per pixel" />
+            <Compare before="/h3-satellite.jpg" after="/h3-drone.jpg" alt="The northeast corner of H-3 from our test flight, five centimetres per pixel" />
           </div>
         </div>
       </section>
@@ -192,7 +194,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ---------- the first flight, in numbers ---------- */}
+      {/* ---------- the latest flight, in numbers (every value from site.flight) ---------- */}
       <section className="relative z-10 overflow-hidden bg-night text-paper">
         <svg viewBox="0 0 1440 120" className="absolute bottom-0 left-0 h-[120px] w-full opacity-35" preserveAspectRatio="none" aria-hidden="true">
           <g stroke="#2f5d3a" strokeWidth="3" strokeLinecap="round">
@@ -201,13 +203,13 @@ export default async function Home() {
         </svg>
         <div className="relative mx-auto grid max-w-[1280px] gap-10 px-5 py-20 sm:px-8 lg:grid-cols-12 lg:py-24">
           <div className="reveal flex flex-col gap-5 lg:col-span-5">
-            <p className="mono text-[12px] text-wheat">The first flight</p>
-            <h2 className="font-serif text-[clamp(38px,5vw,64px)] font-semibold leading-[1.0] tracking-[-0.02em]">Thirty-five photos.<br />One field.<br />The same afternoon.</h2>
-            <p className="max-w-[420px] text-[17px] leading-[1.5] text-paper/75">H-3 on the home farm, flown on the second of September. Stitched, filed, and opened on a phone before supper. That is the whole pitch.</p>
+            <p className="mono text-[12px] text-wheat">The latest flight</p>
+            <h2 className="font-serif text-[clamp(38px,5vw,64px)] font-semibold leading-[1.0] tracking-[-0.02em]">One field.<br />One afternoon.<br />Filed before supper.</h2>
+            <p className="max-w-[420px] text-[17px] leading-[1.5] text-paper/75">{F.field}, {F.acres} acres, flown on {F.flownLong}. Two batteries, one swap, stitched on our own machine and opened on a phone the same day. That is the whole pitch.</p>
           </div>
           <dl className="grid grid-cols-2 gap-4 lg:col-span-7 lg:grid-cols-4">
-            {[[35, "photos", "one pass at 120 ft"], [9, "minutes", "in the air"], [5, "cm / pixel", "ground resolution"], [53, "seconds", "to stitch on our machine"]].map(([n, u, d], i) => (
-              <div key={String(u)} className="reveal rounded-[18px] border border-paper/15 bg-paper/[0.03] p-5 backdrop-blur-[2px] transition-colors duration-500 hover:border-wheat/50" data-delay={String(i % 3)}>
+            {[[F.photos, "photos", `one every ${F.intervalSeconds} seconds`], [F.flightMinutes, "minutes", "in the air"], [F.gsdCm, "cm / pixel", "ground resolution"], [F.stitchMinutes, "minutes", "to stitch on our machine"]].map(([n, u, d], i) => (
+              <div key={String(u) + i} className="reveal rounded-[18px] border border-paper/15 bg-paper/[0.03] p-5 backdrop-blur-[2px] transition-colors duration-500 hover:border-wheat/50" data-delay={String(i % 3)}>
                 <p className="font-serif text-[56px] font-semibold leading-none text-paper"><CountUp value={n as number} /></p>
                 <p className="mono mt-2 text-[11px] text-wheat">{u}</p>
                 <p className="mt-1 text-[13px] text-paper/60">{d}</p>
@@ -232,23 +234,23 @@ export default async function Home() {
         <section id="listen" className="relative z-10 overflow-hidden bg-moss text-paper">
           <div className="mx-auto grid max-w-[1280px] gap-10 px-5 py-20 sm:px-8 lg:grid-cols-12 lg:py-24">
             <div className="reveal flex flex-col gap-5 lg:col-span-5">
-              <p className="mono text-[12px] text-wheat">Listen · the podcast</p>
+              <p className="mono text-[12px] text-wheat-soft">Listen · the podcast</p>
               <h2 className="font-serif text-[clamp(40px,5vw,64px)] font-semibold leading-[1.0] tracking-[-0.02em]">{site.podcast.name}</h2>
-              <p className="max-w-[420px] text-[17px] leading-[1.5] text-paper/80">{site.podcast.blurb}</p>
+              <p className="max-w-[420px] text-[17px] leading-[1.5] text-paper/85">{site.podcast.blurb}</p>
               <div className="flex flex-wrap gap-2.5 pt-2">
                 {[["Apple Podcasts", site.podcast.apple], ["Spotify", site.podcast.spotify], ["Show page", site.podcast.rsscom], ["RSS", site.podcast.feed]].map(([l, u]) => u && <a key={l} href={u} className="mono rounded-full border border-paper/30 px-3.5 py-2 text-[11px] transition-colors hover:border-paper hover:bg-paper/10">{l}</a>)}
               </div>
             </div>
             <ol className="flex flex-col gap-3 lg:col-span-7">
-              {episodes.length === 0 && <li className="reveal rounded-[16px] border border-paper/15 p-5 text-paper/70">First episode coming soon. The feed is live; the first recording is being made.</li>}
+              {episodes.length === 0 && <li className="reveal rounded-[16px] border border-paper/15 p-5 text-paper/85">First episode coming soon. The feed is live; the first recording is being made.</li>}
               {episodes.map((ep, i) => (
-                <li key={ep.title} className={`reveal flex items-center justify-between gap-4 rounded-[16px] p-5 ${i === 0 ? "bg-night" : "border border-paper/15"}`} data-delay={String(i % 3)}>
+                <li key={(ep.url ?? ep.title) + i} className={`reveal flex items-center justify-between gap-4 rounded-[16px] p-5 ${i === 0 ? "bg-night" : "border border-paper/15"}`} data-delay={String(i % 3)}>
                   <div className="min-w-0">
-                    <p className="mono text-[10px] text-paper/60">{i === 0 ? "Latest" : ""} {ep.date ? new Date(ep.date).toLocaleDateString("en-US", { month: "long", day: "numeric" }) : ""}</p>
+                    <p className="mono text-[10px] text-paper/80">{i === 0 ? "Latest" : ""} {ep.date ? new Date(ep.date).toLocaleDateString("en-US", { month: "long", day: "numeric" }) : ""}</p>
                     <p className="font-serif text-[20px] font-semibold leading-[1.2]">{ep.url ? <a href={ep.url} className="hover:underline">{ep.title}</a> : ep.title}</p>
-                    {i === 0 && ep.summary && <p className="mt-1 text-[14px] text-paper/70">{ep.summary}</p>}
+                    {i === 0 && ep.summary && <p className="mt-1 text-[14px] text-paper/85">{ep.summary}</p>}
                   </div>
-                  <span className="mono shrink-0 text-[11px] text-paper/60">{ep.minutes ? `${ep.minutes} min` : ""}</span>
+                  <span className="mono shrink-0 text-[11px] text-paper/80">{ep.minutes ? `${ep.minutes} min` : ""}</span>
                 </li>
               ))}
             </ol>
@@ -319,7 +321,11 @@ export default async function Home() {
               <span className="mono text-[11px] text-ink-faint">{site.legal} · © {new Date().getFullYear()}</span>
             </p>
             <nav className="mono flex gap-7 text-[11px] text-ink-faint" aria-label="Footer">
+              <Link href="/#mapping" className="hover:text-ink">Mapping</Link>
               <a href={site.acrefileUrl} className="hover:text-ink">Acrefile</a>
+              <a href="/grains" className="hover:text-ink">Grains</a>
+              {site.podcast.rsscom && <a href={site.podcast.rsscom} className="hover:text-ink">Podcast</a>}
+              <Link href="/#about" className="hover:text-ink">About</Link>
               <a href="#top" className="hover:text-ink">Top</a>
             </nav>
           </div>

@@ -20,6 +20,7 @@ export default function SiteNav({ name, mailto }: { name: string; mailto: string
   const [progress, setProgress] = useState(0);
   const [active, setActive] = useState<string | null>(null);
   const onGrains = usePathname() === "/grains";
+  const [open, setOpen] = useState(false);
 
   useEffect(() => {
     const onScroll = () => {
@@ -51,18 +52,31 @@ export default function SiteNav({ name, mailto }: { name: string; mailto: string
         </Link>
         <nav className="hidden items-center gap-7 text-[14px] text-ink-muted md:flex" aria-label="Sections">
           {SECTIONS.map(([id, label]) => (
-            <a key={id} href={`/#${id}`} className={`relative py-1 transition-colors hover:text-ink ${active === id && !onGrains ? "text-ink" : ""}`}>
+            <Link key={id} href={`/#${id}`} className={`relative py-1 transition-colors hover:text-ink ${active === id && !onGrains ? "text-ink" : ""}`}>
               {label}
               <span className={`absolute inset-x-0 -bottom-0.5 h-px origin-left bg-wheat transition-transform duration-300 ${active === id && !onGrains ? "scale-x-100" : "scale-x-0"}`} />
-            </a>
+            </Link>
           ))}
           <a href="/grains" className={`relative py-1 transition-colors hover:text-ink ${onGrains ? "text-ink" : ""}`}>
             Grains
             <span className={`absolute inset-x-0 -bottom-0.5 h-px origin-left bg-wheat transition-transform duration-300 ${onGrains ? "scale-x-100" : "scale-x-0"}`} />
           </a>
         </nav>
-        <a href={mailto} className="flex h-10 items-center rounded-full bg-ink px-4 text-[14px] font-medium text-paper transition-colors duration-300 hover:bg-moss">Book a flight</a>
+        <div className="flex items-center gap-2">
+          <a href={mailto} className="flex h-10 items-center rounded-full bg-ink px-4 text-[14px] font-medium text-paper transition-colors duration-300 hover:bg-moss">Book a flight</a>
+          <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} aria-controls="site-menu" aria-label={open ? "Close menu" : "Open menu"} className="flex h-10 w-10 items-center justify-center rounded-full border border-line-strong text-ink md:hidden">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">{open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}</svg>
+          </button>
+        </div>
       </div>
+      {open && (
+        <nav id="site-menu" aria-label="Sections" className="border-t border-line bg-paper px-5 py-3 md:hidden">
+          <ul className="flex flex-col divide-y divide-line text-[16px]">
+            {SECTIONS.map(([id, label]) => <li key={id}><Link href={`/#${id}`} onClick={() => setOpen(false)} className="block py-3 text-ink">{label}</Link></li>)}
+            <li><a href="/grains" onClick={() => setOpen(false)} className={`block py-3 ${onGrains ? "text-moss" : "text-ink"}`}>Grains</a></li>
+          </ul>
+        </nav>
+      )}
     </header>
   );
 }

@@ -11,13 +11,18 @@ export const metadata: Metadata = {
   title: `${site.name} · ${site.tagline}`,
   description: `Drone field mapping and Acrefile, the grower-owned field record, for the farms of ${site.region}. We fly it, your agronomist signs it, and the file is yours for good.`,
   metadataBase: new URL("https://badgairbros.com"),
-  openGraph: { title: `${site.name} · ${site.tagline}`, description: `Drone field mapping and a grower-owned field record for ${site.region}.`, type: "website", locale: "en_US" },
+  alternates: { canonical: "/" },
+  openGraph: { title: `${site.name} · ${site.tagline}`, description: `Drone field mapping and a grower-owned field record for ${site.region}.`, type: "website", locale: "en_US", url: "/" },
+  twitter: { card: "summary_large_image" },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${serif.variable}`}>
-      <body>{children}</body>
+      <body>
+        <noscript><style>{`.reveal{opacity:1!important;transform:none!important}`}</style></noscript>
+        {children}
+      </body>
     </html>
   );
 }

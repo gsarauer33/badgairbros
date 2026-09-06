@@ -3,9 +3,9 @@
 Garrett chose to explore RSS.com's free "Local & Niche" plan. Claude cannot create the account; this is what the sign-up asks for and what is ready.
 
 ## What RSS.com asks at sign-up
-1. **Account**: sign up at https://dashboard.rss.com/auth/sign-up/ with office@badgairbros.com once the forwarder is verified (otherwise badgairbros@gmail.com) and a password. Free plan: one show, unlimited episodes, no inserted ads, 90 days of analytics, one-click submission to Apple Podcasts, Spotify, Amazon, and the rest.
+1. **Account**: sign up at https://dashboard.rss.com/auth/sign-up/ with office@badgairbros.com (live since 2026-09-05, forwards to badgairbros@gmail.com) and a password. Free plan: one show, unlimited episodes, no inserted ads, 90 days of analytics, one-click submission to Apple Podcasts, Spotify, Amazon, and the rest.
 2. **Show name** (pick one; candidates below), **description** (≤ 4,000 characters; the blurb in `src/lib/site.ts` is a start), **category** (Science → Earth Sciences, or Business → Entrepreneurship; most farm shows sit under "Science"), **language** English, **explicit** no.
-3. **Cover art**: square PNG or JPEG, 3000 × 3000 px, under 512 KB, RGB. Draft at `public/podcast-cover.png` ("Road to 400" with the mark on paper, 340 KB). Redo the mark if Garrett picks a different candidate.
+3. **Cover art**: square PNG or JPEG, 3000 × 3000 px, under 512 KB, RGB. Draft at `docs/brand/podcast-cover.png` ("Road to 400" with the mark on paper, 311 KB); already uploaded to RSS.com. Redo the mark if Garrett picks a different candidate.
 4. **First episode**: MP3, mono is fine, 96–128 kbps. Recording on two phones in the truck is enough for episode one; buy nothing until three episodes exist.
 
 ## Name: **Road to 400** (working title, Garrett 2026-09-05)
@@ -27,8 +27,8 @@ Justin's goal is 400-bushel corn on a small farm. The show is the road there: ti
 2. The six numbers on a soil test that matter, in words (pH, OM, P, K, CEC, S; what H-3 says).
 3. A pass that paid and one that didn't: the acre math on last season's herbicide and fungicide.
 
-## Wiring it into the site
-Set `site.podcast.name`, `feed` (RSS.com gives `https://media.rss.com/<slug>/feed.xml`), `apple`, `spotify`, and `rsscom` in `src/lib/site.ts`. The Listen band appears on the next deploy and lists the four latest episodes from the feed, refreshed hourly. Acrefile stays out of it (Garrett, 2026-09-05).
+## Wiring it into the site (state on 2026-09-06)
+`site.podcast.name`, `feed` and `rsscom` are set; the Listen band is live and reads the feed hourly. With no episodes yet it shows one "first episode coming soon" box. `apple` and `spotify` stay null until an episode exists: RSS.com's one-click distribution cannot submit an empty show. Once the first MP3 is up, submit through RSS.com, paste the two URLs into `site.ts`, and the chips appear.
 
 ## Later
 - The free plan's own show page (`rss.com/podcasts/<slug>`) is fine as the canonical player; embed on the site only if wanted.
