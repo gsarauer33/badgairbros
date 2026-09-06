@@ -48,7 +48,7 @@ export default function SiteNav({ name, mailto }: { name: string; mailto: string
       <div className="mx-auto flex max-w-[1280px] items-center justify-between px-5 py-4 sm:px-8">
         <Link href="/#top" className="group flex items-center gap-3">
           <span className="transition-transform duration-500 group-hover:-translate-y-0.5"><BadgairMark size={64} /></span>
-          <span className="font-serif text-[22px] font-semibold tracking-[-0.01em]">{name}</span>
+          <span className="whitespace-nowrap font-serif text-[22px] font-semibold tracking-[-0.01em] max-[400px]:hidden">{name}</span>
         </Link>
         <nav className="hidden items-center gap-7 text-[14px] text-ink-muted md:flex" aria-label="Sections">
           {SECTIONS.map(([id, label]) => (
