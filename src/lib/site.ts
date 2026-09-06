@@ -29,6 +29,15 @@ export const site = {
     spotify: null as string | null,
     rsscom: "https://rss.com/podcasts/road-to-400/" as string | null,
   },
-  /** The hero flight: real numbers from the first capture. */
-  flight: { field: "H-3 · Home Farm", flown: "2 Sep 2026", gsd: "5 cm / pixel", photos: 35, minutes: 9 },
+  /** The hero flight: real numbers from the latest full-field capture. */
+  flight: { field: "H-3 · Home Farm", flown: "6 Sep 2026", gsd: "5 cm / pixel", photos: 620, minutes: 10 },
+  /** Grains page: the elevator we point to (their numbers stay on their page) and the point the forecast is for. */
+  grains: {
+    elevator: "CDR Farms",
+    place: "Bloomer",
+    bidsUrl: "https://www.cdrfarmsllc.com/markets/cash.php?location_filter=28479",
+    phone: "(715) 559-5803" as string | null,
+    lat: 45.1,
+    lon: -91.49,
+  },
 };

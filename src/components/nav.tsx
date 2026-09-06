@@ -1,6 +1,8 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import Link from "next/link";
 import { BadgairMark } from "./marks";
 
 /* Four entries. "How it works" is the scroll scene you meet anyway; "Contact" is the button. */
@@ -17,6 +19,7 @@ export default function SiteNav({ name, mailto }: { name: string; mailto: string
   const [scrolled, setScrolled] = useState(false);
   const [progress, setProgress] = useState(0);
   const [active, setActive] = useState<string | null>(null);
+  const onGrains = usePathname() === "/grains";
 
   useEffect(() => {
     const onScroll = () => {
@@ -42,17 +45,21 @@ export default function SiteNav({ name, mailto }: { name: string; mailto: string
     <header className={`sticky top-0 z-40 transition-[background-color,box-shadow,border-color] duration-500 ${scrolled ? "border-b border-line bg-paper/80 shadow-[0_10px_30px_-24px_rgba(31,42,31,0.5)] backdrop-blur-md" : "border-b border-transparent bg-transparent"}`}>
       <span className="absolute left-0 top-0 h-[2px] bg-moss transition-[width] duration-150" style={{ width: `${progress * 100}%` }} aria-hidden="true" />
       <div className="mx-auto flex max-w-[1280px] items-center justify-between px-5 py-4 sm:px-8">
-        <a href="#top" className="group flex items-center gap-3">
+        <Link href="/#top" className="group flex items-center gap-3">
           <span className="transition-transform duration-500 group-hover:-translate-y-0.5"><BadgairMark size={64} /></span>
           <span className="font-serif text-[22px] font-semibold tracking-[-0.01em]">{name}</span>
-        </a>
+        </Link>
         <nav className="hidden items-center gap-7 text-[14px] text-ink-muted md:flex" aria-label="Sections">
           {SECTIONS.map(([id, label]) => (
-            <a key={id} href={`#${id}`} className={`relative py-1 transition-colors hover:text-ink ${active === id ? "text-ink" : ""}`}>
+            <a key={id} href={`/#${id}`} className={`relative py-1 transition-colors hover:text-ink ${active === id && !onGrains ? "text-ink" : ""}`}>
               {label}
-              <span className={`absolute inset-x-0 -bottom-0.5 h-px origin-left bg-wheat transition-transform duration-300 ${active === id ? "scale-x-100" : "scale-x-0"}`} />
+              <span className={`absolute inset-x-0 -bottom-0.5 h-px origin-left bg-wheat transition-transform duration-300 ${active === id && !onGrains ? "scale-x-100" : "scale-x-0"}`} />
             </a>
           ))}
+          <a href="/grains" className={`relative py-1 transition-colors hover:text-ink ${onGrains ? "text-ink" : ""}`}>
+            Grains
+            <span className={`absolute inset-x-0 -bottom-0.5 h-px origin-left bg-wheat transition-transform duration-300 ${onGrains ? "scale-x-100" : "scale-x-0"}`} />
+          </a>
         </nav>
         <a href={mailto} className="flex h-10 items-center rounded-full bg-ink px-4 text-[14px] font-medium text-paper transition-colors duration-300 hover:bg-moss">Book a flight</a>
       </div>
