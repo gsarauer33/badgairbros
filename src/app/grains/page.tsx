@@ -10,22 +10,23 @@ export const revalidate = 3600;
 
 export const metadata: Metadata = {
   title: `Grains and weather · ${site.name}`,
-  description: `Where to see today's corn and soybean bids at ${site.grains.elevator} in ${site.grains.place}, and the ten-day forecast over the same ground.`,
+  description: `Where to see today's corn and soybean bids at ${site.grains.elevators.map((e) => e.name).join(", ")}, and the ten-day forecast over ${site.grains.locations.map((l) => l.name).join(", ")}.`,
   alternates: { canonical: "/grains" },
-  openGraph: { title: `Grains and weather · ${site.name}`, description: `Corn and soybean bids at ${site.grains.elevator}, and ten days of rain, wind, and heat units over ${site.grains.place}.`, url: "/grains" },
+  openGraph: { title: `Grains and weather · ${site.name}`, description: `Corn and soybean bids at ${site.grains.elevators.map((e) => e.name).join(", ")}, and ten days of rain, wind, and heat units over ${site.grains.locations.map((l) => l.name).join(", ")}.`, url: "/grains" },
 };
 
 const fmtDay = (d: string, i: number) => (i === 0 ? "Today" : i === 1 ? "Tomorrow" : new Date(d + "T12:00:00").toLocaleDateString("en-US", { weekday: "short", month: "short", day: "numeric" }));
 const n = (v: number | null, digits = 0) => (v == null ? "—" : v.toFixed(digits));
 
 /**
- * Grains: the elevator's own bid page, one click away, and ten days of weather over Bloomer with
+ * Grains: the elevator's own bid page, one click away, and ten days of weather over each listed point with
  * the rain and heat units added up. We do not copy anyone's prices; the source stays the source.
  */
 export default async function Grains() {
-  const wx = await getForecast(site.grains.lat, site.grains.lon);
-  const mailto = site.email ? `mailto:${site.email}?subject=${encodeURIComponent("Fly a field")}` : "#contact";
   const g = site.grains;
+  const [first, ...more] = g.elevators;
+  const forecasts = await Promise.all(g.locations.map(async (l) => ({ ...l, wx: await getForecast(l.lat, l.lon) })));
+  const mailto = site.email ? `mailto:${site.email}?subject=${encodeURIComponent("Fly a field")}` : "#contact";
 
   return (
     <main id="top" className="relative min-h-dvh bg-paper text-ink">
@@ -34,17 +35,27 @@ export default async function Grains() {
 
       <section className="relative z-10 mx-auto grid max-w-[1280px] gap-10 px-5 pb-14 pt-16 sm:px-8 lg:grid-cols-12 lg:pt-24">
         <div className="reveal flex flex-col gap-5 lg:col-span-6">
-          <p className="mono text-[12px] text-moss">Grains · {g.place}</p>
+          <p className="mono text-[12px] text-moss">Grains · {first.place}</p>
           <h1 className="font-serif text-[clamp(40px,5.4vw,68px)] font-semibold leading-[1.0] tracking-[-0.02em]">What the elevator is paying today.</h1>
           <p className="max-w-[520px] text-[17px] leading-[1.55] text-ink-muted">
-            {g.elevator} posts corn and soybean bids by delivery month, with the futures and the basis behind each one. Those are their numbers, so we send you straight to them instead of copying a table that would be stale by the time you read it.
+            {first.name} posts corn and soybean bids by delivery month, with the futures and the basis behind each one. Those are their numbers, so we send you straight to them instead of copying a table that would be stale by the time you read it.
           </p>
           <div className="flex flex-wrap items-center gap-3 pt-2">
-            <a href={g.bidsUrl} target="_blank" rel="noopener" className="group flex h-12 items-center gap-2 rounded-full bg-ink px-5 text-[15px] font-medium text-paper transition-colors duration-300 hover:bg-moss">
-              Open {g.elevator} cash bids <Arrow />
+            <a href={first.bidsUrl} target="_blank" rel="noopener" className="group flex h-12 items-center gap-2 rounded-full bg-ink px-5 text-[15px] font-medium text-paper transition-colors duration-300 hover:bg-moss">
+              Open {first.name} cash bids <Arrow />
             </a>
-            {g.phone && <a href={`tel:${g.phone.replace(/\D/g, "")}`} className="mono text-[12px] text-ink-muted hover:text-ink">{g.phone}</a>}
+            {first.phone && <a href={`tel:${first.phone.replace(/\D/g, "")}`} className="mono text-[12px] text-ink-muted hover:text-ink">{first.phone}</a>}
           </div>
+          {more.length > 0 && (
+            <ul className="flex flex-col gap-2 pt-1">
+              {more.map((e) => (
+                <li key={e.bidsUrl} className="flex flex-wrap items-center gap-3 text-[15px]">
+                  <a href={e.bidsUrl} target="_blank" rel="noopener" className="group inline-flex items-center gap-1 font-medium text-ink underline decoration-line underline-offset-4 hover:decoration-moss">{e.name} · {e.place} <Arrow /></a>
+                  {e.phone && <a href={`tel:${e.phone.replace(/\D/g, "")}`} className="mono text-[12px] text-ink-muted hover:text-ink">{e.phone}</a>}
+                </li>
+              ))}
+            </ul>
+          )}
           <p className="mono text-[11px] text-ink-faint">Their bids ride on futures delayed ten minutes. Call before you haul.</p>
         </div>
         <div className="reveal rounded-[20px] border border-line bg-surface p-6 lg:col-span-6" data-delay="1">
@@ -60,20 +71,27 @@ export default async function Grains() {
 
       <section className="relative z-10 bg-night text-paper">
         <div className="mx-auto max-w-[1280px] px-5 py-16 sm:px-8 lg:py-20">
+          {forecasts.length > 1 && (
+            <nav aria-label="Weather locations" className="reveal mb-8 flex flex-wrap gap-2">
+              {forecasts.map((l) => <a key={l.slug} href={`#wx-${l.slug}`} className="mono rounded-full border border-paper/20 px-3 py-1 text-[11px] text-paper/80 hover:border-wheat hover:text-wheat">{l.name}</a>)}
+            </nav>
+          )}
+          {forecasts.map((l, li) => (
+          <div key={l.slug} id={`wx-${l.slug}`} className={li > 0 ? "mt-16 scroll-mt-24 border-t border-paper/10 pt-12" : "scroll-mt-24"}>
           <div className="reveal flex flex-wrap items-end justify-between gap-4">
             <div>
-              <p className="mono text-[12px] text-wheat">Ten days over {g.place}</p>
-              <h2 className="mt-2 font-serif text-[clamp(32px,4vw,48px)] font-semibold leading-[1.02] tracking-[-0.02em]">Rain, wind, and heat units.</h2>
+              <p className="mono text-[12px] text-wheat">Ten days over {l.name}</p>
+              {li === 0 ? <h2 className="mt-2 font-serif text-[clamp(32px,4vw,48px)] font-semibold leading-[1.02] tracking-[-0.02em]">Rain, wind, and heat units.</h2> : <h3 className="mt-2 font-serif text-[clamp(24px,3vw,32px)] font-semibold leading-[1.05] tracking-[-0.02em]">{l.name}</h3>}
             </div>
-            {wx && (
+            {l.wx && (
               <div className="flex gap-8">
-                <div><p className="mono text-[10px] text-paper/60">Rain, next ten days</p><p className="font-serif text-[34px] font-semibold leading-none">{wx.rainTotal.toFixed(2)}<span className="ml-1 text-[14px] font-normal text-paper/60">in</span></p></div>
-                <div><p className="mono text-[10px] text-paper/60">Corn heat units</p><p className="font-serif text-[34px] font-semibold leading-none">{Math.round(wx.gduTotal)}<span className="ml-1 text-[14px] font-normal text-paper/60">GDU</span></p></div>
+                <div><p className="mono text-[10px] text-paper/60">Rain, next ten days</p><p className="font-serif text-[34px] font-semibold leading-none">{l.wx.rainTotal.toFixed(2)}<span className="ml-1 text-[14px] font-normal text-paper/60">in</span></p></div>
+                <div><p className="mono text-[10px] text-paper/60">Corn heat units</p><p className="font-serif text-[34px] font-semibold leading-none">{Math.round(l.wx.gduTotal)}<span className="ml-1 text-[14px] font-normal text-paper/60">GDU</span></p></div>
               </div>
             )}
           </div>
-          {!wx ? (
-            <p className="reveal mt-8 rounded-[16px] border border-paper/15 p-5 text-paper/85">The forecast is not available right now. Check back later, or open a weather app for Bloomer.</p>
+          {!l.wx ? (
+            <p className="reveal mt-8 rounded-[16px] border border-paper/15 p-5 text-paper/85">The forecast is not available right now. Check back later, or open a weather app for {l.name}.</p>
           ) : (
             <div className="reveal mt-8 overflow-x-auto" data-delay="1">
               <table className="w-full min-w-[640px] text-[15px]">
@@ -83,7 +101,7 @@ export default async function Grains() {
                   </tr>
                 </thead>
                 <tbody>
-                  {wx.days.map((d, i) => (
+                  {l.wx.days.map((d, i) => (
                     <tr key={d.date} className={`border-b border-paper/10 ${i === 0 ? "text-paper" : "text-paper/85"}`}>
                       <td className="py-2.5 pr-4 font-medium">{fmtDay(d.date, i)}</td>
                       <td className="py-2.5 pr-4 text-paper/70">{d.sky}</td>
@@ -97,9 +115,11 @@ export default async function Grains() {
                   ))}
                 </tbody>
               </table>
-              <p className="mono mt-4 text-[10px] text-paper/65">Forecast as of {new Date(wx.fetchedAt).toLocaleString("en-US", { timeZone: "America/Chicago", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })} Central · Open-Meteo for {g.lat.toFixed(2)}, {g.lon.toFixed(2)} · rain in inches, wind is the day&apos;s peak in mph · gold marks a quarter inch or a 15 mph day, the two numbers that ground a drone or a sprayer.</p>
+              <p className="mono mt-4 text-[10px] text-paper/65">Forecast as of {new Date(l.wx.fetchedAt).toLocaleString("en-US", { timeZone: "America/Chicago", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })} Central · Open-Meteo for {l.lat.toFixed(2)}, {l.lon.toFixed(2)} · rain in inches, wind is the day&apos;s peak in mph · gold marks a quarter inch or a 15 mph day, the two numbers that ground a drone or a sprayer.</p>
             </div>
           )}
+          </div>
+          ))}
         </div>
       </section>
 

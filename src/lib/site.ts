@@ -42,13 +42,17 @@ export const site = {
     batteries: 2,
     stitchMinutes: 10,
   },
-  /** Grains page: the elevator we point to (their numbers stay on their page) and the point the forecast is for. */
+  /**
+   * Grains page. Elevators: links only (their numbers stay on their page); the first one is the
+   * headline, the rest are listed under it. Locations: every point gets its own ten-day table; the
+   * first is the headline. Add a row to either list and the page picks it up.
+   */
   grains: {
-    elevator: "CDR Farms",
-    place: "Bloomer",
-    bidsUrl: "https://www.cdrfarmsllc.com/markets/cash.php?location_filter=28479",
-    phone: "(715) 559-5803" as string | null,
-    lat: 45.1,
-    lon: -91.49,
+    elevators: [
+      { name: "CDR Farms", place: "Bloomer", bidsUrl: "https://www.cdrfarmsllc.com/markets/cash.php?location_filter=28479", phone: "(715) 559-5803" as string | null },
+    ],
+    locations: [
+      { slug: "bloomer", name: "Bloomer", lat: 45.1, lon: -91.49 },
+    ],
   },
 };
