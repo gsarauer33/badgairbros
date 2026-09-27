@@ -14,7 +14,7 @@ export const site = {
   phone: "(715) 933-2112" as string | null,
   acrefileUrl: "https://acrefile.com",
   people: [
-    { initial: "G", name: "Garrett Sarauer", role: "Builds Acrefile. Flies the drone. Remote pilot, Part 107 in progress.", photo: null as string | null },
+    { initial: "G", name: "Garrett Sarauer", role: "Builds Acrefile. Flies the drone. Studying for the Part 107 remote pilot exam.", photo: null as string | null },
     { initial: "J", name: "Justin Sarauer", role: "Farms the ground. Runs Sarauer Farms. The one who tells us when a map is wrong.", photo: null as string | null },
   ],
   /** Pricing wording (Garrett, 2026-09-05): no numbers; ask for a quote. */

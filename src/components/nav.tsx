@@ -63,7 +63,7 @@ export default function SiteNav({ name, mailto }: { name: string; mailto: string
           </a>
         </nav>
         <div className="flex items-center gap-2">
-          <a href={mailto} className="flex h-10 items-center rounded-full bg-ink px-4 text-[14px] font-medium text-paper transition-colors duration-300 hover:bg-moss">Book a flight</a>
+          <a href={mailto} className="flex h-10 items-center rounded-full bg-ink px-4 text-[14px] font-medium text-paper transition-colors duration-300 hover:bg-moss">Ask about a flight</a>
           <button type="button" onClick={() => setOpen((o) => !o)} aria-expanded={open} aria-controls="site-menu" aria-label={open ? "Close menu" : "Open menu"} className="flex h-10 w-10 items-center justify-center rounded-full border border-line-strong text-ink md:hidden">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">{open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}</svg>
           </button>

@@ -10,7 +10,7 @@ The company site for **Badgair Bros LLC** (Garrett and Justin Sarauer, Bloomer, 
 - **The scroll scene** (`src/components/scrolly.tsx`) uses `public/h3-field.jpg`: the full H-3 orthomosaic of 6 Sep 2026 clipped to the AgFiniti boundary with soft edges. The flight path is the real one from the photo GPS and the planned waypoints; the hotspots sit on real patches. Regenerate the image and constants with the Acrefile scratch scripts when a better flight exists. Under `prefers-reduced-motion` the scene is not pinned and shows its finished state.
 - **The slider** still compares the 2 Sep corner test against satellite on purpose (Garrett, 2026-09-06); swap when the Mavic 3M arrives.
 - Design: paper, ink, moss, wheat as the single accent, `night` for the dark bands; Source Serif 4 display, Geist body, Geist Mono labels. `--ink-faint` is 0.68 alpha for contrast; keep small labels at or above that.
-- Pricing wording: no numbers, "ask us for a quote" (Garrett, 2026-09-05). Part 107 is still in progress; the About line says so.
-- Open on Garrett: soften "Book a flight" until Part 107; shrink the empty Listen band; people photos; Apple/Spotify links once an episode exists.
+- Pricing wording: no numbers, "ask us for a quote" (Garrett, 2026-09-05). No Part 107 certificate yet (2026-09-26); the About line says he is studying for the exam, and the buttons read "Ask about a flight" (Garrett, 2026-09-27), so nothing claims a certificate or offers to fly now.
+- Open on Garrett: switch the buttons back to "Book a flight" once the certificate is in hand; shrink the empty Listen band; people photos; Apple/Spotify links once an episode exists.
 
 `npm run dev -- --port 3001` · `npm run build` · `npm run lint`. Sweep record: `docs/audit-2026-09-06.md`.

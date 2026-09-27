@@ -54,7 +54,7 @@ export default async function Home() {
           </p>
           <div className="rise d4 flex flex-wrap items-center gap-3.5">
             <a href={mailto} className="group flex h-[52px] items-center gap-2.5 rounded-full bg-moss px-6 text-[15px] font-medium text-paper transition-[background-color,box-shadow] duration-300 hover:bg-moss-deep hover:shadow-[0_14px_30px_-14px_rgba(47,93,58,0.7)]">
-              Book a flight <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
+              Ask about a flight <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
             </a>
             <a href={site.acrefileUrl} className="flex h-[52px] items-center rounded-full border border-line-strong px-6 text-[15px] font-medium text-ink transition-colors duration-300 hover:bg-paper-deep">See Acrefile</a>
             {site.podcast.name && site.podcast.feed && (
