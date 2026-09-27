@@ -303,7 +303,7 @@ export default async function Home() {
         <div className="flex flex-col gap-16 border-t border-line-strong pb-10 pt-16 lg:pt-20">
           <div className="flex flex-col items-start justify-between gap-8 lg:flex-row lg:items-end lg:gap-10">
             <div className="reveal flex flex-col gap-4">
-              <h2 className="max-w-[640px] font-serif text-[clamp(44px,6vw,72px)] font-semibold leading-[1.0] tracking-[-0.025em]">Fly a field<br />with us this fall.</h2>
+              <h2 className="max-w-[640px] font-serif text-[clamp(44px,6vw,72px)] font-semibold leading-[1.0] tracking-[-0.025em]">Ask us about<br />a field this fall.</h2>
               <p className="max-w-[520px] text-[16px] text-ink-muted">{site.pricing}</p>
             </div>
             <div className="reveal flex flex-col gap-3 lg:items-end" data-delay="1">
