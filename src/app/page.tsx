@@ -101,11 +101,11 @@ export default async function Home() {
         <div className="grid gap-10 border-t border-line-strong pb-24 pt-20 lg:grid-cols-12 lg:items-center">
           <div className="reveal flex flex-col gap-5 lg:col-span-4">
             <h2 className="font-serif text-[clamp(34px,4.5vw,48px)] font-semibold leading-[1.05] tracking-[-0.02em]">The satellite shows a field.<br />Our flight shows the rows.</h2>
-            <p className="text-[17px] leading-[1.5] text-ink-muted">Right: the free satellite picture most farm apps use, about 60 cm a pixel. Left: our 2 September test flight over the northeast corner of H-3, 5 cm a pixel. Drag the handle.</p>
+            <p className="text-[17px] leading-[1.5] text-ink-muted">Right: the free satellite picture most farm apps use, about 60 cm a pixel. Left: our 2 September test flight over the southwest corner of H-3, 5 cm a pixel. Drag the handle.</p>
             <p className="data text-[11px] text-ink-faint">USGS imagery for the satellite half · our map for the flight</p>
           </div>
           <div className="reveal lg:col-span-8" data-delay="1">
-            <Compare before="/h3-satellite.jpg" after="/h3-drone.jpg" alt="The northeast corner of H-3 from our test flight, five centimetres per pixel" />
+            <Compare before="/h3-satellite.jpg" after="/h3-drone.jpg" alt="The southwest corner of H-3 from our test flight, five centimetres per pixel" />
           </div>
         </div>
       </section>
