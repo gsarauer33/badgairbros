@@ -113,7 +113,16 @@ body {
 @keyframes flyover { from { transform: scale(1.12) translate3d(-4%, -3%, 0); } to { transform: scale(1.12) translate3d(4%, 3%, 0); } }
 .flyover-pan { animation: flyover 48s ease-in-out infinite alternate; will-change: transform; }
 
+/* ---------- hero: the whole field drifting, quicker than the fly-over pan ---------- */
+@keyframes hero-drift {
+  0%   { transform: translate3d(-3%, 2%, 0) scale(1) rotate(-1.5deg); }
+  50%  { transform: translate3d(2%, -2%, 0) scale(1.08) rotate(0deg); }
+  100% { transform: translate3d(4%, 1%, 0) scale(1.02) rotate(1.5deg); }
+}
+.hero-drift { animation: hero-drift 14s ease-in-out infinite alternate; will-change: transform; }
+
 @media (prefers-reduced-motion: reduce) {
+  .hero-drift { animation: none !important; }
   .reveal .plat-line, .reveal.in .plat-line { stroke-dashoffset: 0 !important; transition: none !important; }
   .reveal .plat-fill { fill-opacity: 0.2 !important; transition: none !important; }
   .flyover-pan { animation: none !important; transform: scale(1.12); }
