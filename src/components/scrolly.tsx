@@ -88,7 +88,7 @@ export default function Scrolly({ steps, image, id }: { steps: Step[]; image: st
           <div className="relative lg:col-span-8">
             <div className="relative overflow-hidden rounded-[22px] border border-line bg-surface shadow-[0_30px_60px_-30px_rgba(31,42,31,0.45)]">
               <div className="relative aspect-[640/380] overflow-hidden bg-paper-deep">
-                <Image priority src={image} alt="Orthomosaic of field H-3, 65.3 acres, flown 6 September 2026" fill sizes="(min-width: 1024px) 840px, 100vw" className="object-contain" style={{ opacity: 0.35 + 0.65 * stitch, filter: `saturate(${0.6 + 0.4 * stitch})`, transition: "opacity 0.2s, filter 0.2s" }} />
+                <Image src={image} alt="Orthomosaic of field H-3, 65.3 acres, flown 6 September 2026" fill sizes="(min-width: 1024px) 840px, 100vw" className="object-contain" style={{ opacity: 0.35 + 0.65 * stitch, filter: `saturate(${0.6 + 0.4 * stitch})`, transition: "opacity 0.2s, filter 0.2s" }} />
 
                 {/* stitch tiles */}
                 <div className="absolute inset-0 grid" style={{ gridTemplateColumns: `repeat(${COLS}, 1fr)`, gridTemplateRows: `repeat(${ROWS}, 1fr)` }} aria-hidden="true">

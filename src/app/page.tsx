@@ -3,7 +3,6 @@ import Link from "next/link";
 import { site } from "@/lib/site";
 import Reveal from "@/components/reveal";
 import SiteNav from "@/components/nav";
-import CountUp from "@/components/count-up";
 import Compare from "@/components/compare";
 import Scrolly from "@/components/scrolly";
 import PlatBook from "@/components/plat-book";
@@ -17,10 +16,7 @@ export const revalidate = 3600;
 const mailto = site.email ? `mailto:${site.email}?subject=${encodeURIComponent("Fly a field")}` : "#contact";
 const tel = site.phone ? `tel:+1${site.phone.replace(/\D/g, "")}` : null;
 
-const TICKER = ["Soil tests", "Tissue scans", "Orthomosaics", "Yield maps", "Planting passes", "Spray records", "Boundaries", "Obstacles", "Signed recommendations"];
-
 const F = site.flight;
-const PIPELINE = [`${F.photos} photos`, "matched", "meshed", "stitched", "tiled", "filed to H-3"];
 
 export default async function Home() {
   const episodes = await getEpisodes(site.podcast.feed);
@@ -78,16 +74,22 @@ export default async function Home() {
         </ol>
       </section>
 
-      {/* ---------- ticker: what gets filed ---------- */}
-      <div className="ticker-wrap relative z-10 overflow-hidden border-b border-line-strong py-4" aria-hidden="true">
-        <div className="ticker flex w-max gap-10 whitespace-nowrap">
-          {[...TICKER, ...TICKER].map((t, i) => (
-            <span key={i} className="mono flex items-center gap-10 text-[12px] text-ink-faint">
-              {t}<span className="h-1.5 w-1.5 rounded-full bg-wheat" />
-            </span>
-          ))}
+      {/* ===== chapter 1, mapping: proof, how, the ask ===== */}
+
+      {/* ---------- same ground, two eyes ---------- */}
+      <section className="relative z-10 mx-auto max-w-[1280px] px-5 sm:px-8">
+        <div className="grid gap-10 border-t border-line-strong pb-24 pt-20 lg:grid-cols-12 lg:items-center">
+          <div className="reveal flex flex-col gap-5 lg:col-span-4">
+            <p className="mono text-[12px] text-moss">Same ground, two eyes</p>
+            <h2 className="font-serif text-[clamp(34px,4.5vw,48px)] font-semibold leading-[1.05] tracking-[-0.02em]">Satellite sees a field.<br />We see the rows.</h2>
+            <p className="text-[17px] leading-[1.5] text-ink-muted">The public satellite image on the right is what every farm app shows you. The left half is our 2 September test flight over the northeast corner of H-3, the same ground at five centimetres per pixel. Drag the handle.</p>
+            <p className="data text-[11px] text-ink-faint">USGS imagery for the satellite half · our orthomosaic for the flight</p>
+          </div>
+          <div className="reveal lg:col-span-8" data-delay="1">
+            <Compare before="/h3-satellite.jpg" after="/h3-drone.jpg" alt="The northeast corner of H-3 from our test flight, five centimetres per pixel" />
+          </div>
         </div>
-      </div>
+      </section>
 
       {/* ---------- pinned: how a flight becomes a record ---------- */}
       <Scrolly
@@ -100,6 +102,43 @@ export default async function Home() {
           { kicker: "04 · File", title: "It lands on your record, signed.", body: "The map is filed to the field in Acrefile beside your soil numbers, in words, with your agronomist’s signed recommendation on top. No login, no app to install." },
         ]}
       />
+
+      {/* ---------- how it works ---------- */}
+      <section id="how" className="relative z-10 mx-auto max-w-[1280px] px-5 sm:px-8">
+        <div className="flex flex-col gap-12 border-t border-line-strong pb-24 pt-20">
+          <div className="flex flex-col items-start justify-between gap-4 lg:flex-row lg:items-end">
+            <div className="reveal flex flex-col gap-3.5">
+              <p className="mono text-[12px] text-moss">How a flight works</p>
+              <h2 className="font-serif text-[clamp(34px,4.5vw,48px)] font-semibold leading-[1.05] tracking-[-0.02em]">Ask. We fly. It lands on your record.</h2>
+            </div>
+            <div className="reveal flex flex-col items-start gap-3 lg:items-end" data-delay="1">
+              <div className="flex flex-wrap gap-2">
+                {["Orthomosaic", "Stand count", "Elevation"].map((t) => <span key={t} className="mono rounded-full border border-line-strong px-3 py-1.5 text-[11px] text-ink-muted">{t}</span>)}
+                <span className="mono rounded-full border border-wheat px-3 py-1.5 text-[11px] text-ink">Multispectral · next</span>
+              </div>
+              <p className="mono text-[11px] text-ink-faint">{site.pricing}</p>
+            </div>
+          </div>
+          <ol className="grid gap-8 md:grid-cols-3">
+            {[
+              ["Text us a field.", "Or your agronomist does. A field name and a reason is enough: stand check, gap map, drainage, a spray plan."],
+              ["We fly RTK when it counts.", "If a product needs centimetre accuracy, a spray boundary for one, we fly RTK and the record says so."],
+              ["The files are yours to keep.", "Stitched on our machine, filed to your field, opened from your link. Keep them or share them."],
+            ].map(([t, d], i) => (
+              <li key={t} className="reveal group flex flex-col gap-4 border-t-2 border-ink pt-6" data-delay={String(i)}>
+                <span className="font-serif text-[56px] italic leading-none text-moss transition-transform duration-500 group-hover:translate-x-1">{i + 1}</span>
+                <h3 className="font-serif text-[26px] font-semibold">{t}</h3>
+                <p className="text-[16px] leading-[1.5] text-ink-muted">{d}</p>
+              </li>
+            ))}
+          </ol>
+        </div>
+      </section>
+
+      {/* the close of the mapping chapter: fly-over, the latest flight in numbers, the ask */}
+      <Flyover mailto={mailto} />
+
+      {/* ===== chapter 2, Acrefile: the field record, then the farm on one map ===== */}
 
       {/* ---------- acrefile ---------- */}
       <section id="acrefile" className="relative z-10 mx-auto max-w-[1280px] px-5 sm:px-8">
@@ -176,116 +215,7 @@ export default async function Home() {
         </div>
       </section>
 
-      {/* ---------- same ground, two eyes ---------- */}
-      <section className="relative z-10 mx-auto max-w-[1280px] px-5 sm:px-8">
-        <div className="grid gap-10 border-t border-line-strong pb-24 pt-20 lg:grid-cols-12 lg:items-center">
-          <div className="reveal flex flex-col gap-5 lg:col-span-4">
-            <p className="mono text-[12px] text-moss">Same ground, two eyes</p>
-            <h2 className="font-serif text-[clamp(34px,4.5vw,48px)] font-semibold leading-[1.05] tracking-[-0.02em]">Satellite sees a field.<br />We see the rows.</h2>
-            <p className="text-[17px] leading-[1.5] text-ink-muted">The public satellite image on the right is what every farm app shows you. The left half is our 2 September test flight over the northeast corner of H-3, the same ground at five centimetres per pixel. Drag the handle.</p>
-            <p className="data text-[11px] text-ink-faint">USGS imagery for the satellite half · our orthomosaic for the flight</p>
-          </div>
-          <div className="reveal lg:col-span-8" data-delay="1">
-            <Compare before="/h3-satellite.jpg" after="/h3-drone.jpg" alt="The northeast corner of H-3 from our test flight, five centimetres per pixel" />
-          </div>
-        </div>
-      </section>
-
-      {/* ---------- how it works ---------- */}
-      <section id="how" className="relative z-10 mx-auto max-w-[1280px] px-5 sm:px-8">
-        <div className="flex flex-col gap-12 border-t border-line-strong pb-24 pt-20">
-          <div className="flex flex-col items-start justify-between gap-4 lg:flex-row lg:items-end">
-            <div className="reveal flex flex-col gap-3.5">
-              <p className="mono text-[12px] text-moss">How a flight works</p>
-              <h2 className="font-serif text-[clamp(34px,4.5vw,48px)] font-semibold leading-[1.05] tracking-[-0.02em]">Ask. We fly. It lands on your record.</h2>
-            </div>
-            <div className="reveal flex flex-col items-start gap-3 lg:items-end" data-delay="1">
-              <div className="flex flex-wrap gap-2">
-                {["Orthomosaic", "Stand count", "Elevation"].map((t) => <span key={t} className="mono rounded-full border border-line-strong px-3 py-1.5 text-[11px] text-ink-muted">{t}</span>)}
-                <span className="mono rounded-full border border-wheat px-3 py-1.5 text-[11px] text-ink">Multispectral · next</span>
-              </div>
-              <p className="mono text-[11px] text-ink-faint">{site.pricing}</p>
-            </div>
-          </div>
-          <ol className="grid gap-8 md:grid-cols-3">
-            {[
-              ["Text us a field.", "Or your agronomist does. A field name and a reason is enough: stand check, gap map, drainage, a spray plan."],
-              ["We fly it in the right light.", "Wind, sun angle and shutter speed decide the day. If a product needs centimetre accuracy, we fly RTK and the record says so."],
-              ["The map lands on your record.", "Stitched on our machine, filed to your field, opened from your link. The files are yours to keep or share."],
-            ].map(([t, d], i) => (
-              <li key={t} className="reveal group flex flex-col gap-4 border-t-2 border-ink pt-6" data-delay={String(i)}>
-                <span className="font-serif text-[56px] italic leading-none text-moss transition-transform duration-500 group-hover:translate-x-1">{i + 1}</span>
-                <h3 className="font-serif text-[26px] font-semibold">{t}</h3>
-                <p className="text-[16px] leading-[1.5] text-ink-muted">{d}</p>
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* ---------- the latest flight, in numbers (every value from site.flight) ---------- */}
-      <section className="relative z-10 overflow-hidden bg-night text-paper">
-        <svg viewBox="0 0 1440 120" className="absolute bottom-0 left-0 h-[120px] w-full opacity-35" preserveAspectRatio="none" aria-hidden="true">
-          <g stroke="#2f5d3a" strokeWidth="3" strokeLinecap="round">
-            {Array.from({ length: 72 }, (_, i) => { const h = 12 + ((i * 37) % 48); return <line key={i} x1={20 + i * 20} y1={65 - h / 2} x2={20 + i * 20} y2={65 + h / 2} />; })}
-          </g>
-        </svg>
-        <div className="relative mx-auto grid max-w-[1280px] gap-10 px-5 py-20 sm:px-8 lg:grid-cols-12 lg:py-24">
-          <div className="reveal flex flex-col gap-5 lg:col-span-5">
-            <p className="mono text-[12px] text-wheat">The latest flight</p>
-            <h2 className="font-serif text-[clamp(38px,5vw,64px)] font-semibold leading-[1.0] tracking-[-0.02em]">One field.<br />One afternoon.<br />Filed before supper.</h2>
-            <p className="max-w-[420px] text-[17px] leading-[1.5] text-paper/75">{F.field}, {F.acres} acres, flown on {F.flownLong}. Two batteries, one swap, stitched on our own machine and opened on a phone the same day. That is the whole pitch.</p>
-          </div>
-          <dl className="grid grid-cols-2 gap-4 lg:col-span-7 lg:grid-cols-4">
-            {[[F.photos, "photos", `one every ${F.intervalSeconds} seconds`], [F.flightMinutes, "minutes", "in the air"], [F.gsdCm, "cm / pixel", "ground resolution"], [F.stitchMinutes, "minutes", "to stitch on our machine"]].map(([n, u, d], i) => (
-              <div key={String(u) + i} className="reveal rounded-[18px] border border-paper/15 bg-paper/[0.03] p-5 backdrop-blur-[2px] transition-colors duration-500 hover:border-wheat/50" data-delay={String(i % 3)}>
-                <p className="font-serif text-[56px] font-semibold leading-none text-paper"><CountUp value={n as number} /></p>
-                <p className="mono mt-2 text-[11px] text-wheat">{u}</p>
-                <p className="mt-1 text-[13px] text-paper/60">{d}</p>
-              </div>
-            ))}
-          </dl>
-          <ol className="pipeline reveal data flex flex-wrap items-center gap-x-3 gap-y-2 text-[11px] text-paper/60 lg:col-span-12" data-delay="2" aria-label="What happens to the photos">
-            {PIPELINE.map((step, i) => (
-              <li key={step} className="flex items-center gap-3">
-                <span className="step flex items-center gap-2 rounded-full border border-paper/20 px-3 py-1.5" style={{ animationDelay: `${0.4 + i * 0.35}s` }}>
-                  <span className="dot h-1.5 w-1.5 rounded-full bg-paper/40" />{step}
-                </span>
-                {i < PIPELINE.length - 1 && <span className="h-px w-5 bg-paper/25" />}
-              </li>
-            ))}
-          </ol>
-        </div>
-      </section>
-
-      {/* ---------- listen (appears once the feed exists) ---------- */}
-      {site.podcast.feed && site.podcast.name && (
-        <section id="listen" className="relative z-10 overflow-hidden bg-moss text-paper">
-          <div className="mx-auto grid max-w-[1280px] gap-10 px-5 py-20 sm:px-8 lg:grid-cols-12 lg:py-24">
-            <div className="reveal flex flex-col gap-5 lg:col-span-5">
-              <p className="mono text-[12px] text-wheat-soft">Listen · the podcast</p>
-              <h2 className="font-serif text-[clamp(40px,5vw,64px)] font-semibold leading-[1.0] tracking-[-0.02em]">{site.podcast.name}</h2>
-              <p className="max-w-[420px] text-[17px] leading-[1.5] text-paper/85">{site.podcast.blurb}</p>
-              <div className="flex flex-wrap gap-2.5 pt-2">
-                {[["Apple Podcasts", site.podcast.apple], ["Spotify", site.podcast.spotify], ["Show page", site.podcast.rsscom], ["RSS", site.podcast.feed]].map(([l, u]) => u && <a key={l} href={u} className="mono rounded-full border border-paper/30 px-3.5 py-2 text-[11px] transition-colors hover:border-paper hover:bg-paper/10">{l}</a>)}
-              </div>
-            </div>
-            <ol className="flex flex-col gap-3 lg:col-span-7">
-              {episodes.length === 0 && <li className="reveal rounded-[16px] border border-paper/15 p-5 text-paper/85">First episode coming soon. The feed is live; the first recording is being made.</li>}
-              {episodes.map((ep, i) => (
-                <li key={(ep.url ?? ep.title) + i} className={`reveal flex items-center justify-between gap-4 rounded-[16px] p-5 ${i === 0 ? "bg-night" : "border border-paper/15"}`} data-delay={String(i % 3)}>
-                  <div className="min-w-0">
-                    <p className="mono text-[10px] text-paper/80">{i === 0 ? "Latest" : ""} {ep.date ? new Date(ep.date).toLocaleDateString("en-US", { month: "long", day: "numeric" }) : ""}</p>
-                    <p className="font-serif text-[20px] font-semibold leading-[1.2]">{ep.url ? <a href={ep.url} className="hover:underline">{ep.title}</a> : ep.title}</p>
-                    {i === 0 && ep.summary && <p className="mt-1 text-[14px] text-paper/85">{ep.summary}</p>}
-                  </div>
-                  <span className="data shrink-0 text-[11px] text-paper/80">{ep.minutes ? `${ep.minutes} min` : ""}</span>
-                </li>
-              ))}
-            </ol>
-          </div>
-        </section>
-      )}
+      {/* ===== chapter 3, the people ===== */}
 
       {/* ---------- about ---------- */}
       <section id="about" className="relative z-10 mx-auto grid max-w-[1280px] gap-10 px-5 pb-24 pt-20 sm:px-8 lg:grid-cols-12 lg:pt-28">
@@ -327,7 +257,34 @@ export default async function Home() {
         </div>
       </section>
 
-      <Flyover mailto={mailto} />
+      {/* ---------- listen (appears once the feed exists) ---------- */}
+      {site.podcast.feed && site.podcast.name && (
+        <section id="listen" className="relative z-10 overflow-hidden bg-moss text-paper">
+          <div className="mx-auto grid max-w-[1280px] gap-10 px-5 py-20 sm:px-8 lg:grid-cols-12 lg:py-24">
+            <div className="reveal flex flex-col gap-5 lg:col-span-5">
+              <p className="mono text-[12px] text-wheat-soft">Listen · the podcast</p>
+              <h2 className="font-serif text-[clamp(40px,5vw,64px)] font-semibold leading-[1.0] tracking-[-0.02em]">{site.podcast.name}</h2>
+              <p className="max-w-[420px] text-[17px] leading-[1.5] text-paper/85">{site.podcast.blurb}</p>
+              <div className="flex flex-wrap gap-2.5 pt-2">
+                {[["Apple Podcasts", site.podcast.apple], ["Spotify", site.podcast.spotify], ["Show page", site.podcast.rsscom], ["RSS", site.podcast.feed]].map(([l, u]) => u && <a key={l} href={u} className="mono rounded-full border border-paper/30 px-3.5 py-2 text-[11px] transition-colors hover:border-paper hover:bg-paper/10">{l}</a>)}
+              </div>
+            </div>
+            <ol className="flex flex-col gap-3 lg:col-span-7">
+              {episodes.length === 0 && <li className="reveal rounded-[16px] border border-paper/15 p-5 text-paper/85">First episode coming soon. The feed is live; the first recording is being made.</li>}
+              {episodes.map((ep, i) => (
+                <li key={(ep.url ?? ep.title) + i} className={`reveal flex items-center justify-between gap-4 rounded-[16px] p-5 ${i === 0 ? "bg-night" : "border border-paper/15"}`} data-delay={String(i % 3)}>
+                  <div className="min-w-0">
+                    <p className="mono text-[10px] text-paper/80">{i === 0 ? "Latest" : ""} {ep.date ? new Date(ep.date).toLocaleDateString("en-US", { month: "long", day: "numeric" }) : ""}</p>
+                    <p className="font-serif text-[20px] font-semibold leading-[1.2]">{ep.url ? <a href={ep.url} className="hover:underline">{ep.title}</a> : ep.title}</p>
+                    {i === 0 && ep.summary && <p className="mt-1 text-[14px] text-paper/85">{ep.summary}</p>}
+                  </div>
+                  <span className="data shrink-0 text-[11px] text-paper/80">{ep.minutes ? `${ep.minutes} min` : ""}</span>
+                </li>
+              ))}
+            </ol>
+          </div>
+        </section>
+      )}
 
       {/* ---------- contact + footer ---------- */}
       <footer id="contact" className="relative z-10 mx-auto max-w-[1280px] px-5 sm:px-8">
@@ -354,9 +311,9 @@ export default async function Home() {
             <nav className="mono flex gap-7 text-[11px] text-ink-faint" aria-label="Footer">
               <Link href="/#mapping" className="hover:text-ink">Mapping</Link>
               <a href={site.acrefileUrl} className="hover:text-ink">Acrefile</a>
-              <a href="/grains" className="hover:text-ink">Grains</a>
-              {site.podcast.rsscom && <a href={site.podcast.rsscom} className="hover:text-ink">Podcast</a>}
               <Link href="/#about" className="hover:text-ink">About</Link>
+              {site.podcast.rsscom && <a href={site.podcast.rsscom} className="hover:text-ink">Podcast</a>}
+              <a href="/grains" className="hover:text-ink">Grains</a>
               <a href="#top" className="hover:text-ink">Top</a>
             </nav>
           </div>

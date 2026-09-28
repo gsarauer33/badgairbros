@@ -16,15 +16,15 @@ export default function Compare({ before, after, alt }: { before: string; after:
   return (
     <div
       ref={ref}
-      className="relative aspect-[1600/953] w-full cursor-col-resize touch-none select-none overflow-hidden rounded-[20px] border border-line bg-paper-deep"
+      className="relative aspect-[1600/953] w-full cursor-col-resize touch-pan-y select-none overflow-hidden rounded-[20px] border border-line bg-paper-deep"
       onPointerDown={(e) => { dragging.current = true; (e.currentTarget as HTMLElement).setPointerCapture(e.pointerId); set(e.clientX); }}
       onPointerMove={(e) => { if (dragging.current) set(e.clientX); }}
       onPointerUp={() => { dragging.current = false; }}
       onPointerCancel={() => { dragging.current = false; }}
     >
-      <Image src={before} alt="Satellite view of the same ground at about sixty centimetres per pixel" fill sizes="(min-width: 1024px) 760px, 100vw" className="object-cover" />
+      <Image priority src={before} alt="Satellite view of the same ground at about sixty centimetres per pixel" fill sizes="(min-width: 1024px) 760px, 100vw" className="object-cover" />
       <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
-        <Image src={after} alt={alt} fill sizes="(min-width: 1024px) 760px, 100vw" className="object-cover" />
+        <Image priority src={after} alt={alt} fill sizes="(min-width: 1024px) 760px, 100vw" className="object-cover" />
       </div>
       <span className="data pointer-events-none absolute left-3.5 top-3.5 rounded-full bg-ink/75 px-2.5 py-1.5 text-[10px] text-paper">Our flight · 5 cm</span>
       <span className="data pointer-events-none absolute right-3.5 top-3.5 rounded-full bg-paper/85 px-2.5 py-1.5 text-[10px] text-ink">Satellite · ~60 cm</span>

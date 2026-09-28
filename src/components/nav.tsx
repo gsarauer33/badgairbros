@@ -9,8 +9,8 @@ import { BadgairMark } from "./marks";
 const SECTIONS = [
   ["mapping", "Mapping"],
   ["acrefile", "Acrefile"],
-  ["listen", "Listen"],
   ["about", "About"],
+  ["listen", "Listen"],
 ] as const;
 
 /** Sticky nav: turns to frosted paper once you scroll, underlines the section in view, and draws a

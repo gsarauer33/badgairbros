@@ -73,10 +73,6 @@ body {
 
 /* ---------- pizazz ---------- */
 
-/* Ticker between sections */
-@keyframes ticker { from { transform: translateX(0); } to { transform: translateX(-50%); } }
-.ticker { animation: ticker 38s linear infinite; }
-.ticker-wrap:hover .ticker { animation-play-state: paused; }
 
 /* Contours drift up as you scroll (scroll-driven animation; browsers without it just keep them still) */
 @supports (animation-timeline: scroll()) {
@@ -85,17 +81,24 @@ body {
 }
 
 /* Pipeline steps light up in order when the band is revealed */
-.pipeline .step { opacity: 0.35; }
+/* Both ends of each animation are written in rgba here, not as Tailwind opacity utilities:
+   Chromium mis-converts an animation from Tailwind's oklab colour-mix to an rgb end colour and
+   the pills finished red (found 2026-09-28). */
+.pipeline .step { opacity: 0.35; border-color: rgba(247,243,234,0.2); }
+.pipeline .step .dot { background-color: rgba(247,243,234,0.4); }
 .pipeline.in .step { animation: step-on 0.5s ease-out forwards; }
 .pipeline.in .step .dot { animation: dot-on 0.5s ease-out forwards; animation-delay: inherit; }
-@keyframes step-on { to { opacity: 1; border-color: rgba(201,162,39,0.6); } }
-@keyframes dot-on { to { background: #c9a227; } }
+@keyframes step-on { from { opacity: 0.35; border-color: rgba(247,243,234,0.2); } to { opacity: 1; border-color: rgba(201,162,39,0.6); } }
+@keyframes dot-on { from { background-color: rgba(247,243,234,0.4); } to { background-color: rgba(201,162,39,1); } }
 
 /* Film grain, barely there */
 .grain { position: fixed; inset: 0; pointer-events: none; z-index: 50; opacity: 0.06; mix-blend-mode: multiply; background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
 
 @media (prefers-reduced-motion: reduce) {
-  .ticker, .contours, .pipeline .step, .pipeline .step .dot { animation: none !important; transform: none !important; stroke-dashoffset: 0 !important; width: 100% !important; border-right: 0 !important; }
+  .contours { animation: none !important; transform: none !important; }
+  /* the pipeline shows finished, not dimmed */
+  .pipeline .step { animation: none !important; opacity: 1; border-color: rgba(201,162,39,0.6); }
+  .pipeline .step .dot { animation: none !important; background: #c9a227; }
 }
 
 /* ---------- plat book: outlines draw in when the section is revealed ---------- */
