@@ -135,7 +135,7 @@ export default function Scrolly({ steps, image, id }: { steps: Step[]; image: st
                       </div>
                     ))}
                   </div>
-                  <div className="rounded-lg border border-wheat bg-wheat-soft p-2 text-[10px] leading-[1.35]" style={{ opacity: file > 0.85 ? 1 : 0, transition: "opacity 0.3s" }}>Sulfur with the nitrogen. Skip the P this year. <span className="font-serif italic">— signed, your agronomist</span></div>
+                  <div className="rounded-lg border border-wheat bg-wheat-soft p-2 text-[10px] leading-[1.35]" style={{ opacity: file > 0.85 ? 1 : 0, transition: "opacity 0.3s" }}>Potash where K runs low. <span className="font-serif italic">— an example; your agronomist signs here</span></div>
                 </div>
 
                 <span className="mono absolute left-3.5 top-3.5 rounded-full bg-ink/75 px-2.5 py-1.5 text-[10px] text-paper">{["Flying", "Stitching", "Reading", "Filed"][stage]}</span>

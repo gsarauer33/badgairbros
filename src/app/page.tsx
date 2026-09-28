@@ -199,16 +199,19 @@ export default async function Home() {
             </a>
           </div>
           <div className="reveal lg:col-span-6" data-delay="1">
-            {/* the record as the grower sees it on a phone */}
+            {/* the record as the grower sees it on a phone. H-3's real numbers, as Acrefile headlines
+                them: EarthOptics soil test, October 2024 (Bray P and K), and the 2025 corn average,
+                233.4 bu/ac (Justin's OK, 2026-09-28) */}
             <div className="mx-auto w-[min(360px,100%)] rounded-[28px] border border-line bg-surface p-4 shadow-[0_30px_60px_-30px_rgba(31,42,31,0.45)]">
               <div className="flex items-center justify-between px-1">
                 <span className="data text-[10px] text-ink-faint">H-3 · Home Farm · 65.3 ac</span>
                 <span className="mono rounded-full bg-moss-soft px-2 py-0.5 text-[9px] text-moss-deep">your link</span>
               </div>
               <div className="mt-3 rounded-2xl border-l-4 border-wheat bg-wheat-soft/70 p-3">
-                <p className="mono text-[9px] text-ink-faint">Recommendation · signed</p>
-                <p className="mt-1 font-serif text-[15px] leading-snug">Hold K this year. Retest in three. Lime is not needed at these pH levels.</p>
-                <p className="mt-1.5 font-serif text-[13px] italic text-ink-muted">— your agronomist</p>
+                {/* an example, labelled as one: no agronomist signed these words (audit 2026-09-26) */}
+                <p className="mono text-[9px] text-ink-faint">Recommendation · example</p>
+                <p className="mt-1 font-serif text-[15px] leading-snug">Potash where K runs low. Retest in three years.</p>
+                <p className="mt-1.5 font-serif text-[13px] italic text-ink-muted">— your agronomist signs here</p>
               </div>
               <div className="mt-3 grid grid-cols-3 gap-1.5">
                 {[["pH", "6.2", "in range", "bg-moss-soft text-moss-deep"], ["OM", "2.4%", "in range", "bg-moss-soft text-moss-deep"], ["P", "34", "high", "bg-paper-deep text-ink-faint"], ["K", "115", "in range", "bg-moss-soft text-moss-deep"], ["CEC", "7.1", "lighter", "bg-wheat-soft text-ink"], ["S", "14", "low", "bg-[#f6e3dc] text-[#a8442c]"]].map(([k, v, w, c]) => (
@@ -221,7 +224,7 @@ export default async function Home() {
               </div>
               <div className="mt-3 flex items-center justify-between rounded-xl bg-paper px-3 py-2">
                 <span className="data text-[9px] text-ink-faint">Yield 2025 · Corn</span>
-                <span className="font-serif text-[15px] font-semibold">200 <span className="text-[10px] font-normal text-ink-faint">bu/ac</span></span>
+                <span className="font-serif text-[15px] font-semibold">233.4 <span className="text-[10px] font-normal text-ink-faint">bu/ac</span></span>
               </div>
             </div>
           </div>
