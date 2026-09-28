@@ -1,4 +1,4 @@
-import Image from "next/image";
+import Image, { getImageProps } from "next/image";
 import Link from "next/link";
 import { site } from "@/lib/site";
 import Reveal from "@/components/reveal";
@@ -17,6 +17,13 @@ const mailto = site.email ? `mailto:${site.email}?subject=${encodeURIComponent("
 const tel = site.phone ? `tel:+1${site.phone.replace(/\D/g, "")}` : null;
 
 const F = site.flight;
+
+// Hero images: the 2 Sep corner test (corn rows, the lane) on wide screens, the full H-3 map on
+// phones. fetchPriority rather than preload, so the browser fetches only the one it shows.
+const heroCommon = { alt: "", sizes: "100vw", fetchPriority: "high" as const };
+const heroWide = getImageProps({ ...heroCommon, src: "/hero-h3-rows.jpg", width: 1180, height: 470, quality: 75 }).props.srcSet;
+const { srcSet: heroPhoneSrcSet, ...heroPhoneRest } = getImageProps({ ...heroCommon, src: "/hero-h3-field.jpg", width: 1000, height: 790, quality: 75 }).props;
+const heroPhone = { ...heroPhoneRest, srcSet: heroPhoneSrcSet };
 
 export default async function Home() {
   const episodes = await getEpisodes(site.podcast.feed);
@@ -47,8 +54,11 @@ export default async function Home() {
       <section className="relative z-10 overflow-hidden bg-night text-paper">
         <div className="absolute inset-0" aria-hidden="true">
           <div className="flyover-pan absolute inset-0">
-            <Image priority src="/hero-h3-rows.jpg" alt="" fill sizes="100vw" className="hidden object-cover md:block" />
-            <Image priority src="/hero-h3-field.jpg" alt="" fill sizes="100vw" className="object-cover md:hidden" />
+            {/* Art direction: one <picture>, so each device downloads only its own crop. */}
+            <picture>
+              <source media="(min-width: 768px)" srcSet={heroWide} />
+              <img {...heroPhone} alt="" className="absolute inset-0 h-full w-full object-cover" />
+            </picture>
           </div>
           <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(19,28,22,0.88)_0%,rgba(19,28,22,0.62)_48%,rgba(19,28,22,0.3)_100%)]" />
           <div className="absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(0deg,rgba(19,28,22,0.7),rgba(19,28,22,0))]" />
@@ -60,7 +70,7 @@ export default async function Home() {
               <span className="rise d2 block">Your data.</span>
               <span className="rise d3 block font-normal italic text-[#b9d4bd]">Your call.</span>
             </h1>
-            <p className="rise d3 max-w-[620px] text-[19px] leading-[1.45] text-paper/85 sm:text-[21px]">
+            <p className="rise d3 max-w-[620px] text-[19px] leading-[1.45] text-paper sm:text-[21px]">
               Drone maps of your fields, filed in a record you own. We fly it, your agronomist signs it, you keep it.
             </p>
             <div className="rise d4 flex flex-wrap items-center gap-3.5">
