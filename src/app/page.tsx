@@ -49,7 +49,7 @@ export default async function Home() {
             <span className="rise d3 block font-normal italic text-moss">Your call.</span>
           </h1>
           <p className="rise d3 max-w-[620px] text-[19px] leading-[1.45] text-ink-muted sm:text-[21px]">
-            Drone field mapping and a grower-owned record for the farms of {site.region}. We fly it, your agronomist signs it, and the file is yours for good.
+            Drone maps of your fields, filed in a record you own. We fly it, your agronomist signs it, you keep it.
           </p>
           <div className="rise d4 flex flex-wrap items-center gap-3.5">
             <a href={mailto} className="group flex h-[52px] items-center gap-2.5 rounded-full bg-moss px-6 text-[15px] font-medium text-paper transition-[background-color,box-shadow] duration-300 hover:bg-moss-deep hover:shadow-[0_14px_30px_-14px_rgba(47,93,58,0.7)]">
@@ -66,7 +66,7 @@ export default async function Home() {
         </div>
 
         <ol className="rise d5 flex flex-col divide-y divide-line-strong border-y border-line-strong lg:col-span-4">
-          {["The grower owns every file.", "A person signs every recommendation.", "Accuracy is recorded, never assumed."].map((t) => (
+          {["The grower owns every file.", "A person signs every recommendation."].map((t) => (
             <li key={t} className="py-5">
               <span className="font-serif text-[22px] leading-[1.25]">{t}</span>
             </li>
@@ -80,9 +80,8 @@ export default async function Home() {
       <section className="relative z-10 mx-auto max-w-[1280px] px-5 sm:px-8">
         <div className="grid gap-10 border-t border-line-strong pb-24 pt-20 lg:grid-cols-12 lg:items-center">
           <div className="reveal flex flex-col gap-5 lg:col-span-4">
-            <p className="mono text-[12px] text-moss">Same ground, two eyes</p>
-            <h2 className="font-serif text-[clamp(34px,4.5vw,48px)] font-semibold leading-[1.05] tracking-[-0.02em]">Satellite sees a field.<br />We see the rows.</h2>
-            <p className="text-[17px] leading-[1.5] text-ink-muted">The public satellite image on the right is what every farm app shows you. The left half is our 2 September test flight over the northeast corner of H-3, the same ground at five centimetres per pixel. Drag the handle.</p>
+            <h2 className="font-serif text-[clamp(34px,4.5vw,48px)] font-semibold leading-[1.05] tracking-[-0.02em]">The satellite shows a field.<br />Our flight shows the rows.</h2>
+            <p className="text-[17px] leading-[1.5] text-ink-muted">Right: the free satellite picture most farm apps use, about 60 cm a pixel. Left: our 2 September test flight over the northeast corner of H-3, 5 cm a pixel. Drag the handle.</p>
             <p className="data text-[11px] text-ink-faint">USGS imagery for the satellite half · our orthomosaic for the flight</p>
           </div>
           <div className="reveal lg:col-span-8" data-delay="1">
@@ -97,9 +96,9 @@ export default async function Home() {
         image="/h3-field.jpg"
         steps={[
           { kicker: "01 · Fly", title: "We fly it in the right light.", body: `Wind, sun angle and shutter speed decide the day. The drone flies a lawnmower pattern and shoots a photo every ${F.intervalSeconds} seconds. This flight: ${F.photos} photos in ${F.flightMinutes} minutes of flying, ${F.batteries === 2 ? "one battery swap" : `${F.batteries} batteries`}.` },
-          { kicker: "02 · Stitch", title: "Our machine stitches it into one map.", body: `The photos are matched, meshed and blended into a single orthomosaic you can measure from. ${F.stitchMinutes} minutes for these ${F.acres} acres, on our own machine. No cloud, no monthly fee.` },
-          { kicker: "03 · Read", title: "Then you read the field, not a pixel.", body: "The brown patches worth walking, the corner that always comes up thin. Five centimetres per pixel is enough to count plants." },
-          { kicker: "04 · File", title: "It lands on your record, signed.", body: "The map is filed to the field in Acrefile beside your soil numbers, in words, with your agronomist’s signed recommendation on top. No login, no app to install." },
+          { kicker: "02 · Stitch", title: "Our machine stitches it into one map.", body: `The photos are matched and blended into one map you can measure from: ${F.stitchMinutes} minutes for these ${F.acres} acres, on our own computer. Nothing to subscribe to.` },
+          { kicker: "03 · Read", title: "", body: "The brown patches worth walking, the corner that always comes up thin. Five centimetres per pixel is enough to count plants." },
+          { kicker: "04 · File", title: "It lands on your record, signed.", body: "The map is filed to the field in Acrefile beside your soil numbers, with your agronomist’s signed recommendation on top. You open it from a link on your phone; nothing to install." },
         ]}
       />
 
@@ -109,7 +108,7 @@ export default async function Home() {
           <div className="flex flex-col items-start justify-between gap-4 lg:flex-row lg:items-end">
             <div className="reveal flex flex-col gap-3.5">
               <p className="mono text-[12px] text-moss">How a flight works</p>
-              <h2 className="font-serif text-[clamp(34px,4.5vw,48px)] font-semibold leading-[1.05] tracking-[-0.02em]">Ask. We fly. It lands on your record.</h2>
+              <h2 className="font-serif text-[clamp(34px,4.5vw,48px)] font-semibold leading-[1.05] tracking-[-0.02em]">You name the field. We fly it and file it.</h2>
             </div>
             <div className="reveal flex flex-col items-start gap-3 lg:items-end" data-delay="1">
               <div className="flex flex-wrap gap-2">
@@ -145,12 +144,12 @@ export default async function Home() {
         <div className="grid items-center gap-10 border-t border-line-strong pb-24 pt-20 lg:grid-cols-12">
           <div className="reveal flex flex-col gap-5 lg:col-span-6">
             <p className="mono flex items-center gap-2 text-[12px] text-moss"><AcrefileMark size={18} /> Acrefile</p>
-            <h2 className="font-serif text-[clamp(36px,5vw,56px)] font-semibold leading-[1.02] tracking-[-0.02em]">One record. Yours.</h2>
+            <h2 className="font-serif text-[clamp(32px,4vw,46px)] font-semibold leading-[1.05] tracking-[-0.015em]">Every field’s records in one place, and they’re yours.</h2>
             <p className="max-w-[520px] text-[17px] leading-[1.55] text-ink-muted">
-              Every flight we make lands in Acrefile, the field record the grower owns. Soil tests, tissue scans, imagery and planter data in one place, in plain words, with your agronomist’s signed recommendation on top. Your own costs per field sit beside them: budget beside actual, at your prices. Opened from a text message. No login to remember, no account someone else controls.
+              Every flight we make is filed in Acrefile, the field record you own: soil tests, tissue scans, maps and planter data, with your agronomist’s signed recommendation on top, and your own costs per field, budget beside actual. You sign in with your email; nobody else controls the account.
             </p>
             <ul className="flex flex-wrap gap-2.5">
-              {["Six numbers in words", "Signed recommendations", "Machine data filed by location", "Cost of production per field", "One-page PDF", "Share links you can revoke"].map((t) => (
+              {["Soil test in plain words", "Signed recommendations", "Machine data filed by location", "Cost of production per field", "One-page PDF", "Share links you can turn off"].map((t) => (
                 <li key={t} className="mono rounded-full border border-line-strong px-3 py-2 text-[11px] text-ink-muted">{t}</li>
               ))}
             </ul>
