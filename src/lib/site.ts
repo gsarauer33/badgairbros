@@ -36,6 +36,8 @@ export const site = {
     flown: "6 Sep 2026",
     flownLong: "the sixth of September",
     gsdCm: 5,
+    /** Flying height for this mission (J-1 was flown at 80 m the same day). */
+    altitudeMetres: 100,
     photos: 620,
     intervalSeconds: 3,
     flightMinutes: 38,

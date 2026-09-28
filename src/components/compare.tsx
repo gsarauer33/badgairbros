@@ -26,8 +26,8 @@ export default function Compare({ before, after, alt }: { before: string; after:
       <div className="absolute inset-0" style={{ clipPath: `inset(0 ${100 - pos}% 0 0)` }}>
         <Image src={after} alt={alt} fill sizes="(min-width: 1024px) 760px, 100vw" className="object-cover" />
       </div>
-      <span className="mono pointer-events-none absolute left-3.5 top-3.5 rounded-full bg-ink/75 px-2.5 py-1.5 text-[10px] text-paper">Our flight · 5 cm</span>
-      <span className="mono pointer-events-none absolute right-3.5 top-3.5 rounded-full bg-paper/85 px-2.5 py-1.5 text-[10px] text-ink">Satellite · ~60 cm</span>
+      <span className="data pointer-events-none absolute left-3.5 top-3.5 rounded-full bg-ink/75 px-2.5 py-1.5 text-[10px] text-paper">Our flight · 5 cm</span>
+      <span className="data pointer-events-none absolute right-3.5 top-3.5 rounded-full bg-paper/85 px-2.5 py-1.5 text-[10px] text-ink">Satellite · ~60 cm</span>
       <div className="pointer-events-none absolute inset-y-0 w-px bg-paper shadow-[0_0_0_1px_rgba(31,42,31,0.25)]" style={{ left: `${pos}%` }} />
       <button
         type="button"

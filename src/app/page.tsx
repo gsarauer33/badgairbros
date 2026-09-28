@@ -6,6 +6,9 @@ import SiteNav from "@/components/nav";
 import CountUp from "@/components/count-up";
 import Compare from "@/components/compare";
 import Scrolly from "@/components/scrolly";
+import PlatBook from "@/components/plat-book";
+import Flyover from "@/components/flyover";
+import { PLAT_FIELDS } from "@/lib/plat-book";
 import { getEpisodes } from "@/lib/podcast";
 import { BadgairMark, AcrefileMark, Arrow } from "@/components/marks";
 
@@ -67,9 +70,8 @@ export default async function Home() {
         </div>
 
         <ol className="rise d5 flex flex-col divide-y divide-line-strong border-y border-line-strong lg:col-span-4">
-          {["The grower owns every file.", "A person signs every recommendation.", "Accuracy is recorded, never assumed."].map((t, i) => (
-            <li key={t} className="flex items-baseline gap-4 py-5">
-              <span className="mono text-[12px] text-moss">0{i + 1}</span>
+          {["The grower owns every file.", "A person signs every recommendation.", "Accuracy is recorded, never assumed."].map((t) => (
+            <li key={t} className="py-5">
               <span className="font-serif text-[22px] leading-[1.25]">{t}</span>
             </li>
           ))}
@@ -106,10 +108,10 @@ export default async function Home() {
             <p className="mono flex items-center gap-2 text-[12px] text-moss"><AcrefileMark size={18} /> Acrefile</p>
             <h2 className="font-serif text-[clamp(36px,5vw,56px)] font-semibold leading-[1.02] tracking-[-0.02em]">One record. Yours.</h2>
             <p className="max-w-[520px] text-[17px] leading-[1.55] text-ink-muted">
-              Every flight we make lands in Acrefile, the field record the grower owns. Soil tests, tissue scans, imagery and planter data in one place, in plain words, with your agronomist’s signed recommendation on top. Opened from a text message. No login to remember, no account someone else controls.
+              Every flight we make lands in Acrefile, the field record the grower owns. Soil tests, tissue scans, imagery and planter data in one place, in plain words, with your agronomist’s signed recommendation on top. Your own costs per field sit beside them: budget beside actual, at your prices. Opened from a text message. No login to remember, no account someone else controls.
             </p>
             <ul className="flex flex-wrap gap-2.5">
-              {["Six numbers in words", "Signed recommendations", "Machine data filed by location", "One-page PDF", "Share links you can revoke"].map((t) => (
+              {["Six numbers in words", "Signed recommendations", "Machine data filed by location", "Cost of production per field", "One-page PDF", "Share links you can revoke"].map((t) => (
                 <li key={t} className="mono rounded-full border border-line-strong px-3 py-2 text-[11px] text-ink-muted">{t}</li>
               ))}
             </ul>
@@ -121,7 +123,7 @@ export default async function Home() {
             {/* the record as the grower sees it on a phone */}
             <div className="mx-auto w-[min(360px,100%)] rounded-[28px] border border-line bg-surface p-4 shadow-[0_30px_60px_-30px_rgba(31,42,31,0.45)]">
               <div className="flex items-center justify-between px-1">
-                <span className="mono text-[10px] text-ink-faint">H-3 · Home Farm · 65.3 ac</span>
+                <span className="data text-[10px] text-ink-faint">H-3 · Home Farm · 65.3 ac</span>
                 <span className="mono rounded-full bg-moss-soft px-2 py-0.5 text-[9px] text-moss-deep">your link</span>
               </div>
               <div className="mt-3 rounded-2xl border-l-4 border-wheat bg-wheat-soft/70 p-3">
@@ -139,10 +141,37 @@ export default async function Home() {
                 ))}
               </div>
               <div className="mt-3 flex items-center justify-between rounded-xl bg-paper px-3 py-2">
-                <span className="mono text-[9px] text-ink-faint">Yield 2025 · Corn</span>
+                <span className="data text-[9px] text-ink-faint">Yield 2025 · Corn</span>
                 <span className="font-serif text-[15px] font-semibold">200 <span className="text-[10px] font-normal text-ink-faint">bu/ac</span></span>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ---------- plat book: the farm on one map, as Acrefile shows it ---------- */}
+      <section id="plat-book" className="relative z-10 mx-auto max-w-[1280px] px-5 sm:px-8">
+        <div className="grid gap-10 border-t border-line-strong pb-24 pt-20 lg:grid-cols-12 lg:items-center">
+          <div className="reveal flex flex-col gap-5 lg:col-span-4">
+            <p className="mono text-[13px] text-moss">The plat book</p>
+            <h2 className="font-serif text-[clamp(34px,4.5vw,48px)] font-bold leading-[1.05] tracking-[-0.015em]">Every field on one page.</h2>
+            <p className="text-[17px] leading-[1.5] text-ink-muted">In Acrefile the farm opens on one map: every field outlined and tinted by farm, like the county plat book on the kitchen table. This is Sarauer Farms, drawn from the boundaries in its record. Tap a field and its record opens.</p>
+            <dl className="grid grid-cols-[auto_1fr_auto] items-baseline gap-x-4 gap-y-2 border-t border-line pt-4">
+              {PLAT_FIELDS.map((f) => (
+                <div key={f.field} className="contents">
+                  <dt className="flex items-center gap-2 font-serif text-[18px] font-bold"><span className="h-3 w-3 rounded-[3px]" style={{ background: f.color }} aria-hidden="true" />{f.field}</dt>
+                  <dd className="text-[14px] text-ink-muted">{f.farm}</dd>
+                  <dd className="data text-right text-[14px]">{f.acres.toFixed(1)} ac</dd>
+                </div>
+              ))}
+              <div className="contents">
+                <dt className="col-span-2 border-t border-line pt-2 text-[14px] font-semibold">{PLAT_FIELDS.length} fields, {new Set(PLAT_FIELDS.map((f) => f.farm)).size} farms</dt>
+                <dd className="data border-t border-line pt-2 text-right text-[14px] font-medium">{PLAT_FIELDS.reduce((n, f) => n + f.acres, 0).toFixed(1)} ac</dd>
+              </div>
+            </dl>
+          </div>
+          <div className="reveal rounded-[20px] border border-line bg-surface p-3 sm:p-5 lg:col-span-8" data-delay="1">
+            <PlatBook />
           </div>
         </div>
       </section>
@@ -154,7 +183,7 @@ export default async function Home() {
             <p className="mono text-[12px] text-moss">Same ground, two eyes</p>
             <h2 className="font-serif text-[clamp(34px,4.5vw,48px)] font-semibold leading-[1.05] tracking-[-0.02em]">Satellite sees a field.<br />We see the rows.</h2>
             <p className="text-[17px] leading-[1.5] text-ink-muted">The public satellite image on the right is what every farm app shows you. The left half is our 2 September test flight over the northeast corner of H-3, the same ground at five centimetres per pixel. Drag the handle.</p>
-            <p className="mono text-[11px] text-ink-faint">USGS imagery for the satellite half · our orthomosaic for the flight</p>
+            <p className="data text-[11px] text-ink-faint">USGS imagery for the satellite half · our orthomosaic for the flight</p>
           </div>
           <div className="reveal lg:col-span-8" data-delay="1">
             <Compare before="/h3-satellite.jpg" after="/h3-drone.jpg" alt="The northeast corner of H-3 from our test flight, five centimetres per pixel" />
@@ -216,7 +245,7 @@ export default async function Home() {
               </div>
             ))}
           </dl>
-          <ol className="pipeline reveal mono flex flex-wrap items-center gap-x-3 gap-y-2 text-[11px] text-paper/60 lg:col-span-12" data-delay="2" aria-label="What happens to the photos">
+          <ol className="pipeline reveal data flex flex-wrap items-center gap-x-3 gap-y-2 text-[11px] text-paper/60 lg:col-span-12" data-delay="2" aria-label="What happens to the photos">
             {PIPELINE.map((step, i) => (
               <li key={step} className="flex items-center gap-3">
                 <span className="step flex items-center gap-2 rounded-full border border-paper/20 px-3 py-1.5" style={{ animationDelay: `${0.4 + i * 0.35}s` }}>
@@ -250,7 +279,7 @@ export default async function Home() {
                     <p className="font-serif text-[20px] font-semibold leading-[1.2]">{ep.url ? <a href={ep.url} className="hover:underline">{ep.title}</a> : ep.title}</p>
                     {i === 0 && ep.summary && <p className="mt-1 text-[14px] text-paper/85">{ep.summary}</p>}
                   </div>
-                  <span className="mono shrink-0 text-[11px] text-paper/80">{ep.minutes ? `${ep.minutes} min` : ""}</span>
+                  <span className="data shrink-0 text-[11px] text-paper/80">{ep.minutes ? `${ep.minutes} min` : ""}</span>
                 </li>
               ))}
             </ol>
@@ -298,6 +327,8 @@ export default async function Home() {
         </div>
       </section>
 
+      <Flyover mailto={mailto} />
+
       {/* ---------- contact + footer ---------- */}
       <footer id="contact" className="relative z-10 mx-auto max-w-[1280px] px-5 sm:px-8">
         <div className="flex flex-col gap-16 border-t border-line-strong pb-10 pt-16 lg:pt-20">
@@ -308,7 +339,7 @@ export default async function Home() {
             </div>
             <div className="reveal flex flex-col gap-3 lg:items-end" data-delay="1">
               {site.email && <a href={mailto} className="font-serif text-[24px] text-moss underline decoration-wheat/0 underline-offset-8 transition-[text-decoration-color] duration-300 hover:decoration-wheat sm:text-[26px]">{site.email}</a>}
-              <p className="mono flex flex-wrap gap-x-3 text-[12px] text-ink-faint">
+              <p className="data flex flex-wrap gap-x-3 text-[12px] text-ink-faint">
                 {site.phone && tel && <a href={tel} className="hover:text-ink">{site.phone}</a>}
                 {site.phone && <span>·</span>}
                 <span>{site.place}</span>

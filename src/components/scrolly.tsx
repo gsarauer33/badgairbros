@@ -121,7 +121,7 @@ export default function Scrolly({ steps, image, id }: { steps: Step[]; image: st
 
                 {/* the record slides in */}
                 <div className="absolute inset-y-4 right-4 flex w-[min(300px,60%)] flex-col gap-2.5 rounded-[18px] border border-line bg-paper/95 p-4 shadow-[0_20px_50px_-20px_rgba(31,42,31,0.6)] backdrop-blur" style={{ transform: `translateX(${(1 - file) * 120}%)`, opacity: file, transition: "transform 0.25s, opacity 0.25s" }}>
-                  <p className="mono text-[10px] text-ink-faint">H-3 · Home Farm · filed</p>
+                  <p className="data text-[10px] text-ink-faint">H-3 · Home Farm · filed</p>
                   <div className="grid grid-cols-3 gap-1.5">
                     {NUMBERS.map(([k, v, w], i) => (
                       <div key={k} className="rounded-lg bg-surface p-2" style={{ opacity: file * 6 > i ? 1 : 0, transition: "opacity 0.2s" }}>
@@ -137,8 +137,8 @@ export default function Scrolly({ steps, image, id }: { steps: Step[]; image: st
                 <span className="mono absolute left-3.5 top-3.5 rounded-full bg-ink/75 px-2.5 py-1.5 text-[10px] text-paper">{["Flying", "Stitching", "Reading", "Filed"][stage]}</span>
               </div>
               <div className="flex items-center justify-between border-t border-line px-4 py-3">
-                <span className="mono text-[10px] text-ink-faint">H-3 · Home Farm · 6 Sep 2026</span>
-                <span className="mono text-[10px] text-ink-faint">{Math.round(p * 100)}%</span>
+                <span className="data text-[10px] text-ink-faint">H-3 · Home Farm · 6 Sep 2026</span>
+                <span className="data text-[10px] text-ink-faint">{Math.round(p * 100)}%</span>
               </div>
             </div>
           </div>

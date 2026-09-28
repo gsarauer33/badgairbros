@@ -1,11 +1,13 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Source_Serif_4 } from "next/font/google";
+import { Besley, IBM_Plex_Mono, Public_Sans } from "next/font/google";
 import "./globals.css";
 import { site } from "@/lib/site";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
-const serif = Source_Serif_4({ variable: "--font-serif", subsets: ["latin"], style: ["normal", "italic"], weight: "variable", axes: ["opsz"] });
+// Type (Garrett, 2026-09-28): Besley for headings and headline numbers, Public Sans for body and UI,
+// IBM Plex Mono only for real data (field labels, source and resolution). All three are SIL OFL.
+const serif = Besley({ variable: "--font-besley", subsets: ["latin"], style: ["normal", "italic"], weight: "variable" });
+const sans = Public_Sans({ variable: "--font-public-sans", subsets: ["latin"], style: ["normal", "italic"], weight: "variable" });
+const mono = IBM_Plex_Mono({ variable: "--font-plex-mono", subsets: ["latin"], weight: ["400", "500"] });
 
 export const metadata: Metadata = {
   title: `${site.name} · ${site.tagline}`,
@@ -18,7 +20,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${geistSans.variable} ${geistMono.variable} ${serif.variable}`}>
+    <html lang="en" className={`${sans.variable} ${mono.variable} ${serif.variable}`}>
       <body>
         <noscript><style>{`.reveal{opacity:1!important;transform:none!important}`}</style></noscript>
         {children}

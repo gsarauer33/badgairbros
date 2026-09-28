@@ -44,14 +44,14 @@ export default async function Grains() {
             <a href={first.bidsUrl} target="_blank" rel="noopener" className="group flex h-12 items-center gap-2 rounded-full bg-ink px-5 text-[15px] font-medium text-paper transition-colors duration-300 hover:bg-moss">
               Open {first.name} cash bids <Arrow />
             </a>
-            {first.phone && <a href={`tel:${first.phone.replace(/\D/g, "")}`} className="mono text-[12px] text-ink-muted hover:text-ink">{first.phone}</a>}
+            {first.phone && <a href={`tel:${first.phone.replace(/\D/g, "")}`} className="data text-[12px] text-ink-muted hover:text-ink">{first.phone}</a>}
           </div>
           {more.length > 0 && (
             <ul className="flex flex-col gap-2 pt-1">
               {more.map((e) => (
                 <li key={e.bidsUrl} className="flex flex-wrap items-center gap-3 text-[15px]">
                   <a href={e.bidsUrl} target="_blank" rel="noopener" className="group inline-flex items-center gap-1 font-medium text-ink underline decoration-line underline-offset-4 hover:decoration-moss">{e.name} · {e.place} <Arrow /></a>
-                  {e.phone && <a href={`tel:${e.phone.replace(/\D/g, "")}`} className="mono text-[12px] text-ink-muted hover:text-ink">{e.phone}</a>}
+                  {e.phone && <a href={`tel:${e.phone.replace(/\D/g, "")}`} className="data text-[12px] text-ink-muted hover:text-ink">{e.phone}</a>}
                 </li>
               ))}
             </ul>
@@ -115,7 +115,7 @@ export default async function Grains() {
                   ))}
                 </tbody>
               </table>
-              <p className="mono mt-4 text-[10px] text-paper/65">Forecast as of {new Date(l.wx.fetchedAt).toLocaleString("en-US", { timeZone: "America/Chicago", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })} Central · Open-Meteo for {l.lat.toFixed(2)}, {l.lon.toFixed(2)} · rain in inches, wind is the day&apos;s peak in mph · gold marks a quarter inch or a 15 mph day, the two numbers that ground a drone or a sprayer.</p>
+              <p className="data mt-4 text-[10px] text-paper/65">Forecast as of {new Date(l.wx.fetchedAt).toLocaleString("en-US", { timeZone: "America/Chicago", month: "short", day: "numeric", hour: "numeric", minute: "2-digit" })} Central · Open-Meteo for {l.lat.toFixed(2)}, {l.lon.toFixed(2)} · rain in inches, wind is the day&apos;s peak in mph · gold marks a quarter inch or a 15 mph day, the two numbers that ground a drone or a sprayer.</p>
             </div>
           )}
           </div>

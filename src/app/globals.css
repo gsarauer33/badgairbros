@@ -34,22 +34,25 @@
   --color-wheat: var(--wheat);
   --color-wheat-soft: var(--wheat-soft);
   --color-night: var(--night);
-  --font-mono: var(--font-geist-mono);
-  --font-serif: var(--font-serif);
+  --font-sans: var(--font-public-sans);
+  --font-mono: var(--font-plex-mono);
+  --font-serif: var(--font-besley);
 }
 
 html { scroll-behavior: smooth; }
 body {
   background: var(--paper);
   color: var(--ink);
-  font-family: var(--font-geist-sans), system-ui, sans-serif;
+  font-family: var(--font-public-sans), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
 }
 ::selection { background: var(--wheat-soft); color: var(--ink); }
 
-/* Label voice: mono with wide tracking */
-.mono { font-family: var(--font-geist-mono), ui-monospace, Menlo, monospace; letter-spacing: 0.08em; text-transform: uppercase; }
+/* Label voice (2026-09-28): sentence case in the body sans, a touch heavier. The uppercase
+   tracked-mono eyebrow read as a template; mono is kept for real data only (.data). */
+.mono { font-family: var(--font-public-sans), system-ui, sans-serif; font-weight: 600; letter-spacing: 0.005em; }
+.data { font-family: var(--font-plex-mono), ui-monospace, Menlo, monospace; letter-spacing: 0.01em; font-variant-numeric: tabular-nums; }
 
 /* Motion. Everything respects reduced motion. */
 @keyframes rise { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: translateY(0); } }
@@ -93,4 +96,22 @@ body {
 
 @media (prefers-reduced-motion: reduce) {
   .ticker, .contours, .pipeline .step, .pipeline .step .dot { animation: none !important; transform: none !important; stroke-dashoffset: 0 !important; width: 100% !important; border-right: 0 !important; }
+}
+
+/* ---------- plat book: outlines draw in when the section is revealed ---------- */
+.plat-fill { fill-opacity: 0.2; transition: fill-opacity 0.8s ease-out; }
+.plat-line { stroke-dasharray: 1; stroke-dashoffset: 0; }
+.reveal .plat-line { stroke-dashoffset: 1; transition: stroke-dashoffset 1.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+.reveal .plat-fill { fill-opacity: 0; }
+.reveal.in .plat-line { stroke-dashoffset: 0; }
+.reveal.in .plat-fill { fill-opacity: 0.2; }
+
+/* ---------- fly-over stand-in: a slow pan across the H-3 map ---------- */
+@keyframes flyover { from { transform: scale(1.12) translate3d(-4%, -3%, 0); } to { transform: scale(1.12) translate3d(4%, 3%, 0); } }
+.flyover-pan { animation: flyover 48s ease-in-out infinite alternate; will-change: transform; }
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal .plat-line, .reveal.in .plat-line { stroke-dashoffset: 0 !important; transition: none !important; }
+  .reveal .plat-fill { fill-opacity: 0.2 !important; transition: none !important; }
+  .flyover-pan { animation: none !important; transform: scale(1.12); }
 }
