@@ -40,38 +40,54 @@ export default async function Home() {
 
       <SiteNav name={site.name} mailto={mailto} />
 
-      {/* ---------- hero ---------- */}
-      <section className="relative z-10 mx-auto grid max-w-[1280px] items-end gap-12 px-5 pb-12 pt-16 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:pb-16 lg:pt-24">
-        <div className="relative flex flex-col gap-7 lg:col-span-8 lg:gap-8">
-          <h1 className="font-serif text-[clamp(56px,9.5vw,104px)] font-semibold leading-[1.02] tracking-[-0.025em] text-ink">
-            <span className="rise d1 block">Your ground.</span>
-            <span className="rise d2 block">Your data.</span>
-            <span className="rise d3 block font-normal italic text-moss">Your call.</span>
-          </h1>
-          <p className="rise d3 max-w-[620px] text-[19px] leading-[1.45] text-ink-muted sm:text-[21px]">
-            Drone maps of your fields, filed in a record you own. We fly it, your agronomist signs it, you keep it.
-          </p>
-          <div className="rise d4 flex flex-wrap items-center gap-3.5">
-            <a href={mailto} className="group flex h-[52px] items-center gap-2.5 rounded-full bg-moss px-6 text-[15px] font-medium text-paper transition-[background-color,box-shadow] duration-300 hover:bg-moss-deep hover:shadow-[0_14px_30px_-14px_rgba(47,93,58,0.7)]">
-              Ask about a flight <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
-            </a>
-            <a href={site.acrefileUrl} className="flex h-[52px] items-center rounded-full border border-line-strong px-6 text-[15px] font-medium text-ink transition-colors duration-300 hover:bg-paper-deep">See Acrefile</a>
-            {site.podcast.name && site.podcast.feed && (
-              <a href="#listen" className="group flex h-[52px] items-center gap-2 px-2 text-[15px] font-medium text-ink-muted transition-colors hover:text-ink">
-                <span className="flex h-7 w-7 items-center justify-center rounded-full bg-ink text-paper"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg></span>
-                Listen to {site.podcast.name}
+      {/* ---------- hero: the motto over a slow pass across H-3 ----------
+          Stand-in for an aerial video until the Part 107 certificate: our own 2 Sep test flight
+          (corn rows and the lane) on wide screens, the full H-3 map on phones. The pan is CSS
+          (.flyover-pan) and holds still under reduced motion. */}
+      <section className="relative z-10 overflow-hidden bg-night text-paper">
+        <div className="absolute inset-0" aria-hidden="true">
+          <div className="flyover-pan absolute inset-0">
+            <Image priority src="/hero-h3-rows.jpg" alt="" fill sizes="100vw" className="hidden object-cover md:block" />
+            <Image priority src="/hero-h3-field.jpg" alt="" fill sizes="100vw" className="object-cover md:hidden" />
+          </div>
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(19,28,22,0.88)_0%,rgba(19,28,22,0.62)_48%,rgba(19,28,22,0.3)_100%)]" />
+          <div className="absolute inset-x-0 bottom-0 h-40 bg-[linear-gradient(0deg,rgba(19,28,22,0.7),rgba(19,28,22,0))]" />
+        </div>
+        <div className="relative mx-auto grid max-w-[1280px] items-end gap-12 px-5 pb-14 pt-16 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:pb-20 lg:pt-24">
+          <div className="relative flex flex-col gap-7 lg:col-span-8 lg:gap-8">
+            <h1 className="font-serif text-[clamp(56px,9.5vw,104px)] font-semibold leading-[1.02] tracking-[-0.025em] text-paper">
+              <span className="rise d1 block">Your ground.</span>
+              <span className="rise d2 block">Your data.</span>
+              <span className="rise d3 block font-normal italic text-[#b9d4bd]">Your call.</span>
+            </h1>
+            <p className="rise d3 max-w-[620px] text-[19px] leading-[1.45] text-paper/85 sm:text-[21px]">
+              Drone maps of your fields, filed in a record you own. We fly it, your agronomist signs it, you keep it.
+            </p>
+            <div className="rise d4 flex flex-wrap items-center gap-3.5">
+              <a href={mailto} className="group flex h-[52px] items-center gap-2.5 rounded-full bg-paper px-6 text-[15px] font-medium text-ink transition-colors duration-300 hover:bg-wheat-soft">
+                Ask about a flight <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
               </a>
-            )}
+              <a href={site.acrefileUrl} className="flex h-[52px] items-center rounded-full border border-paper/40 px-6 text-[15px] font-medium text-paper transition-colors duration-300 hover:bg-paper/10">See Acrefile</a>
+              {site.podcast.name && site.podcast.feed && (
+                <a href="#listen" className="group flex h-[52px] items-center gap-2 px-2 text-[15px] font-medium text-paper/80 transition-colors hover:text-paper">
+                  <span className="flex h-7 w-7 items-center justify-center rounded-full bg-paper text-ink"><svg width="10" height="10" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z" /></svg></span>
+                  Listen to {site.podcast.name}
+                </a>
+              )}
+            </div>
+          </div>
+
+          <div className="rise d5 flex flex-col gap-4 lg:col-span-4">
+            <ol className="flex flex-col divide-y divide-paper/25 border-y border-paper/25">
+              {["The grower owns every file.", "A person signs every recommendation."].map((t) => (
+                <li key={t} className="py-5">
+                  <span className="font-serif text-[22px] leading-[1.25] text-paper">{t}</span>
+                </li>
+              ))}
+            </ol>
+            <p className="data text-[11px] text-paper/70">Behind: our own flights over H-3, September 2026</p>
           </div>
         </div>
-
-        <ol className="rise d5 flex flex-col divide-y divide-line-strong border-y border-line-strong lg:col-span-4">
-          {["The grower owns every file.", "A person signs every recommendation."].map((t) => (
-            <li key={t} className="py-5">
-              <span className="font-serif text-[22px] leading-[1.25]">{t}</span>
-            </li>
-          ))}
-        </ol>
       </section>
 
       {/* ===== chapter 1, mapping: proof, how, the ask ===== */}
