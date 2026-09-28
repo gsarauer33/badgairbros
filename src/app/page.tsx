@@ -5,8 +5,8 @@ import Reveal from "@/components/reveal";
 import SiteNav from "@/components/nav";
 import Compare from "@/components/compare";
 import Scrolly from "@/components/scrolly";
+import CountUp from "@/components/count-up";
 import PlatBook from "@/components/plat-book";
-import Flyover from "@/components/flyover";
 import { PLAT_FIELDS } from "@/lib/plat-book";
 import { getEpisodes } from "@/lib/podcast";
 import { BadgairMark, AcrefileMark, Arrow } from "@/components/marks";
@@ -46,13 +46,15 @@ export default async function Home() {
           (.flyover-pan) and holds still under reduced motion. */}
       <section className="relative z-10 overflow-hidden bg-night text-paper">
         <div className="absolute inset-0" aria-hidden="true">
-          {/* The whole of H-3 from the 6 Sep flight, background cut away, drifting on a short loop. */}
-          <div className="absolute inset-y-6 right-[-6%] left-[-10%] opacity-45 lg:inset-y-10 lg:left-[40%] lg:right-[-2%] lg:opacity-100">
-            <div className="hero-drift relative h-full w-full">
-              <Image src="/hero-h3-full.webp" alt="" fill sizes="(min-width: 1024px) 62vw, 110vw" fetchPriority="high" loading="eager" className="object-contain object-top lg:object-center" />
+          {/* H-3 from the 6 Sep flight fills the band, close enough to see the contour strips, and the
+              view flies passes across it, pausing at each stop like the drone taking a photo
+              (globals.css, .hero-survey). The box keeps the image's own shape at any screen size. */}
+          <div className="hero-stage absolute inset-0">
+            <div className="hero-survey absolute left-1/2 top-1/2">
+              <Image src="/hero-h3-full.webp" alt="" fill sizes="(min-width: 1024px) 260vw, 400vw" fetchPriority="high" loading="eager" className="object-cover" />
             </div>
           </div>
-          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(19,28,22,0.92)_0%,rgba(19,28,22,0.55)_42%,rgba(19,28,22,0)_70%)]" />
+          <div className="absolute inset-0 bg-[linear-gradient(90deg,rgba(19,28,22,0.86)_0%,rgba(19,28,22,0.6)_45%,rgba(19,28,22,0.25)_100%)]" />
           <div className="absolute inset-x-0 bottom-0 h-72 bg-[linear-gradient(0deg,rgba(19,28,22,0.85),rgba(19,28,22,0))]" />
         </div>
         <div className="relative mx-auto grid max-w-[1280px] items-end gap-12 px-5 pb-14 pt-16 sm:px-8 lg:grid-cols-12 lg:gap-8 lg:pb-20 lg:pt-24">
@@ -100,7 +102,7 @@ export default async function Home() {
           <div className="reveal flex flex-col gap-5 lg:col-span-4">
             <h2 className="font-serif text-[clamp(34px,4.5vw,48px)] font-semibold leading-[1.05] tracking-[-0.02em]">The satellite shows a field.<br />Our flight shows the rows.</h2>
             <p className="text-[17px] leading-[1.5] text-ink-muted">Right: the free satellite picture most farm apps use, about 60 cm a pixel. Left: our 2 September test flight over the northeast corner of H-3, 5 cm a pixel. Drag the handle.</p>
-            <p className="data text-[11px] text-ink-faint">USGS imagery for the satellite half · our orthomosaic for the flight</p>
+            <p className="data text-[11px] text-ink-faint">USGS imagery for the satellite half · our map for the flight</p>
           </div>
           <div className="reveal lg:col-span-8" data-delay="1">
             <Compare before="/h3-satellite.jpg" after="/h3-drone.jpg" alt="The northeast corner of H-3 from our test flight, five centimetres per pixel" />
@@ -120,40 +122,65 @@ export default async function Home() {
         ]}
       />
 
-      {/* ---------- how it works ---------- */}
-      <section id="how" className="relative z-10 mx-auto max-w-[1280px] px-5 sm:px-8">
-        <div className="flex flex-col gap-12 border-t border-line-strong pb-24 pt-20">
-          <div className="flex flex-col items-start justify-between gap-4 lg:flex-row lg:items-end">
+      {/* ---------- how a flight works, and the flight that proves it ----------
+          One dark band closes the mapping chapter (Garrett, 2026-09-28): the steps, the price and
+          the ask on the left, the 6 Sep flight's numbers on the right. Every number reads from
+          site.flight. The hero carries the moving picture now. */}
+      <section id="how" className="relative z-10 overflow-hidden bg-night text-paper">
+        <div className="mx-auto grid max-w-[1280px] gap-14 px-5 py-20 sm:px-8 lg:grid-cols-12 lg:gap-10 lg:py-24">
+          <div className="flex flex-col gap-8 lg:col-span-6">
             <div className="reveal flex flex-col gap-3.5">
-              <p className="mono text-[12px] text-moss">How a flight works</p>
-              <h2 className="font-serif text-[clamp(34px,4.5vw,48px)] font-semibold leading-[1.05] tracking-[-0.02em]">You name the field. We fly it and file it.</h2>
+              <p className="mono text-[13px] text-wheat">How a flight works</p>
+              <h2 className="font-serif text-[clamp(34px,4.5vw,50px)] font-bold leading-[1.05] tracking-[-0.015em]">You name the field. We fly it and file it.</h2>
             </div>
-            <div className="reveal flex flex-col items-start gap-3 lg:items-end" data-delay="1">
-              <div className="flex flex-wrap gap-2">
-                {["Orthomosaic", "Stand count", "Elevation"].map((t) => <span key={t} className="mono rounded-full border border-line-strong px-3 py-1.5 text-[11px] text-ink-muted">{t}</span>)}
-                <span className="mono rounded-full border border-wheat px-3 py-1.5 text-[11px] text-ink">Multispectral · next</span>
-              </div>
-              <p className="mono text-[11px] text-ink-faint">{site.pricing}</p>
+            <ol className="flex flex-col divide-y divide-paper/15 border-y border-paper/15">
+              {[
+                ["Text us a field.", "Or your agronomist does. A field name and a reason is enough: stand check, gap map, drainage, a spray plan."],
+                ["We fly RTK when it counts.", "If a product needs centimetre accuracy, a spray boundary for one, we fly RTK and the record says so."],
+                ["The files are yours to keep.", "Stitched on our machine, filed to your field, opened from your link. Keep them or share them."],
+              ].map(([t, d], i) => (
+                <li key={t} className="reveal grid grid-cols-[3rem_1fr] gap-x-4 py-6" data-delay={String(i)}>
+                  <span className="font-serif text-[40px] italic leading-none text-wheat">{i + 1}</span>
+                  <div className="flex flex-col gap-1.5">
+                    <h3 className="font-serif text-[24px] font-semibold leading-[1.2]">{t}</h3>
+                    <p className="text-[16px] leading-[1.5] text-paper/80">{d}</p>
+                  </div>
+                </li>
+              ))}
+            </ol>
+            <div className="reveal flex flex-col gap-4" data-delay="1">
+              <p className="text-[15px] text-paper/80">{site.pricing}</p>
+              <a href={mailto} className="group flex h-[52px] w-fit items-center gap-2.5 rounded-full bg-paper px-6 text-[15px] font-medium text-ink transition-colors duration-300 hover:bg-wheat-soft">
+                Ask about a flight <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
+              </a>
+              <ul className="flex flex-wrap gap-2" aria-label="What we fly">
+                {["Map", "Stand count", "Elevation"].map((t) => <li key={t} className="mono rounded-full border border-paper/25 px-3 py-1.5 text-[12px] text-paper/80">{t}</li>)}
+                <li className="mono rounded-full border border-wheat/70 px-3 py-1.5 text-[12px] text-paper">Multispectral · next</li>
+              </ul>
             </div>
           </div>
-          <ol className="grid gap-8 md:grid-cols-3">
-            {[
-              ["Text us a field.", "Or your agronomist does. A field name and a reason is enough: stand check, gap map, drainage, a spray plan."],
-              ["We fly RTK when it counts.", "If a product needs centimetre accuracy, a spray boundary for one, we fly RTK and the record says so."],
-              ["The files are yours to keep.", "Stitched on our machine, filed to your field, opened from your link. Keep them or share them."],
-            ].map(([t, d], i) => (
-              <li key={t} className="reveal group flex flex-col gap-4 border-t-2 border-ink pt-6" data-delay={String(i)}>
-                <span className="font-serif text-[56px] italic leading-none text-moss transition-transform duration-500 group-hover:translate-x-1">{i + 1}</span>
-                <h3 className="font-serif text-[26px] font-semibold">{t}</h3>
-                <p className="text-[16px] leading-[1.5] text-ink-muted">{d}</p>
-              </li>
-            ))}
-          </ol>
+
+          <div className="flex flex-col gap-4 lg:col-span-6 lg:justify-center">
+            <p className="reveal data text-[12px] text-wheat">{F.field} · {F.altitudeMetres} m up · {F.flown}</p>
+            <dl className="grid grid-cols-2 gap-3">
+              {([
+                [F.photos, "photos", `one every ${F.intervalSeconds} seconds`],
+                [F.flightMinutes, "minutes", "in the air"],
+                [F.gsdCm, "cm / pixel", "ground resolution"],
+                [F.stitchMinutes, "minutes", "to stitch"],
+              ] as [number, string, string][]).map(([n, u, d], i) => (
+                <div key={u + i} className="reveal flex flex-col-reverse gap-2 rounded-[18px] border border-paper/15 bg-paper/[0.03] p-5 transition-colors duration-500 hover:border-wheat/50" data-delay={String(i % 3)}>
+                  <dt className="flex flex-col">
+                    <span className="mono text-[13px] text-wheat">{u}</span>
+                    <span className="text-[13px] text-paper/70">{d}</span>
+                  </dt>
+                  <dd className="font-serif text-[48px] font-bold leading-none text-paper sm:text-[60px]"><CountUp value={n} /></dd>
+                </div>
+              ))}
+            </dl>
+          </div>
         </div>
       </section>
-
-      {/* the close of the mapping chapter: fly-over, the latest flight in numbers, the ask */}
-      <Flyover mailto={mailto} />
 
       {/* ===== chapter 2, Acrefile: the field record, then the farm on one map ===== */}
 
