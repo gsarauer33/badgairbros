@@ -96,7 +96,7 @@ export default async function Home() {
         steps={[
           { kicker: "01 · Fly", title: "We fly it in the right light.", body: `Wind, sun angle and shutter speed decide the day. The drone flies a lawnmower pattern and shoots a photo every ${F.intervalSeconds} seconds. This flight: ${F.photos} photos in ${F.flightMinutes} minutes of flying, ${F.batteries === 2 ? "one battery swap" : `${F.batteries} batteries`}.` },
           { kicker: "02 · Stitch", title: "Our machine stitches it into one map.", body: `The photos are matched, meshed and blended into a single orthomosaic you can measure from. ${F.stitchMinutes} minutes for these ${F.acres} acres, on our own machine. No cloud, no monthly fee.` },
-          { kicker: "03 · Read", title: "Then you read the field, not a pixel.", body: "The brown patches worth walking, the waterway you farm around, the corner that always comes up thin. Five centimetres per pixel is enough to count plants." },
+          { kicker: "03 · Read", title: "Then you read the field, not a pixel.", body: "The brown patches worth walking, the corner that always comes up thin. Five centimetres per pixel is enough to count plants." },
           { kicker: "04 · File", title: "It lands on your record, signed.", body: "The map is filed to the field in Acrefile beside your soil numbers, in words, with your agronomist’s signed recommendation on top. No login, no app to install." },
         ]}
       />

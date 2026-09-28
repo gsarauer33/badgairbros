@@ -15,7 +15,6 @@ const FLIGHT = "M577.9 29.0 L573.0 29.2 L524.0 28.6 L475.2 24.7 L426.4 19.0 L377
 const WAYPOINTS: [number, number][] = [[577.9, 29.1], [565.0, 29.4], [102.5, 37.6], [90.0, 56.0], [565.3, 47.5], [578.5, 65.4], [77.4, 74.4], [77.8, 92.5], [566.0, 83.8], [579.2, 101.7], [78.1, 110.6], [78.4, 128.8], [566.7, 120.1], [579.8, 138.0], [78.7, 146.9], [66.2, 165.3], [567.3, 156.3], [580.5, 174.3], [53.7, 183.7], [54.0, 201.8], [568.0, 192.6], [581.1, 210.5], [54.3, 219.9], [54.7, 238.1], [568.6, 228.9], [581.8, 246.8], [55.0, 256.2], [93.9, 273.7], [569.3, 265.2], [582.4, 283.1], [248.4, 289.1], [248.7, 307.2], [569.9, 301.5], [428.9, 322.1], [249.0, 325.4], [275.0, 343.0], [416.4, 340.5], [403.8, 358.9], [326.7, 360.3]];
 const HOTSPOTS: { x: number; y: number; label: string }[] = [
   { x: 29.5, y: 66.7, label: "Brown patch · walk it" },
-  { x: 38.3, y: 49.6, label: "Waterway · not in the acres" },
   { x: 75.5, y: 23.5, label: "Thin corner" },
 ];
 const NUMBERS = [["pH", "6.2", "in range"], ["OM", "2.4%", "in range"], ["P", "34", "high"], ["K", "115", "in range"], ["CEC", "7.1", "lighter"], ["S", "14", "low"]];
@@ -68,15 +67,19 @@ export default function Scrolly({ steps, image, id }: { steps: Step[]; image: st
       <div className={still ? "flex items-center py-16" : "sticky top-0 flex h-dvh items-center overflow-hidden"}>
         <div className="mx-auto grid w-full max-w-[1280px] items-center gap-8 px-5 sm:px-8 lg:grid-cols-12">
           {/* words */}
-          <div className="relative min-h-[280px] sm:min-h-[220px] lg:col-span-4">
+          {/* All four steps share one grid cell, so the block is as tall as the longest step and the
+              progress bar below can never be overrun, whatever the font or screen width. */}
+          <div className="relative flex flex-col gap-6 lg:col-span-4">
+            <div className="grid">
             {steps.map((s, i) => (
-              <div key={s.title} aria-hidden={i !== stage} className="absolute inset-x-0 top-0 flex flex-col gap-3 transition-[opacity,transform] duration-500" style={{ opacity: i === stage ? 1 : 0, transform: `translateY(${i === stage ? 0 : i < stage ? -16 : 16}px)`, pointerEvents: i === stage ? "auto" : "none" }}>
+              <div key={s.title} aria-hidden={i !== stage} className="flex flex-col gap-3 transition-[opacity,transform] duration-500 [grid-area:1/1]" style={{ opacity: i === stage ? 1 : 0, transform: `translateY(${i === stage ? 0 : i < stage ? -16 : 16}px)`, pointerEvents: i === stage ? "auto" : "none" }}>
                 <p className="mono text-[12px] text-moss">{s.kicker}</p>
                 <h3 className="font-serif text-[clamp(30px,3.6vw,44px)] font-semibold leading-[1.05] tracking-[-0.02em]">{s.title}</h3>
                 <p className="text-[16px] leading-[1.5] text-ink-muted sm:text-[17px]">{s.body}</p>
               </div>
             ))}
-            <ol className="absolute -bottom-10 left-0 flex gap-2" aria-hidden="true">
+            </div>
+            <ol className="flex gap-2" aria-hidden="true">
               {steps.map((s, i) => <li key={s.title} className={`h-1 rounded-full transition-[width,background-color] duration-500 ${i === stage ? "w-8 bg-moss" : "w-3 bg-line-strong"}`} />)}
             </ol>
           </div>
@@ -109,7 +112,7 @@ export default function Scrolly({ steps, image, id }: { steps: Step[]; image: st
 
                 {/* hotspots */}
                 {HOTSPOTS.map((h, i) => {
-                  const t = Math.min(1, Math.max(0, read * 3 - i));
+                  const t = Math.min(1, Math.max(0, read * HOTSPOTS.length - i));
                   const flip = h.x > 55; // labels on the right half hang to the left so they never leave the card
                   return (
                     <div key={h.label} className={`absolute flex items-center gap-2 whitespace-nowrap ${flip ? "flex-row-reverse" : ""}`} style={{ left: `${h.x}%`, top: `${h.y}%`, transform: `translate(${flip ? "calc(-100% + 6px)" : "-6px"}, -6px) scale(${0.6 + 0.4 * t})`, transformOrigin: flip ? "right center" : "left center", opacity: t, transition: "opacity 0.2s, transform 0.2s" }}>
