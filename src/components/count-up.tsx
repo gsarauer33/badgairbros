@@ -26,5 +26,6 @@ export default function CountUp({ value, duration = 1400 }: { value: number; dur
     io.observe(el);
     return () => io.disconnect();
   }, [value, duration]);
-  return <span ref={ref} className="tabular-nums">{n}</span>;
+  // Proportional lining figures: Besley's tabular zero is drawn lighter than its other digits.
+  return <span ref={ref} className="lining-nums proportional-nums">{n}</span>;
 }
