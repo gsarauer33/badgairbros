@@ -127,7 +127,7 @@ export default async function Home() {
           the ask on the left, the 6 Sep flight's numbers on the right. Every number reads from
           site.flight. The hero carries the moving picture now. */}
       <section id="how" className="relative z-10 overflow-hidden bg-night text-paper">
-        <div className="mx-auto grid max-w-[1280px] gap-14 px-5 py-20 sm:px-8 lg:grid-cols-12 lg:gap-10 lg:py-24">
+        <div className="mx-auto grid max-w-[1280px] gap-12 px-5 pb-14 pt-20 sm:px-8 lg:grid-cols-12 lg:items-center lg:gap-10 lg:pb-16 lg:pt-24">
           <div className="flex flex-col gap-8 lg:col-span-6">
             <div className="reveal flex flex-col gap-3.5">
               <p className="mono text-[13px] text-wheat">How a flight works</p>
@@ -153,10 +153,6 @@ export default async function Home() {
               <a href={mailto} className="group flex h-[52px] w-fit items-center gap-2.5 rounded-full bg-paper px-6 text-[15px] font-medium text-ink transition-colors duration-300 hover:bg-wheat-soft">
                 Ask about a flight <Arrow className="transition-transform duration-300 group-hover:translate-x-1" />
               </a>
-              <ul className="flex flex-wrap gap-2" aria-label="What we fly">
-                {["Map", "Stand count", "Elevation"].map((t) => <li key={t} className="mono rounded-full border border-paper/25 px-3 py-1.5 text-[12px] text-paper/80">{t}</li>)}
-                <li className="mono rounded-full border border-wheat/70 px-3 py-1.5 text-[12px] text-paper">Multispectral · next</li>
-              </ul>
             </div>
           </div>
 
